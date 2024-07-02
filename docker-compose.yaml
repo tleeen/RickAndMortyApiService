@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+    container_name: nginx
+    volumes:
+      - .:/var/www:rw
+      - ./logs/nginx:/var/log/nginx/:rw
+    ports:
+      - "8876:80"
+    restart: always
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: ./docker/php
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+    container_name: php
+    restart: always
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - database
+    volumes:
+      - .:/var/www
+
+  database:
+    build:
+      context: docker/database
+    container_name: database
+    restart: always
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}
+    volumes:
+      - /home/web/www/rick_and_morty/local/pgsql:/var/lib/postgresql/data:rw
