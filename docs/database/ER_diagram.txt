@@ -1,0 +1,106 @@
+// Docs: https://dbml.dbdiagram.io/docs
+// View: https://dbdiagram.io/d
+
+Table characters {
+  id integer [pk]
+  name string
+  status_id integer
+  species_id integer
+  subspecies_id integer
+  gender_id integer
+  origin_id integer
+  last_location_id integer
+  image string
+  created_at timestamp
+  updated_at timestamp
+}
+Table character_statuses {
+  id integer [pk]
+  name string
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table character_species {
+  id integer [pk]
+  name string
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table character_subspecies {
+  id integer [pk]
+  name string
+  species_id integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table character_genders {
+  id integer [pk]
+  name string
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table locations {
+  id integer [pk]
+  name string
+  type_id integer
+  dimension_id integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table location_types {
+  id integer [pk]
+  name string
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table location_dimensions {
+  id integer [pk]
+  name string
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table episodes {
+  id integer [pk]
+  name string
+  air_date date
+  code string
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table episode_characters {
+  id integer [pk]
+  episode_id integer
+  character_id integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Ref: characters.status_id > character_statuses.id
+
+Ref: characters.species_id > character_species.id
+
+Ref: characters.subspecies_id > character_subspecies.id
+
+Ref: characters.gender_id > character_genders.id
+
+Ref: character_species.id < character_subspecies.species_id
+
+Ref: locations.type_id > location_types.id
+
+Ref: locations.dimension_id > location_dimensions.id
+
+Ref: episodes.id < episode_characters.episode_id
+
+Ref: characters.id < episode_characters.character_id
+
+Ref: characters.origin_id > locations.id
+
+Ref: characters.last_location_id > locations.id
