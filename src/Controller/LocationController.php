@@ -13,7 +13,7 @@ class LocationController extends AbstractController
     public function __construct(
         private readonly LocationRepository $locationRepository,
         private readonly CharacterRepository $characterRepository,
-    ){}
+    ) {}
     #[Route('/location', name: 'app_location')]
     public function index(): JsonResponse
     {
