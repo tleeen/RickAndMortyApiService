@@ -76,11 +76,8 @@ Table episodes {
 }
 
 Table episode_characters {
-  id integer [pk]
   episode_id integer
   character_id integer
-  created_at timestamp
-  updated_at timestamp
 }
 
 Ref: characters.status_id > character_statuses.id
