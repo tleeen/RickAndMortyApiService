@@ -1,98 +1,42 @@
 // Docs: https://dbml.dbdiagram.io/docs
 // View: https://dbdiagram.io/d
 
-Table characters {
+Table character {
   id integer [pk]
   name string
-  status_id integer
-  species_id integer
-  subspecies_id integer
-  gender_id integer
+  status string
+  species string
+  type string
+  gende string
   origin_id integer
   last_location_id integer
   image string
   created_at timestamp
   updated_at timestamp
 }
-Table character_statuses {
+
+Table location {
   id integer [pk]
   name string
+  type string
+  dimension string
   created_at timestamp
   updated_at timestamp
 }
 
-Table character_species {
+Table episode {
   id integer [pk]
   name string
+  air_date timestamp
+  episode string
   created_at timestamp
   updated_at timestamp
 }
 
-Table character_subspecies {
-  id integer [pk]
-  name string
-  species_id integer
-  created_at timestamp
-  updated_at timestamp
-}
-
-Table character_genders {
-  id integer [pk]
-  name string
-  created_at timestamp
-  updated_at timestamp
-}
-
-Table locations {
-  id integer [pk]
-  name string
-  type_id integer
-  dimension_id integer
-  created_at timestamp
-  updated_at timestamp
-}
-
-Table location_types {
-  id integer [pk]
-  name string
-  created_at timestamp
-  updated_at timestamp
-}
-
-Table location_dimensions {
-  id integer [pk]
-  name string
-  created_at timestamp
-  updated_at timestamp
-}
-
-Table episodes {
-  id integer [pk]
-  name string
-  air_date date
-  code string
-  created_at timestamp
-  updated_at timestamp
-}
-
-Table episode_characters {
+Table episode_character {
   episode_id integer
   character_id integer
 }
-
-Ref: characters.status_id > character_statuses.id
-
-Ref: characters.species_id > character_species.id
-
-Ref: characters.subspecies_id > character_subspecies.id
-
-Ref: characters.gender_id > character_genders.id
-
-Ref: character_species.id < character_subspecies.species_id
-
-Ref: locations.type_id > location_types.id
-
-Ref: locations.dimension_id > location_dimensions.id
 
 Ref: episodes.id < episode_characters.episode_id
 
