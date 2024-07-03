@@ -25,20 +25,17 @@ class Character
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'characters')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?CharacterStatus $status = null;
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'characters')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?CharacterSpecies $species = null;
+    #[ORM\Column(length: 255)]
+    private ?string $species = null;
 
-    #[ORM\ManyToOne(inversedBy: 'characters')]
-    private ?CharacterSubspecies $subspecies = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'characters')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?CharacterGender $gender = null;
+    #[ORM\Column(length: 255)]
+    private ?string $gender = null;
 
     #[ORM\ManyToOne(inversedBy: 'characters')]
     #[ORM\JoinColumn(nullable: false)]
@@ -83,55 +80,50 @@ class Character
     public function setImage(string $image): static
     {
         $this->image = $image;
-
         return $this;
     }
 
-    public function getStatus(): ?CharacterStatus
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(?CharacterStatus $status): static
+    public function setStatus(?string $status): static
     {
         $this->status = $status;
-
         return $this;
     }
 
-    public function getSpecies(): ?CharacterSpecies
+    public function getSpecies(): ?string
     {
         return $this->species;
     }
 
-    public function setSpecies(?CharacterSpecies $species): static
+    public function setSpecies(?string $species): static
     {
         $this->species = $species;
-
         return $this;
     }
 
-    public function getSubspecies(): ?CharacterSubspecies
+    public function getType(): ?string
     {
-        return $this->subspecies;
+        return $this->type;
     }
 
-    public function setSubspecies(?CharacterSubspecies $subspecies): static
+    public function setType(?string $type): static
     {
-        $this->subspecies = $subspecies;
-
+        $this->type = $type;
         return $this;
     }
 
-    public function getGender(): ?CharacterGender
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function setGender(?CharacterGender $gender): static
+    public function setGender(?string $gender): static
     {
         $this->gender = $gender;
-
         return $this;
     }
 
@@ -173,7 +165,6 @@ class Character
             $this->episodes->add($episode);
             $episode->addCharacter($this);
         }
-
         return $this;
     }
 
@@ -182,7 +173,6 @@ class Character
         if ($this->episodes->removeElement($episode)) {
             $episode->removeCharacter($this);
         }
-
         return $this;
     }
 }

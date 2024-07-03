@@ -7,7 +7,7 @@ Table character {
   status string
   species string
   type string
-  gende string
+  gender string
   origin_id integer
   last_location_id integer
   image string

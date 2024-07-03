@@ -3,10 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CharacterRepository;
-use App\Repository\LocationDimensionRepository;
 use App\Repository\LocationRepository;
-use App\Repository\LocationTypeRepository;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,8 +12,6 @@ class LocationController extends AbstractController
 {
     public function __construct(
         private readonly LocationRepository $locationRepository,
-        private readonly LocationDimensionRepository $locationDimensionRepository,
-        private readonly LocationTypeRepository $locationTypeRepository,
         private readonly CharacterRepository $characterRepository,
     ){}
     #[Route('/location', name: 'app_location')]

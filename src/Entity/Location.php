@@ -21,13 +21,11 @@ class Location
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'locations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?LocationType $type = null;
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'locations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?LocationDimension $dimension = null;
+    #[ORM\Column(length: 255)]
+    private ?string $dimension = null;
 
     /**
      * @var Collection<int, Character>
@@ -60,27 +58,25 @@ class Location
         return $this;
     }
 
-    public function getType(): ?LocationType
-    {
-        return $this->type;
-    }
-
-    public function setType(?LocationType $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getDimension(): ?LocationDimension
+    public function getDimension(): ?string
     {
         return $this->dimension;
     }
 
-    public function setDimension(?LocationDimension $dimension): static
+    public function setDimension(?string $dimension): static
     {
         $this->dimension = $dimension;
+        return $this;
+    }
 
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): static
+    {
+        $this->type = $type;
         return $this;
     }
 
