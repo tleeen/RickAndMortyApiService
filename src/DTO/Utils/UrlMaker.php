@@ -8,4 +8,9 @@ class UrlMaker
     {
         return $baseUrl . $basePrefix . $modulePrefix . '/' . $id;
     }
+
+    public static function makeStoreImage(string $baseUrl, string $basePrefix, string $modulePrefix, string $image): string
+    {
+        return $baseUrl . $basePrefix . $modulePrefix . '/avatar/' . $image;
+    }
 }
