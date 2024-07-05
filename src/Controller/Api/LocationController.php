@@ -17,7 +17,7 @@ class LocationController extends AbstractController
 {
     public function __construct(
         private readonly LocationRepository $locationRepository,
-        private readonly ValidateManager $validateManager,
+        private readonly ValidateManager    $validateManager,
     ) {}
 
 

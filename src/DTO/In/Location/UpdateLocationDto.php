@@ -22,11 +22,12 @@ class UpdateLocationDto
     public readonly ?string $dimension;
 
     public function __construct(
-        int $id,
+        int     $id,
         ?string $name,
         ?string $type,
         ?string $dimension
-    ) {
+    )
+    {
         $this->id = $id;
         $this->name = $name;
         $this->type = $type;

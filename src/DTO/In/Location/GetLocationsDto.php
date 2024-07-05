@@ -12,7 +12,8 @@ class GetLocationsDto
 
     public function __construct(
         ?array $ids,
-    ) {
+    )
+    {
         $this->ids = $ids;
     }
 

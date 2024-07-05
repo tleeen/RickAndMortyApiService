@@ -8,7 +8,8 @@ class CollectionDto
 
     public function __construct(
         array $results,
-    ) {
+    )
+    {
         $this->results = $results;
     }
 

@@ -23,7 +23,8 @@ class CreateLocationDto
         string $name,
         string $type,
         string $dimension
-    ) {
+    )
+    {
         $this->name = $name;
         $this->type = $type;
         $this->dimension = $dimension;
@@ -37,9 +38,9 @@ class CreateLocationDto
     {
         $location = $request->toArray();
         return new self(
-          name: $location['name'],
-          type: $location['type'],
-          dimension: $location['dimension']
+            name: $location['name'],
+            type: $location['type'],
+            dimension: $location['dimension']
         );
     }
 }
