@@ -53,6 +53,7 @@ class LocationRepository extends ServiceEntityRepository
     public function delete(int $id): void
     {
         $this->getEntityManager()->remove($this->find($id));
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -77,7 +78,7 @@ class LocationRepository extends ServiceEntityRepository
      * @param UpdateLocationDto $updateLocationDto
      * @return LocationDto
      */
-    public function update(UpdateLocationDto $updateLocationDto): LocationDto
+    public function change(UpdateLocationDto $updateLocationDto): LocationDto
     {
         /** @var Location $location */
         $location = $this->find($updateLocationDto->id);

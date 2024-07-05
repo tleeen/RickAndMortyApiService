@@ -38,6 +38,10 @@ class LocationDto
         $this->created = $created;
     }
 
+    /**
+     * @param Location $location
+     * @return self
+     */
     public static function fromModel(Location $location): self
     {
         $locationId = $location->getId();

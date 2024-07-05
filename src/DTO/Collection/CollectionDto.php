@@ -12,6 +12,11 @@ class CollectionDto
         $this->results = $results;
     }
 
+    /**
+     * @param array $array
+     * @param string $className
+     * @return self
+     */
     public static function fromArray(array $array, string $className): self
     {
         return new self(

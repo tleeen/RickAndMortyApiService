@@ -16,6 +16,10 @@ class GetLocationsDto
         $this->ids = $ids;
     }
 
+    /**
+     * @param Request $request
+     * @return self
+     */
     public static function fromRequest(Request $request): self
     {
         return new self(

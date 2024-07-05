@@ -9,6 +9,7 @@ class UpdateLocationDto
 {
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
+    #[Assert\Positive]
     public readonly int $id;
 
     #[Assert\Type('string')]
@@ -32,6 +33,10 @@ class UpdateLocationDto
         $this->dimension = $dimension;
     }
 
+    /**
+     * @param Request $request
+     * @return self
+     */
     public static function fromRequest(Request $request): self
     {
         $location = $request->toArray();

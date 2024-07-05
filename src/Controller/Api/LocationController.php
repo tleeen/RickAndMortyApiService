@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\DTO\In\Location\CreateLocationDto;
 use App\DTO\In\Location\GetLocationsDto;
 use App\DTO\In\Location\UpdateLocationDto;
+use App\Exceptions\Validation\ValidateException;
 use App\Managers\ValidateManager;
 use App\Repository\LocationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +30,13 @@ class LocationController extends AbstractController
     {
         $getLocationsDto = GetLocationsDto::fromRequest($request);
 
-        $this->validateManager->validate($getLocationsDto);
+        try {
+            $this->validateManager->validate($getLocationsDto);
+        } catch (ValidateException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
 
         return new JsonResponse($this->locationRepository->findMany($getLocationsDto));
     }
@@ -63,11 +70,17 @@ class LocationController extends AbstractController
     #[Route('/location', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        $createLocationsDto = CreateLocationDto::fromRequest($request);
+        $createLocationDto = CreateLocationDto::fromRequest($request);
 
-        $this->validateManager->validate($createLocationsDto);
+        try {
+            $this->validateManager->validate($createLocationDto);
+        } catch (ValidateException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
 
-        return new JsonResponse($this->locationRepository->create($createLocationsDto));
+        return new JsonResponse($this->locationRepository->create($createLocationDto));
     }
 
     /**
@@ -79,8 +92,14 @@ class LocationController extends AbstractController
     {
         $updateLocationDto = UpdateLocationDto::fromRequest($request);
 
-        $this->validateManager->validate($updateLocationDto);
+        try {
+            $this->validateManager->validate($updateLocationDto);
+        } catch (ValidateException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
 
-        return new JsonResponse($this->locationRepository->update($updateLocationDto));
+        return new JsonResponse($this->locationRepository->change($updateLocationDto));
     }
 }

@@ -29,6 +29,10 @@ class CreateLocationDto
         $this->dimension = $dimension;
     }
 
+    /**
+     * @param Request $request
+     * @return self
+     */
     public static function fromRequest(Request $request): self
     {
         $location = $request->toArray();
