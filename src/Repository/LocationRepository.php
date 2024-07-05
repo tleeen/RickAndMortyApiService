@@ -2,6 +2,10 @@
 
 namespace App\Repository;
 
+use App\DTO\Collection\CollectionDto;
+use App\DTO\In\Location\CreateLocationDto;
+use App\DTO\In\Location\UpdateLocationDto;
+use App\DTO\Out\Location\LocationDto;
 use App\Entity\Location;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,36 +20,80 @@ class LocationRepository extends ServiceEntityRepository
         parent::__construct($registry, Location::class);
     }
 
-    public function findById(int $id): ?Location {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
+    /**
+     * @param $getLocationsDto
+     * @return CollectionDto
+     */
+    public function findMany($getLocationsDto): CollectionDto
+    {
+        if (empty($getLocationsDto->ids)) {
+            return CollectionDto::fromArray(
+                $this->findAll(),
+                LocationDto::class);
+        } else {
+            return CollectionDto::fromArray(
+                $this->findBy(['id' => $getLocationsDto->ids]),
+                LocationDto::class);
+        }
     }
 
-    //    /**
-    //     * @return Location[] Returns an array of Location objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('l.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @param int $id
+     * @return LocationDto
+     */
+    public function findById(int $id): LocationDto
+    {
+        return LocationDto::fromModel($this->find($id));
+    }
 
-    //    public function findOneBySomeField($value): ?Location
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function delete(int $id): void
+    {
+        $this->getEntityManager()->remove($this->find($id));
+    }
+
+    /**
+     * @param CreateLocationDto $createLocationDto
+     * @return LocationDto
+     */
+    public function create(CreateLocationDto $createLocationDto): LocationDto
+    {
+        $location = new Location();
+
+        $location->setName($createLocationDto->name);
+        $location->setType($createLocationDto->type);
+        $location->setDimension($createLocationDto->dimension);
+
+        $this->getEntityManager()->persist($location);
+        $this->getEntityManager()->flush();
+
+        return LocationDto::fromModel($location);
+    }
+
+    /**
+     * @param UpdateLocationDto $updateLocationDto
+     * @return LocationDto
+     */
+    public function update(UpdateLocationDto $updateLocationDto): LocationDto
+    {
+        /** @var Location $location */
+        $location = $this->find($updateLocationDto->id);
+
+        if ($updateLocationDto->name) {
+            $location->setName($updateLocationDto->name);
+        }
+        if ($updateLocationDto->type) {
+            $location->setType($updateLocationDto->type);
+        }
+        if ($updateLocationDto->dimension) {
+            $location->setDimension($updateLocationDto->dimension);
+        }
+
+        $this->getEntityManager()->flush();
+
+        return LocationDto::fromModel($location);
+    }
 }

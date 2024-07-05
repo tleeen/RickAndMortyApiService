@@ -33,12 +33,16 @@ class Location
     #[ORM\OneToMany(targetEntity: Character::class, mappedBy: 'origin', orphanRemoval: true)]
     private Collection $characters;
 
+    /**
+     * @var Collection<int, Character>
+     */
     #[ORM\OneToMany(targetEntity: Character::class, mappedBy: 'lastLocation', orphanRemoval: true)]
     private Collection $residents;
 
     public function __construct()
     {
         $this->characters = new ArrayCollection();
+        $this->residents = new ArrayCollection();
     }
 
     public function getId(): ?int
