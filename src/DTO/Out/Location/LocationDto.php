@@ -27,7 +27,6 @@ class LocationDto
         array  $residents,
         string $url,
         string $created,
-
     )
     {
         $this->id = $id;

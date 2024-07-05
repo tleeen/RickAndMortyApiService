@@ -1,0 +1,65 @@
+<?php
+
+namespace App\DTO\Out\Episode;
+
+use App\DTO\Enums\BaseUrl;
+use App\DTO\Enums\Prefixes\BasePrefixes;
+use App\DTO\Enums\Prefixes\ModulePrefixes;
+use App\DTO\Utils\UrlMaker;
+use App\Entity\Episode;
+
+class EpisodeDto
+{
+    public readonly int $id;
+    public readonly string $name;
+    public readonly string $air_date;
+    public readonly string $episode;
+    public readonly array $characters;
+    public readonly string $url;
+    public readonly string $created;
+
+
+    public function __construct(
+        int    $id,
+        string $name,
+        string $air_date,
+        string $episode,
+        array  $characters,
+        string $url,
+        string $created,
+    )
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->air_date = $air_date;
+        $this->episode = $episode;
+        $this->characters = $characters;
+        $this->url = $url;
+        $this->created = $created;
+    }
+
+    /**
+     * @param Episode $episode
+     * @return self
+     */
+    public static function fromModel(Episode $episode): self
+    {
+        $episodeId = $episode->getId();
+
+        return new self(
+            id: $episodeId,
+            name: $episode->getName(),
+            air_date: $episode->getAirDate()->format('F j, Y'),
+            episode: $episode->getCode(),
+            characters: array_map(fn($character) => UrlMaker::makeUnique(BaseUrl::APP_URL->value
+                , BasePrefixes::API->value
+                , ModulePrefixes::CHARACTERS->value
+                , $character->getId()), $episode->getCharacters()->toArray()),
+            url: UrlMaker::makeUnique(BaseUrl::APP_URL->value
+                , BasePrefixes::API->value
+                , ModulePrefixes::EPISODES->value
+                , $episodeId),
+            created: $episode->getCreatedAt()->format('Y-m-d\TH:i:s.v\Z')
+        );
+    }
+}
