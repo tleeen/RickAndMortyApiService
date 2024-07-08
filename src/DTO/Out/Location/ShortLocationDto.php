@@ -2,9 +2,9 @@
 
 namespace App\DTO\Out\Location;
 
-use App\DTO\Enums\BaseUrl;
-use App\DTO\Enums\Prefixes\BasePrefixes;
-use App\DTO\Enums\Prefixes\ModulePrefixes;
+use App\DTO\Utils\Enums\BaseUrl;
+use App\DTO\Utils\Enums\Prefixes\BasePrefixes;
+use App\DTO\Utils\Enums\Prefixes\ModulePrefixes;
 use App\DTO\Utils\UrlMaker;
 use App\Entity\Location;
 

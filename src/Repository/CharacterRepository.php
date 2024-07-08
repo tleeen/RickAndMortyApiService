@@ -2,12 +2,14 @@
 
 namespace App\Repository;
 
-use App\DTO\Collection\CollectionDto;
 use App\DTO\In\Character\CreateCharacterDto;
+use App\DTO\In\Character\GetCharactersDto;
 use App\DTO\In\Character\UpdateCharacterDto;
 use App\DTO\Out\Character\CharacterDto;
+use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
 use App\Entity\Location;
+use App\Managers\PaginatorManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,26 +19,29 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CharacterRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly PaginatorManager $paginatorManager
+    )
     {
         parent::__construct($registry, Character::class);
     }
 
     /**
-     * @param $getLocationsDto
-     * @return CollectionDto
+     * @param GetCharactersDto $getCharactersDto
+     * @return PaginateDto
      */
-    public function findMany($getLocationsDto): CollectionDto
+    public function findMany(GetCharactersDto $getCharactersDto): PaginateDto
     {
-        if (empty($getLocationsDto->ids)) {
-            return CollectionDto::fromArray(
-                $this->findAll(),
-                CharacterDto::class);
-        } else {
-            return CollectionDto::fromArray(
-                $this->findBy(['id' => $getLocationsDto->ids]),
-                CharacterDto::class);
-        }
+        $ids = $getCharactersDto->ids ? ['id' => $getCharactersDto->ids] : [];
+
+        $characters= !empty($ids) ? $this->createQueryBuilder('character')
+            ->andWhere('location.id IN (:ids)')
+            ->setParameter('ids', $ids) : $this->createQueryBuilder('character');
+
+        return CharacterDto::fromPaginator($this
+            ->paginatorManager
+            ->paginate($characters, $getCharactersDto->page ?: 1));
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Enums\Prefixes;
+namespace App\DTO\Utils\Enums\Prefixes;
 
 enum BasePrefixes: string
 {

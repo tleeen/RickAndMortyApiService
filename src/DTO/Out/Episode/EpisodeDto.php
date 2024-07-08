@@ -2,11 +2,13 @@
 
 namespace App\DTO\Out\Episode;
 
-use App\DTO\Enums\BaseUrl;
-use App\DTO\Enums\Prefixes\BasePrefixes;
-use App\DTO\Enums\Prefixes\ModulePrefixes;
+use App\DTO\Paginate\PaginateDto;
+use App\DTO\Utils\Enums\BaseUrl;
+use App\DTO\Utils\Enums\Prefixes\BasePrefixes;
+use App\DTO\Utils\Enums\Prefixes\ModulePrefixes;
 use App\DTO\Utils\UrlMaker;
 use App\Entity\Episode;
+use App\Managers\PaginatorManager as Paginator;
 
 class EpisodeDto
 {
@@ -61,5 +63,12 @@ class EpisodeDto
                 , $episodeId),
             created: $episode->getCreatedAt()->format('Y-m-d\TH:i:s.v\Z')
         );
+    }
+
+    public static function fromPaginator(Paginator $paginator): PaginateDto
+    {
+        return PaginateDto::fromPaginator($paginator,
+            self::class,
+            ModulePrefixes::EPISODES->value);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Enums;
+namespace App\DTO\Utils\Enums;
 
 enum BaseUrl: string
 {

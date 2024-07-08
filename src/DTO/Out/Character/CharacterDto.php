@@ -2,12 +2,14 @@
 
 namespace App\DTO\Out\Character;
 
-use App\DTO\Enums\BaseUrl;
-use App\DTO\Enums\Prefixes\BasePrefixes;
-use App\DTO\Enums\Prefixes\ModulePrefixes;
 use App\DTO\Out\Location\ShortLocationDto;
+use App\DTO\Paginate\PaginateDto;
+use App\DTO\Utils\Enums\BaseUrl;
+use App\DTO\Utils\Enums\Prefixes\BasePrefixes;
+use App\DTO\Utils\Enums\Prefixes\ModulePrefixes;
 use App\DTO\Utils\UrlMaker;
 use App\Entity\Character;
+use App\Managers\PaginatorManager as Paginator;
 
 class CharacterDto
 {
@@ -85,5 +87,12 @@ class CharacterDto
                 , $characterId),
             created: $character->getCreatedAt()->format('Y-m-d\TH:i:s.v\Z')
         );
+    }
+
+    public static function fromPaginator(Paginator $paginator): PaginateDto
+    {
+        return PaginateDto::fromPaginator($paginator,
+            self::class,
+            ModulePrefixes::CHARACTERS->value);
     }
 }

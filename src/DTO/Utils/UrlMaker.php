@@ -13,4 +13,9 @@ class UrlMaker
     {
         return $baseUrl . $basePrefix . $modulePrefix . '/avatar/' . $image;
     }
+
+    public static function makePaginatePage(string $baseUrl, string $basePrefix, string $modulePrefix, int $page): string
+    {
+        return $baseUrl . $basePrefix . $modulePrefix . '/?page=' . $page;
+    }
 }

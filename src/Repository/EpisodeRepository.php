@@ -2,11 +2,13 @@
 
 namespace App\Repository;
 
-use App\DTO\Collection\CollectionDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
+use App\DTO\In\Episode\GetEpisodesDto;
 use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\DTO\Out\Episode\EpisodeDto;
+use App\DTO\Paginate\PaginateDto;
 use App\Entity\Episode;
+use App\Managers\PaginatorManager;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,26 +18,29 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EpisodeRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly PaginatorManager $paginatorManager
+    )
     {
         parent::__construct($registry, Episode::class);
     }
 
     /**
-     * @param $getLocationsDto
-     * @return CollectionDto
+     * @param GetEpisodesDto $getEpisodeDto
+     * @return PaginateDto
      */
-    public function findMany($getLocationsDto): CollectionDto
+    public function findMany(GetEpisodesDto $getEpisodeDto): PaginateDto
     {
-        if (empty($getLocationsDto->ids)) {
-            return CollectionDto::fromArray(
-                $this->findAll(),
-                EpisodeDto::class);
-        } else {
-            return CollectionDto::fromArray(
-                $this->findBy(['id' => $getLocationsDto->ids]),
-                EpisodeDto::class);
-        }
+        $ids = $getEpisodeDto->ids ? ['id' => $getEpisodeDto->ids] : [];
+
+        $episodes = !empty($ids) ? $this->createQueryBuilder('episode')
+            ->andWhere('location.id IN (:ids)')
+            ->setParameter('ids', $ids) : $this->createQueryBuilder('episode');
+
+        return EpisodeDto::fromPaginator($this
+            ->paginatorManager
+            ->paginate($episodes, $getEpisodeDto->page ?: 1));
     }
 
     /**
