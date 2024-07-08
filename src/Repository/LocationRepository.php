@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\DTO\In\Location\ChangeLocationDto;
 use App\DTO\In\Location\CreateLocationDto;
 use App\DTO\In\Location\GetLocationsDto;
 use App\DTO\In\Location\UpdateLocationDto;
@@ -31,15 +32,16 @@ class LocationRepository extends ServiceEntityRepository
      */
     public function findMany(GetLocationsDto $getLocationsDto): PaginateDto
     {
-        $ids = $getLocationsDto->ids ? ['id' => $getLocationsDto->ids] : [];
+        $qb = $this->createQueryBuilder('location');
 
-        $locations = !empty($ids) ? $this->createQueryBuilder('location')
-            ->andWhere('location.id IN (:ids)')
-            ->setParameter('ids', $ids) : $this->createQueryBuilder('location');
+        if ($getLocationsDto->ids) {
+            $qb->andWhere('location.id IN (:ids)')
+                ->setParameter('ids', $getLocationsDto->ids);
+        }
 
         return LocationDto::fromPaginator($this
             ->paginatorManager
-            ->paginate($locations, $getLocationsDto->page ?: 1));
+            ->paginate($qb, $getLocationsDto->page ?: 1));
     }
 
     /**
@@ -69,11 +71,31 @@ class LocationRepository extends ServiceEntityRepository
     {
         $location = new Location();
 
-        $location->setName($createLocationDto->name);
-        $location->setType($createLocationDto->type);
-        $location->setDimension($createLocationDto->dimension);
+        $this->setAttributes($location, [
+            'name' => $createLocationDto->name,
+            'type' => $createLocationDto->type,
+            'dimension' => $createLocationDto->dimension]);
 
         $this->getEntityManager()->persist($location);
+        $this->getEntityManager()->flush();
+
+        return LocationDto::fromModel($location);
+    }
+
+    /**
+     * @param ChangeLocationDto $changeLocationDto
+     * @return LocationDto
+     */
+    public function change(ChangeLocationDto $changeLocationDto): LocationDto
+    {
+        /** @var Location $location */
+        $location = $this->find($changeLocationDto->id);
+
+        $this->setAttributes($location, [
+            'name' => $changeLocationDto->name,
+            'type' => $changeLocationDto->type,
+            'dimension' => $changeLocationDto->dimension]);
+
         $this->getEntityManager()->flush();
 
         return LocationDto::fromModel($location);
@@ -83,23 +105,27 @@ class LocationRepository extends ServiceEntityRepository
      * @param UpdateLocationDto $updateLocationDto
      * @return LocationDto
      */
-    public function change(UpdateLocationDto $updateLocationDto): LocationDto
+    public function updateOrCreate(UpdateLocationDto $updateLocationDto): LocationDto
     {
         /** @var Location $location */
         $location = $this->find($updateLocationDto->id);
 
-        if ($updateLocationDto->name) {
-            $location->setName($updateLocationDto->name);
-        }
-        if ($updateLocationDto->type) {
-            $location->setType($updateLocationDto->type);
-        }
-        if ($updateLocationDto->dimension) {
-            $location->setDimension($updateLocationDto->dimension);
-        }
+        if (!$location) $location = new Location();
+
+        $this->setAttributes($location, [
+            'name' => $updateLocationDto->name,
+            'type' => $updateLocationDto->type,
+            'dimension' => $updateLocationDto->dimension]);
 
         $this->getEntityManager()->flush();
 
         return LocationDto::fromModel($location);
+    }
+
+    private function setAttributes(Location $location, array $attributes): void
+    {
+        if (isset($attributes['name'])) $location->setName($attributes['name']);
+        if (isset($attributes['type'])) $location->setType($attributes['type']);
+        if (isset($attributes['dimension'])) $location->setDimension($attributes['dimension']);
     }
 }

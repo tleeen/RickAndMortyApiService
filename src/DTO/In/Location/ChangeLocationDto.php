@@ -5,7 +5,7 @@ namespace App\DTO\In\Location;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UpdateLocationDto
+class ChangeLocationDto
 {
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
@@ -13,22 +13,19 @@ class UpdateLocationDto
     public readonly int $id;
 
     #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    public readonly string $name;
+    public readonly ?string $name;
 
     #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    public readonly string $type;
+    public readonly ?string $type;
 
     #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    public readonly string $dimension;
+    public readonly ?string $dimension;
 
     public function __construct(
-        int $id,
-        string $name,
-        string $type,
-        string $dimension
+        int     $id,
+        ?string $name,
+        ?string $type,
+        ?string $dimension
     )
     {
         $this->id = $id;
@@ -46,9 +43,9 @@ class UpdateLocationDto
         $location = $request->toArray();
         return new self(
             id: $request->get('id'),
-            name: $location['name'],
-            type: $location['type'],
-            dimension: $location['dimension']
+            name: $location['name'] ?? null,
+            type: $location['type'] ?? null,
+            dimension: $location['dimension'] ?? null
         );
     }
 }

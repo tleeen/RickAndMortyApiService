@@ -10,7 +10,6 @@ use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\Exceptions\Validation\ValidateException;
 use App\Managers\ValidateManager;
 use App\Repository\EpisodeRepository;
-use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\DTO\In\Location\ChangeLocationDto;
 use App\DTO\In\Location\CreateLocationDto;
 use App\DTO\In\Location\GetLocationsDto;
 use App\DTO\In\Location\UpdateLocationDto;
@@ -32,13 +33,12 @@ class LocationController extends AbstractController
 
         try {
             $this->validateManager->validate($getLocationsDto);
+            return new JsonResponse($this->locationRepository->findMany($getLocationsDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
-
-        return new JsonResponse($this->locationRepository->findMany($getLocationsDto));
     }
 
     /**
@@ -74,13 +74,12 @@ class LocationController extends AbstractController
 
         try {
             $this->validateManager->validate($createLocationDto);
+            return new JsonResponse($this->locationRepository->create($createLocationDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
-
-        return new JsonResponse($this->locationRepository->create($createLocationDto));
     }
 
     /**
@@ -88,6 +87,21 @@ class LocationController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/location/{id}', methods: ['PATCH'])]
+    public function change(Request $request): JsonResponse
+    {
+        $changeLocationDto = ChangeLocationDto::fromRequest($request);
+
+        try {
+            $this->validateManager->validate($changeLocationDto);
+            return new JsonResponse($this->locationRepository->change($changeLocationDto));
+        } catch (ValidateException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
+    }
+
+    #[Route('/location/{id}', methods: ['PUT'])]
     public function update(Request $request): JsonResponse
     {
         $updateLocationDto = UpdateLocationDto::fromRequest($request);
@@ -100,6 +114,6 @@ class LocationController extends AbstractController
             ], $e->getStatusCode());
         }
 
-        return new JsonResponse($this->locationRepository->change($updateLocationDto));
+        return new JsonResponse($this->locationRepository->updateOrCreate($updateLocationDto));
     }
 }
