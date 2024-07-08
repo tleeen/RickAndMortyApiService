@@ -28,7 +28,7 @@ Table episode {
   id integer [pk]
   name string
   air_date timestamp
-  episode string
+  code string
   created_at timestamp
   updated_at timestamp
 }

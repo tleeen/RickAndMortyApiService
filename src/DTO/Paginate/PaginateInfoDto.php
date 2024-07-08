@@ -4,7 +4,6 @@ namespace App\DTO\Paginate;
 
 use App\DTO\Utils\Enums\BaseUrl;
 use App\DTO\Utils\Enums\Prefixes\BasePrefixes;
-use App\DTO\Utils\Enums\Prefixes\ModulePrefixes;
 use App\DTO\Utils\UrlMaker;
 use App\Managers\PaginatorManager as Paginator;
 

@@ -72,7 +72,7 @@ class CreateCharacterDto
             name: $character['name'],
             status: $character['status'],
             species: $character['species'],
-            type: $character['type'],
+            type: $character['type'] ?? null,
             gender: $character['gender'],
             originId: $character['originId'],
             locationId: $character['locationId'],

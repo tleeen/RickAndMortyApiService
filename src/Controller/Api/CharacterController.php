@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\DTO\In\Character\CreateCharacterDto;
 use App\DTO\In\Character\GetCharactersDto;
+use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\UpdateCharacterDto;
 use App\Exceptions\Validation\ValidateException;
 use App\Managers\ValidateManager;
@@ -89,6 +90,27 @@ class CharacterController extends AbstractController
      * @throws ORMException
      */
     #[Route('/character/{id}', methods: ['PATCH'])]
+    public function change(Request $request): JsonResponse
+    {
+        $changeCharacterDto = ChangeCharacterDto::fromRequest($request);
+
+        try {
+            $this->validateManager->validate($changeCharacterDto);
+        } catch (ValidateException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
+
+        return new JsonResponse($this->characterRepository->change($changeCharacterDto));
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ORMException
+     */
+    #[Route('/character/{id}', methods: ['PUT'])]
     public function update(Request $request): JsonResponse
     {
         $updateCharacterDto = UpdateCharacterDto::fromRequest($request);
@@ -101,6 +123,6 @@ class CharacterController extends AbstractController
             ], $e->getStatusCode());
         }
 
-        return new JsonResponse($this->characterRepository->change($updateCharacterDto));
+        return new JsonResponse($this->characterRepository->updateOrCreate($updateCharacterDto));
     }
 }
