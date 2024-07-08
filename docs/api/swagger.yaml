@@ -1,0 +1,816 @@
+openapi: 3.0.3
+info:
+  title: RickAndMorty
+  version: 1.0.0
+servers:
+  - url: http://localhost:8876/api
+tags:
+  - name: characters
+  - name: episodes
+  - name: locations
+
+paths:
+  /character:
+    get:
+      parameters:
+        - name: ids
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: number
+            example: [1, 2]
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: number
+            example: 1
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "Rick Sanchez"
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            example: ['Alive', 'Dead', 'unknown']
+        - name: species
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "Human"
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "Hunter"
+        - name: gender
+          in: query
+          required: false
+          schema:
+            type: string
+            example: ['Female', 'Male', 'Genderless', 'unknown']
+      tags:
+        - characters
+      summary: Get many caharacters
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedCharacters"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /character/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - characters
+      summary: Get a single character
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCharacter"
+
+    post:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - characters
+      summary: Create character
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCharacter"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCharacter"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - characters
+      summary: Update character
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCharacter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCharacter"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    patch:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - characters
+      summary: Change character
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCharacter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCharacter"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - characters
+      summary: Delete character
+      responses:
+        "200":
+          description: OK
+
+  /episode:
+    get:
+      parameters:
+        - name: ids
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: number
+            example: [1, 2]
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: number
+            example: 1
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "Rick Sanchez"
+        - name: code
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "S01E01"
+      tags:
+        - episodes
+      summary: Get many episodes
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedEpisodes"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /episode/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - episodes
+      summary: Get a single episode
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEpisode"
+
+    post:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - episodes
+      summary: Create episode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostEpisode"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEpisode"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - episodes
+      summary: Update episode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostEpisode"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEpisode"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    patch:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - episodes
+      summary: Change episode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostEpisode"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEpisode"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - episodes
+      summary: Delete episode
+      responses:
+        "200":
+          description: OK
+
+  /location:
+    get:
+      parameters:
+        - name: ids
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: number
+            example: [1, 2]
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: number
+            example: 1
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "Earth"
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "Planet"
+        - name: dimension
+          in: query
+          required: false
+          schema:
+            type: string
+            example: "Dimension C-137"
+      tags:
+        - locations
+      summary: Get many locations
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedLocations"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /location/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - locations
+      summary: Get a single location
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetLocation"
+
+    post:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - locations
+      summary: Create location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostLocation"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetLocation"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - locations
+      summary: Update location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostLocation"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetLocation"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    patch:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - locations
+      summary: Change location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostEpisode"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEpisode"
+        "400":
+          description: Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - locations
+      summary: Delete location
+      responses:
+        "200":
+          description: OK
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Object(App\\DTO\\In\\Episode\\GetEpisodesDto).filters.code: This value is not valid."
+
+    Paginated:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 826
+        pages:
+          type: integer
+          example: 42
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: "http://localhost:8876/api/character/?page=3"
+        prev:
+          type: string
+          nullable: true
+          format: uri
+          example: "http://localhost:8876/api/character/?page=1"
+
+    GetCharacter:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Rick Sanchez"
+        status:
+          type: string
+          enum:
+            - "Alive"
+            - "Dead"
+            - "unknown"
+          example: "Alive"
+        species:
+          type: string
+          example: "Human"
+        type:
+          type: string
+          example: ""
+        gender:
+          type: string
+          enum:
+            - "Female"
+            - "Male"
+            - "Genderless"
+            - "unknown"
+          example: "Male"
+        origin:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Earth"
+            url:
+              type: string
+              format: uri
+              example: "http://localhost:8876/api/location/1"
+        location:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Earth"
+            url:
+              type: string
+              format: uri
+              example: "http://localhost:8876/api/location/20"
+        image:
+          type: string
+          format: uri
+          example: "http://localhost:8876/api/character/avatar/1.jpeg"
+        episode:
+          type: array
+          items:
+            type: string
+            format: uri
+            example: "http://localhost:8876/api/episode/1"
+        url:
+          type: string
+          format: uri
+          example: "http://localhost:8876/api/character/1"
+        created:
+          type: string
+          format: date-time
+          example: "2017-11-04T18:48:46.250Z"
+
+    PaginatedCharacters:
+      type: object
+      properties:
+        info:
+          $ref: '#/components/schemas/Paginated'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetCharacter'
+
+    PostCharacter:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Rick Sanchez"
+        status:
+          type: string
+          enum:
+            - "Alive"
+            - "Dead"
+            - "unknown"
+          example: "Alive"
+        species:
+          type: string
+          example: "Human"
+        type:
+          type: string
+          example: ""
+        gender:
+          type: string
+          enum:
+            - "Female"
+            - "Male"
+            - "Genderless"
+            - "unknown"
+          example: "Male"
+        originId:
+          type: number
+          example: 1
+        locationId:
+          type: number
+          example: 20
+        image:
+          type: string
+          format: uri
+          example: "1.jpeg"
+
+    GetEpisode:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "Pilot"
+        air_date:
+          type: string
+          example: "December 2, 2013"
+        episode:
+          type: string
+          example: "S01E01"
+        characters:
+          type: array
+          items:
+            type: string
+            format: uri
+            example: "http://localhost:8876/api/character/1"
+        url:
+          type: string
+          format: uri
+          example: "http://localhost:8876/api/episode/1"
+        created:
+          type: string
+          format: date-time
+          example: "2017-11-04T18:48:46.250Z"
+
+    PaginatedEpisodes:
+      type: object
+      properties:
+        info:
+          $ref: '#/components/schemas/Paginated'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetEpisode'
+
+    PostEpisode:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Pilot"
+        air_date:
+          type: string
+          example: "December 2, 2013"
+        episode:
+          type: string
+          example: "S01E01"
+
+    GetLocation:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "Earth"
+        type:
+          type: string
+          example: "Planet"
+        dimension:
+          type: string
+          example: "Dimension C-137"
+        residents:
+          type: array
+          items:
+            type: string
+            format: uri
+            example: "http://localhost:8876/api/character/1"
+        url:
+          type: string
+          format: uri
+          example: "http://localhost:8876/api/location/1"
+        created:
+          type: string
+          format: date-time
+          example: "2017-11-04T18:48:46.250Z"
+
+    PaginatedLocations:
+      type: object
+      properties:
+        info:
+          $ref: '#/components/schemas/Paginated'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetLocation'
+
+    PostLocation:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Earth"
+        type:
+          type: string
+          example: "Planet"
+        dimension:
+          type: string
+          example: "Dimension C-137"
+

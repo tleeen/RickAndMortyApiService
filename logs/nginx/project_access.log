@@ -544,3 +544,7 @@
 172.18.0.1 - - [08/Jul/2024:11:44:42 +0000] "GET /api/location HTTP/1.1" 200 833 "-" "PostmanRuntime/7.39.0"
 172.18.0.1 - - [08/Jul/2024:11:44:47 +0000] "GET /api/episode HTTP/1.1" 200 658 "-" "PostmanRuntime/7.39.0"
 172.18.0.1 - - [08/Jul/2024:11:44:49 +0000] "GET /api/character HTTP/1.1" 200 1714 "-" "PostmanRuntime/7.39.0"
+172.18.0.1 - - [08/Jul/2024:12:50:35 +0000] "GET /api/character HTTP/1.1" 200 1714 "-" "PostmanRuntime/7.39.0"
+172.18.0.1 - - [08/Jul/2024:12:50:39 +0000] "GET /api/character HTTP/1.1" 200 1714 "-" "PostmanRuntime/7.39.0"
+172.18.0.1 - - [08/Jul/2024:12:50:44 +0000] "GET /api/character HTTP/1.1" 200 1714 "-" "PostmanRuntime/7.39.0"
+172.18.0.1 - - [08/Jul/2024:12:50:55 +0000] "GET /api/episode?code=sdfg HTTP/1.1" 400 160 "-" "PostmanRuntime/7.39.0"
