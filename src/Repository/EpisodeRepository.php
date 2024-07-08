@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use App\DTO\In\Episode\GetEpisodesDto;
 use App\DTO\In\Episode\UpdateEpisodeDto;
@@ -19,7 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class EpisodeRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry,
+        ManagerRegistry                   $registry,
         private readonly PaginatorManager $paginatorManager
     )
     {
@@ -32,15 +33,16 @@ class EpisodeRepository extends ServiceEntityRepository
      */
     public function findMany(GetEpisodesDto $getEpisodeDto): PaginateDto
     {
-        $ids = $getEpisodeDto->ids ? ['id' => $getEpisodeDto->ids] : [];
+        $qb = $this->createQueryBuilder('episode');
 
-        $episodes = !empty($ids) ? $this->createQueryBuilder('episode')
-            ->andWhere('location.id IN (:ids)')
-            ->setParameter('ids', $ids) : $this->createQueryBuilder('episode');
+        if ($getEpisodeDto->ids) {
+            $qb->andWhere('episode.id IN (:ids)')
+                ->setParameter('ids', $getEpisodeDto->ids);
+        }
 
         return EpisodeDto::fromPaginator($this
             ->paginatorManager
-            ->paginate($episodes, $getEpisodeDto->page ?: 1));
+            ->paginate($qb, $getEpisodeDto->page ?: 1));
     }
 
     /**
@@ -70,11 +72,31 @@ class EpisodeRepository extends ServiceEntityRepository
     {
         $episode = new Episode();
 
-        $episode->setName($createEpisodeDto->name);
-        $episode->setAirDate(DateTime::createFromFormat('Y-m-d', $createEpisodeDto->airDate));
-        $episode->setCode($createEpisodeDto->code);
+        $this->setAttributes($episode, [
+            'name' => $createEpisodeDto->name,
+            'airDate' => $createEpisodeDto->airDate,
+            'code' => $createEpisodeDto->code]);
 
         $this->getEntityManager()->persist($episode);
+        $this->getEntityManager()->flush();
+
+        return EpisodeDto::fromModel($episode);
+    }
+
+    /**
+     * @param ChangeEpisodeDto $changeEpisodeDto
+     * @return EpisodeDto
+     */
+    public function change(ChangeEpisodeDto $changeEpisodeDto): EpisodeDto
+    {
+        /** @var Episode $episode */
+        $episode = $this->find($changeEpisodeDto->id);
+
+        $this->setAttributes($episode, [
+            'name' => $changeEpisodeDto->name,
+            'airDate' => $changeEpisodeDto->airDate,
+            'code' => $changeEpisodeDto->code]);
+
         $this->getEntityManager()->flush();
 
         return EpisodeDto::fromModel($episode);
@@ -84,23 +106,33 @@ class EpisodeRepository extends ServiceEntityRepository
      * @param UpdateEpisodeDto $updateEpisodeDto
      * @return EpisodeDto
      */
-    public function change(UpdateEpisodeDto $updateEpisodeDto): EpisodeDto
+    public function updateOrCreate(UpdateEpisodeDto $updateEpisodeDto): EpisodeDto
     {
         /** @var Episode $episode */
         $episode = $this->find($updateEpisodeDto->id);
 
-        if ($updateEpisodeDto->name) {
-            $episode->setName($updateEpisodeDto->name);
-        }
-        if ($updateEpisodeDto->airDate) {
-            $episode->setAirDate(DateTime::createFromFormat('Y-m-d', $updateEpisodeDto->airDate));
-        }
-        if ($updateEpisodeDto->code) {
-            $episode->setCode($updateEpisodeDto->code);
-        }
+        if (!$episode) $episode = new Episode();
+
+        $this->setAttributes($episode, [
+            'name' => $updateEpisodeDto->name,
+            'airDate' => $updateEpisodeDto->airDate,
+            'code' => $updateEpisodeDto->code]);
 
         $this->getEntityManager()->flush();
 
         return EpisodeDto::fromModel($episode);
+    }
+
+    /**
+     * @param Episode $episode
+     * @param array $attributes
+     * @return void
+     */
+    private function setAttributes(Episode $episode, array $attributes): void
+    {
+        if (isset($attributes['name'])) $episode->setName($attributes['name']);
+        if (isset($attributes['airDate']))
+            $episode->setAirDate(DateTime::createFromFormat('Y-m-d', $attributes['airDate']));
+        if (isset($attributes['code'])) $episode->setCode($attributes['code']);
     }
 }

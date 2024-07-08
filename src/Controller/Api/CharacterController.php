@@ -32,13 +32,12 @@ class CharacterController extends AbstractController
 
         try {
             $this->validateManager->validate($getCharactersDto);
+            return new JsonResponse($this->characterRepository->findMany($getCharactersDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
-
-        return new JsonResponse($this->characterRepository->findMany($getCharactersDto));
     }
 
     /**
@@ -75,13 +74,12 @@ class CharacterController extends AbstractController
 
         try {
             $this->validateManager->validate($createCharacterDto);
+            return new JsonResponse($this->characterRepository->create($createCharacterDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
-
-        return new JsonResponse($this->characterRepository->create($createCharacterDto));
     }
 
     /**
@@ -96,13 +94,12 @@ class CharacterController extends AbstractController
 
         try {
             $this->validateManager->validate($changeCharacterDto);
+            return new JsonResponse($this->characterRepository->change($changeCharacterDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
-
-        return new JsonResponse($this->characterRepository->change($changeCharacterDto));
     }
 
     /**
@@ -117,12 +114,11 @@ class CharacterController extends AbstractController
 
         try {
             $this->validateManager->validate($updateCharacterDto);
+            return new JsonResponse($this->characterRepository->updateOrCreate($updateCharacterDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
-
-        return new JsonResponse($this->characterRepository->updateOrCreate($updateCharacterDto));
     }
 }

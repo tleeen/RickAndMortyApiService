@@ -5,7 +5,7 @@ namespace App\DTO\In\Episode;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UpdateEpisodeDto
+class ChangeEpisodeDto
 {
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
@@ -13,25 +13,22 @@ class UpdateEpisodeDto
     public readonly int $id;
 
     #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    public readonly string $name;
+    public readonly ?string $name;
 
     #[Assert\Date]
-    #[Assert\NotBlank]
-    public readonly string $airDate;
+    public readonly ?string $airDate;
 
     #[Assert\Type('string')]
-    #[Assert\NotBlank]
     #[Assert\Regex(
         pattern: '/^S\d{2}E\d{2}$/',
     )]
-    public readonly string $code;
+    public readonly ?string $code;
 
     public function __construct(
         int $id,
-        string $name,
-        string $airDate,
-        string $code
+        ?string $name,
+        ?string $airDate,
+        ?string $code
     )
     {
         $this->id = $id;
@@ -49,9 +46,9 @@ class UpdateEpisodeDto
         $episode = $request->toArray();
         return new self(
             id: $request->get('id'),
-            name: $episode['name'],
-            airDate: $episode['airDate'],
-            code: $episode['code']
+            name: $episode['name'] ?? null,
+            airDate: $episode['airDate'] ?? null,
+            code: $episode['code'] ?? null
         );
     }
 }

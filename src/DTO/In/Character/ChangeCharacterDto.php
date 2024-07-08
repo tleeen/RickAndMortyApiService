@@ -30,9 +30,11 @@ class ChangeCharacterDto
     public readonly ?string $gender;
 
     #[Assert\Type('integer')]
+    #[Assert\Positive]
     public readonly ?int $originId;
 
     #[Assert\Type('integer')]
+    #[Assert\Positive]
     public readonly ?int $locationId;
 
     #[Assert\Type('string')]

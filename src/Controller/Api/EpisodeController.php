@@ -2,12 +2,15 @@
 
 namespace App\Controller\Api;
 
+use App\DTO\In\Character\UpdateCharacterDto;
+use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use App\DTO\In\Episode\GetEpisodesDto;
 use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\Exceptions\Validation\ValidateException;
 use App\Managers\ValidateManager;
 use App\Repository\EpisodeRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,13 +33,12 @@ class EpisodeController extends AbstractController
 
         try {
             $this->validateManager->validate($getEpisodesDto);
+            return new JsonResponse($this->episodeRepository->findMany($getEpisodesDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
-
-        return new JsonResponse($this->episodeRepository->findMany($getEpisodesDto));
     }
 
     /**
@@ -72,13 +74,12 @@ class EpisodeController extends AbstractController
 
         try {
             $this->validateManager->validate($createEpisodeDto);
+            return new JsonResponse($this->episodeRepository->create($createEpisodeDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
-
-        return new JsonResponse($this->episodeRepository->create($createEpisodeDto));
     }
 
     /**
@@ -86,18 +87,36 @@ class EpisodeController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/episode/{id}', methods: ['PATCH'])]
-    public function update(Request $request): JsonResponse
+    public function change(Request $request): JsonResponse
     {
-        $updateEpisodeDto = UpdateEpisodeDto::fromRequest($request);
+        $changeEpisodeDto = ChangeEpisodeDto::fromRequest($request);
 
         try {
-            $this->validateManager->validate($updateEpisodeDto);
+            $this->validateManager->validate($changeEpisodeDto);
+            return new JsonResponse($this->episodeRepository->change($changeEpisodeDto));
         } catch (ValidateException $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         }
+    }
 
-        return new JsonResponse($this->episodeRepository->change($updateEpisodeDto));
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('/character/{id}', methods: ['PUT'])]
+    public function update(Request $request): JsonResponse
+    {
+        $updateEpisodeDto= UpdateEpisodeDto::fromRequest($request);
+
+        try {
+            $this->validateManager->validate($updateEpisodeDto);
+            return new JsonResponse($this->episodeRepository->updateOrCreate($updateEpisodeDto));
+        } catch (ValidateException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], $e->getStatusCode());
+        }
     }
 }

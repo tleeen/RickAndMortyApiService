@@ -80,8 +80,8 @@ class CharacterRepository extends ServiceEntityRepository
             'species' => $createCharacterDto->species,
             'type' => $createCharacterDto->type,
             'gender' => $createCharacterDto->gender,
-            'origin' => $createCharacterDto->originId,
-            'lastLocation' => $createCharacterDto->locationId,
+            'originId' => $createCharacterDto->originId,
+            'locationId' => $createCharacterDto->locationId,
             'image' => $createCharacterDto->image]);
 
         $this->getEntityManager()->persist($character);
@@ -106,8 +106,8 @@ class CharacterRepository extends ServiceEntityRepository
             'species' => $changeCharacterDto->species,
             'type' => $changeCharacterDto->type,
             'gender' => $changeCharacterDto->gender,
-            'origin' => $changeCharacterDto->originId,
-            'lastLocation' => $changeCharacterDto->locationId,
+            'originId' => $changeCharacterDto->originId,
+            'locationId' => $changeCharacterDto->locationId,
             'image' => $changeCharacterDto->image]);
 
         $this->getEntityManager()->flush();
@@ -125,9 +125,7 @@ class CharacterRepository extends ServiceEntityRepository
         /** @var Character $character */
         $character = $this->find($updateCharacterDto->id);
 
-        if (!$character) {
-            $character = new Character();
-        }
+        if (!$character) $character = new Character();
 
         $this->setAttributes($character, [
             'name' => $updateCharacterDto->name,
@@ -135,8 +133,8 @@ class CharacterRepository extends ServiceEntityRepository
             'species' => $updateCharacterDto->species,
             'type' => $updateCharacterDto->type,
             'gender' => $updateCharacterDto->gender,
-            'origin' => $updateCharacterDto->originId,
-            'lastLocation' => $updateCharacterDto->locationId,
+            'originId' => $updateCharacterDto->originId,
+            'locationId' => $updateCharacterDto->locationId,
             'image' => $updateCharacterDto->image]);
 
         $this->getEntityManager()->flush();
@@ -154,13 +152,15 @@ class CharacterRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
 
-        if (isset($attributes['name'])) dd($attributes['name']);
-        if (isset($dto->status)) $character->setStatus($dto->status);
-        if (isset($dto->species)) $character->setSpecies($dto->species);
-        if (isset($dto->type)) $character->setType($dto->type);
-        if (isset($dto->gender)) $character->setGender($dto->gender);
-        if (isset($dto->originId)) $character->setOrigin($em->getReference(Location::class, $dto->originId));
-        if (isset($dto->locationId)) $character->setLastLocation($em->getReference(Location::class, $dto->locationId));
-        if (isset($dto->image)) $character->setImage($dto->image);
+        if (isset($attributes['name'])) $character->setName($attributes['name']);
+        if (isset($attributes['status'])) $character->setStatus($attributes['status']);
+        if (isset($attributes['species'])) $character->setSpecies($attributes['species']);
+        if (isset($attributes['type'])) $character->setType($attributes['type']);
+        if (isset($attributes['gender'])) $character->setGender($attributes['gender']);
+        if (isset($attributes['originId']))
+            $character->setOrigin($em->getReference(Location::class, $attributes['originId']));
+        if (isset($attributes['locationId']))
+            $character->setLastLocation($em->getReference(Location::class, $attributes['locationId']));
+        if (isset($attributes['image'])) $character->setImage($attributes['image']);
     }
 }

@@ -30,10 +30,12 @@ class CreateCharacterDto
 
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
+    #[Assert\Positive]
     public readonly int $originId;
 
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
+    #[Assert\Positive]
     public readonly int $locationId;
 
     #[Assert\Type('string')]
