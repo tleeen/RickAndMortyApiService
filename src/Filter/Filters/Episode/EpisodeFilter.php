@@ -2,10 +2,10 @@
 
 namespace App\Filter\Filters\Episode;
 
-use App\Filter\AbstractFilter;
+use App\Filter\AbstractIFilter;
 use Doctrine\ORM\QueryBuilder;
 
-class EpisodeFilter extends AbstractFilter
+class EpisodeFilter extends AbstractIFilter
 {
     protected function getCallbacks(): array
     {

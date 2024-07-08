@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\Timestampable;
-use App\Repository\EpisodeRepository;
+use App\Repository\Episode\EpisodeRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

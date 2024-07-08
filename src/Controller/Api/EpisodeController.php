@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api;
 
+use App\Contracts\Managers\Validation\IValidateManager;
+use App\Contracts\Repositories\Episode\IEpisodeRepository;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use App\DTO\In\Episode\GetEpisodesDto;
 use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\Exceptions\Validation\ValidateException;
-use App\Managers\ValidateManager;
-use App\Repository\EpisodeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +17,10 @@ use Symfony\Component\Routing\Attribute\Route;
 class EpisodeController extends AbstractController
 {
     public function __construct(
-        private readonly EpisodeRepository $episodeRepository,
-        private readonly ValidateManager    $validateManager,
+        private readonly IEpisodeRepository $episodeRepository,
+        private readonly IValidateManager    $validateManager,
     ) {}
+
     /**
      * @param Request $request
      * @return JsonResponse

@@ -2,10 +2,10 @@
 
 namespace App\Filter\Filters\Location;
 
-use App\Filter\AbstractFilter;
+use App\Filter\AbstractIFilter;
 use Doctrine\ORM\QueryBuilder;
 
-class LocationFilter extends AbstractFilter
+class LocationFilter extends AbstractIFilter
 {
     protected function getCallbacks(): array
     {

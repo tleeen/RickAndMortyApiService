@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Managers;
+namespace App\Managers\Validation;
 
+
+use App\Contracts\Managers\Validation\IValidateManager;
 use App\Exceptions\Validation\ValidateException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ValidateManager
+class ValidateManager implements IValidateManager
 {
     public function __construct(
         private readonly ValidatorInterface $validator

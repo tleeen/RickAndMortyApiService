@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Character;
 
+use App\Contracts\Managers\Pagination\IPaginateManager;
+use App\Contracts\Repositories\Character\ICharacterRepository;
+use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\CreateCharacterDto;
 use App\DTO\In\Character\GetCharactersDto;
-use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\UpdateCharacterDto;
 use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
@@ -12,7 +14,6 @@ use App\Entity\Character;
 use App\Entity\Location;
 use App\Filter\Filters\Character\CharacterFilterFactory;
 use App\Filter\HasFilter;
-use App\Managers\PaginatorManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,12 +21,12 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Character>
  */
-class CharacterRepository extends ServiceEntityRepository
+class CharacterRepository extends ServiceEntityRepository implements ICharacterRepository
 {
     use HasFilter;
     public function __construct(
         ManagerRegistry $registry,
-        private readonly PaginatorManager $paginatorManager
+        private readonly IPaginateManager $paginatorManager
     )
     {
         parent::__construct($registry, Character::class);

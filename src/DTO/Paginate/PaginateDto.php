@@ -2,7 +2,7 @@
 
 namespace App\DTO\Paginate;
 
-use App\Managers\PaginatorManager as Paginator;
+use App\Managers\Pagination\PaginateManager as Paginator;
 
 
 class PaginateDto

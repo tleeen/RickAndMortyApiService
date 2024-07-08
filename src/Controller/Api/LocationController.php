@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api;
 
+use App\Contracts\Managers\Validation\IValidateManager;
+use App\Contracts\Repositories\Location\ILocationRepository;
 use App\DTO\In\Location\ChangeLocationDto;
 use App\DTO\In\Location\CreateLocationDto;
 use App\DTO\In\Location\GetLocationsDto;
 use App\DTO\In\Location\UpdateLocationDto;
 use App\Exceptions\Validation\ValidateException;
-use App\Managers\ValidateManager;
-use App\Repository\LocationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +17,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class LocationController extends AbstractController
 {
     public function __construct(
-        private readonly LocationRepository $locationRepository,
-        private readonly ValidateManager    $validateManager,
+        private readonly ILocationRepository $locationRepository,
+        private readonly IValidateManager    $validateManager,
     ) {}
-
 
     /**
      * @param Request $request

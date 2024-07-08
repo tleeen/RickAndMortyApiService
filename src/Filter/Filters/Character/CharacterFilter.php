@@ -2,10 +2,10 @@
 
 namespace App\Filter\Filters\Character;
 
-use App\Filter\AbstractFilter;
+use App\Filter\AbstractIFilter;
 use Doctrine\ORM\QueryBuilder;
 
-class CharacterFilter extends AbstractFilter
+class CharacterFilter extends AbstractIFilter
 {
     protected function getCallbacks(): array
     {

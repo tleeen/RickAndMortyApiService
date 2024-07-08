@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Managers;
+namespace App\Managers\Pagination;
 
+use App\Contracts\Managers\Pagination\IPaginateManager;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class PaginatorManager
+class PaginateManager implements IPaginateManager
 {
     private int $total;
     private int $lastPage;
@@ -37,26 +38,41 @@ class PaginatorManager
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getTotal(): int
     {
         return $this->total;
     }
 
+    /**
+     * @return int
+     */
     public function getLastPage(): int
     {
         return $this->lastPage;
     }
 
+    /**
+     * @return Paginator
+     */
     public function getItems(): Paginator
     {
         return $this->items;
     }
 
+    /**
+     * @return int|null
+     */
     public function getNextPage(): ?int
     {
         return $this->currentPage < $this->lastPage ? $this->currentPage + 1 : null;
     }
 
+    /**
+     * @return int|null
+     */
     public function getPreviousPage(): ?int
     {
         return $this->currentPage > 1 ? $this->currentPage - 1 : null;

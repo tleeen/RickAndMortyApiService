@@ -4,7 +4,7 @@ namespace App\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 
-abstract class AbstractFilter implements FilterInterface
+abstract class AbstractIFilter implements IFilter
 {
     protected object $filters;
 

@@ -9,7 +9,7 @@ use App\DTO\Utils\Enums\Prefixes\BasePrefixes;
 use App\DTO\Utils\Enums\Prefixes\ModulePrefixes;
 use App\DTO\Utils\UrlMaker;
 use App\Entity\Character;
-use App\Managers\PaginatorManager as Paginator;
+use App\Managers\Pagination\PaginateManager as Paginator;
 
 class CharacterDto
 {

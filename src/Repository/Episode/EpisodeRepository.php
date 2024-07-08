@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Episode;
 
+use App\Contracts\Managers\Pagination\IPaginateManager;
+use App\Contracts\Repositories\Episode\IEpisodeRepository;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use App\DTO\In\Episode\GetEpisodesDto;
@@ -11,7 +13,6 @@ use App\DTO\Paginate\PaginateDto;
 use App\Entity\Episode;
 use App\Filter\Filters\Episode\EpisodeFilterFactory;
 use App\Filter\HasFilter;
-use App\Managers\PaginatorManager;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,13 +20,13 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Episode>
  */
-class EpisodeRepository extends ServiceEntityRepository
+class EpisodeRepository extends ServiceEntityRepository implements IEpisodeRepository
 {
     use HasFilter;
 
     public function __construct(
         ManagerRegistry                   $registry,
-        private readonly PaginatorManager $paginatorManager
+        private readonly IPaginateManager $paginatorManager
     )
     {
         parent::__construct($registry, Episode::class);

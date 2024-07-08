@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Location;
 
+use App\Contracts\Managers\Pagination\IPaginateManager;
+use App\Contracts\Repositories\Location\ILocationRepository;
 use App\DTO\In\Location\ChangeLocationDto;
 use App\DTO\In\Location\CreateLocationDto;
 use App\DTO\In\Location\GetLocationsDto;
@@ -11,19 +13,18 @@ use App\DTO\Paginate\PaginateDto;
 use App\Entity\Location;
 use App\Filter\Filters\Location\LocationFilterFactory;
 use App\Filter\HasFilter;
-use App\Managers\PaginatorManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Location>
  */
-class LocationRepository extends ServiceEntityRepository
+class LocationRepository extends ServiceEntityRepository implements ILocationRepository
 {
     use HasFilter;
     public function __construct(
         ManagerRegistry $registry,
-        private readonly PaginatorManager $paginatorManager
+        private readonly IPaginateManager $paginatorManager
     )
     {
         parent::__construct($registry, Location::class);
@@ -127,6 +128,11 @@ class LocationRepository extends ServiceEntityRepository
         return LocationDto::fromModel($location);
     }
 
+    /**
+     * @param Location $location
+     * @param array $attributes
+     * @return void
+     */
     private function setAttributes(Location $location, array $attributes): void
     {
         if (isset($attributes['name'])) $location->setName($attributes['name']);

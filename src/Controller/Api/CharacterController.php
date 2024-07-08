@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api;
 
+use App\Contracts\Managers\Validation\IValidateManager;
+use App\Contracts\Repositories\Character\ICharacterRepository;
+use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\CreateCharacterDto;
 use App\DTO\In\Character\GetCharactersDto;
-use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\UpdateCharacterDto;
 use App\Exceptions\Validation\ValidateException;
-use App\Managers\ValidateManager;
-use App\Repository\CharacterRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,9 +18,10 @@ use Symfony\Component\Routing\Attribute\Route;
 class CharacterController extends AbstractController
 {
     public function __construct(
-        private readonly CharacterRepository $characterRepository,
-        private readonly ValidateManager    $validateManager,
+        private readonly ICharacterRepository $characterRepository,
+        private readonly IValidateManager     $validateManager,
     ) {}
+
     /**
      * @param Request $request
      * @return JsonResponse
