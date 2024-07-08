@@ -9,6 +9,8 @@ use App\DTO\In\Location\UpdateLocationDto;
 use App\DTO\Out\Location\LocationDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Location;
+use App\Filter\Filters\Location\LocationFilterFactory;
+use App\Filter\HasFilter;
 use App\Managers\PaginatorManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,6 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LocationRepository extends ServiceEntityRepository
 {
+    use HasFilter;
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorManager $paginatorManager
@@ -33,6 +36,8 @@ class LocationRepository extends ServiceEntityRepository
     public function findMany(GetLocationsDto $getLocationsDto): PaginateDto
     {
         $qb = $this->createQueryBuilder('location');
+
+        $qb = $this->filterBy($qb, LocationFilterFactory::create($getLocationsDto->filters));
 
         if ($getLocationsDto->ids) {
             $qb->andWhere('location.id IN (:ids)')

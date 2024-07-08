@@ -9,6 +9,8 @@ use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Episode;
+use App\Filter\Filters\Episode\EpisodeFilterFactory;
+use App\Filter\HasFilter;
 use App\Managers\PaginatorManager;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -19,6 +21,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EpisodeRepository extends ServiceEntityRepository
 {
+    use HasFilter;
+
     public function __construct(
         ManagerRegistry                   $registry,
         private readonly PaginatorManager $paginatorManager
@@ -34,6 +38,8 @@ class EpisodeRepository extends ServiceEntityRepository
     public function findMany(GetEpisodesDto $getEpisodeDto): PaginateDto
     {
         $qb = $this->createQueryBuilder('episode');
+
+        $qb = $this->filterBy($qb, EpisodeFilterFactory::create($getEpisodeDto->filters));
 
         if ($getEpisodeDto->ids) {
             $qb->andWhere('episode.id IN (:ids)')

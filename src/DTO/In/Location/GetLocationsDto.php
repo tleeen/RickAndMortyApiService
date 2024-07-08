@@ -14,13 +14,18 @@ class GetLocationsDto
     #[Assert\Positive]
     public readonly ?int $page;
 
+    #[Assert\Valid]
+    public readonly FilterDto $filters;
+
     public function __construct(
         ?array $ids,
-        ?int $page
+        ?int $page,
+        FilterDto $filters
     )
     {
         $this->ids = $ids;
         $this->page = $page;
+        $this->filters = $filters;
     }
 
     /**
@@ -31,7 +36,8 @@ class GetLocationsDto
     {
         return new self(
             ids: array_map(fn($id) => (int)$id, $request->query->all('ids')),
-            page: $request->query->get('page')
+            page: $request->query->get('page'),
+            filters: FilterDto::fromRequest($request),
         );
     }
 }

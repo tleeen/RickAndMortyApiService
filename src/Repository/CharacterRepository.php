@@ -10,6 +10,8 @@ use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
 use App\Entity\Location;
+use App\Filter\Filters\Character\CharacterFilterFactory;
+use App\Filter\HasFilter;
 use App\Managers\PaginatorManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
@@ -20,6 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CharacterRepository extends ServiceEntityRepository
 {
+    use HasFilter;
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorManager $paginatorManager
@@ -35,6 +38,8 @@ class CharacterRepository extends ServiceEntityRepository
     public function findMany(GetCharactersDto $getCharactersDto): PaginateDto
     {
         $qb = $this->createQueryBuilder('character');
+
+        $qb = $this->filterBy($qb, CharacterFilterFactory::create($getCharactersDto->filters));
 
         if ($getCharactersDto->ids) {
             $qb->andWhere('character.id IN (:ids)')
