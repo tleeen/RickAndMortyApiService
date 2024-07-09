@@ -2,8 +2,6 @@
 
 namespace App\DTO\In\Character;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\DTO\In\Character\FilterDto;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class GetCharactersDto
@@ -34,19 +32,5 @@ class GetCharactersDto
         $this->page = $page;
         $this->limit = $limit;
         $this->filters = $filters;
-    }
-
-    /**
-     * @param Request $request
-     * @return self
-     */
-    public static function fromRequest(Request $request): self
-    {
-        return new self(
-            ids: array_map(fn($id) => (int)$id, $request->query->all('ids')),
-            page: $request->query->get('page'),
-            limit: $request->query->get('limit'),
-            filters: FilterDto::fromRequest($request),
-        );
     }
 }

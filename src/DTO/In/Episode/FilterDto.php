@@ -2,7 +2,6 @@
 
 namespace App\DTO\In\Episode;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class FilterDto
@@ -23,17 +22,5 @@ class FilterDto
     {
         $this->name = $name;
        $this->code = $code;
-    }
-
-    /**
-     * @param Request $request
-     * @return self
-     */
-    public static function fromRequest(Request $request): self
-    {
-        return new self(
-            name: $request->query->get('name') ?? null,
-            code: $request->query->get('code') ?? null
-        );
     }
 }

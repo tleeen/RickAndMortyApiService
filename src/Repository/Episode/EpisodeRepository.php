@@ -3,6 +3,7 @@
 namespace App\Repository\Episode;
 
 use App\Contracts\Managers\Pagination\PaginateManagerInterface;
+use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
 use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
@@ -13,6 +14,7 @@ use App\DTO\Paginate\PaginateDto;
 use App\Entity\Episode;
 use App\Filter\Filters\Episode\EpisodeFilterFactory;
 use App\Filter\HasFilter;
+use App\Utils\Mappers\Out\Episode\EpisodeDtoMapper;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,7 +28,8 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
 
     public function __construct(
         ManagerRegistry                   $registry,
-        private readonly PaginateManagerInterface $paginatorManager
+        private readonly PaginateManagerInterface $paginatorManager,
+        private readonly UrlGenerateManagerInterface $urlGenerator,
     )
     {
         parent::__construct($registry, Episode::class);
@@ -47,9 +50,10 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
                 ->setParameter('ids', $getEpisodeDto->ids);
         }
 
-        return EpisodeDto::fromPaginator($this
+        return EpisodeDtoMapper::fromPaginator($this
             ->paginatorManager
-            ->paginate($qb, $getEpisodeDto->page ?: 1, $getEpisodeDto->limit ?: 10));
+            ->paginate($qb, $getEpisodeDto->page ?: 1, $getEpisodeDto->limit ?: 10),
+            $this->urlGenerator);
     }
 
     /**
@@ -58,7 +62,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
      */
     public function findById(int $id): EpisodeDto
     {
-        return EpisodeDto::fromModel($this->find($id));
+        return EpisodeDtoMapper::fromModel($this->find($id), $this->urlGenerator);
     }
 
     /**
@@ -87,7 +91,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         $this->getEntityManager()->persist($episode);
         $this->getEntityManager()->flush();
 
-        return EpisodeDto::fromModel($episode);
+        return EpisodeDtoMapper::fromModel($episode, $this->urlGenerator);
     }
 
     /**
@@ -106,7 +110,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
 
         $this->getEntityManager()->flush();
 
-        return EpisodeDto::fromModel($episode);
+        return EpisodeDtoMapper::fromModel($episode, $this->urlGenerator);
     }
 
     /**
@@ -127,7 +131,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
 
         $this->getEntityManager()->flush();
 
-        return EpisodeDto::fromModel($episode);
+        return EpisodeDtoMapper::fromModel($episode, $this->urlGenerator);
     }
 
     /**

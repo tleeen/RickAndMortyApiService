@@ -2,7 +2,6 @@
 
 namespace App\DTO\In\Character;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class FilterDto
@@ -37,20 +36,5 @@ class FilterDto
         $this->species = $species;
         $this->type = $type;
         $this->gender = $gender;
-    }
-
-    /**
-     * @param Request $request
-     * @return self
-     */
-    public static function fromRequest(Request $request): self
-    {
-        return new self(
-            name: $request->query->get('name') ?? null,
-            status: $request->query->get('status') ?? null,
-            species: $request->query->get('species') ?? null,
-            type: $request->query->get('type') ?? null,
-            gender: $request->query->get('gender') ?? null,
-        );
     }
 }

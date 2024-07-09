@@ -3,6 +3,7 @@
 namespace App\Repository\Character;
 
 use App\Contracts\Managers\Pagination\PaginateManagerInterface;
+use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
 use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
 use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\CreateCharacterDto;
@@ -14,6 +15,7 @@ use App\Entity\Character;
 use App\Entity\Location;
 use App\Filter\Filters\Character\CharacterFilterFactory;
 use App\Filter\HasFilter;
+use App\Utils\Mappers\Out\Character\CharacterDtoMapper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,9 +26,11 @@ use Doctrine\Persistence\ManagerRegistry;
 class CharacterRepository extends ServiceEntityRepository implements CharacterRepositoryInterface
 {
     use HasFilter;
+
     public function __construct(
-        ManagerRegistry $registry,
-        private readonly PaginateManagerInterface $paginatorManager
+        ManagerRegistry                              $registry,
+        private readonly PaginateManagerInterface    $paginatorManager,
+        private readonly UrlGenerateManagerInterface $urlGenerator,
     )
     {
         parent::__construct($registry, Character::class);
@@ -47,9 +51,10 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
                 ->setParameter('ids', $getCharactersDto->ids);
         }
 
-        return CharacterDto::fromPaginator($this
+        return CharacterDtoMapper::fromPaginator($this
             ->paginatorManager
-            ->paginate($qb, $getCharactersDto->page ?: 1, $getCharactersDto->limit ?: 10));
+            ->paginate($qb, $getCharactersDto->page ?: 1, $getCharactersDto->limit ?: 10),
+            $this->urlGenerator);
     }
 
     /**
@@ -58,7 +63,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
      */
     public function findById(int $id): CharacterDto
     {
-        return CharacterDto::fromModel($this->find($id));
+        return CharacterDtoMapper::fromModel($this->find($id), $this->urlGenerator);
     }
 
     /**
@@ -93,7 +98,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         $this->getEntityManager()->persist($character);
         $this->getEntityManager()->flush();
 
-        return CharacterDto::fromModel($character);
+        return CharacterDtoMapper::fromModel($character, $this->urlGenerator);
     }
 
     /**
@@ -118,7 +123,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
 
         $this->getEntityManager()->flush();
 
-        return CharacterDto::fromModel($character);
+        return CharacterDtoMapper::fromModel($character, $this->urlGenerator);
     }
 
     /**
@@ -145,7 +150,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
 
         $this->getEntityManager()->flush();
 
-        return CharacterDto::fromModel($character);
+        return CharacterDtoMapper::fromModel($character, $this->urlGenerator);
     }
 
     /**

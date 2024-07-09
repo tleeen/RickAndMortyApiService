@@ -4,17 +4,18 @@ namespace App\Controller\Api;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
 use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
-use App\DTO\In\Character\ChangeCharacterDto;
-use App\DTO\In\Character\CreateCharacterDto;
-use App\DTO\In\Character\GetCharactersDto;
-use App\DTO\In\Character\UpdateCharacterDto;
 use App\Exceptions\Validation\ValidateException;
+use App\Utils\Mappers\In\Character\ChangeCharacterDtoMapper;
+use App\Utils\Mappers\In\Character\CreateCharacterDtoMapper;
+use App\Utils\Mappers\In\Character\GetCharactersDtoMapper;
+use App\Utils\Mappers\In\Character\UpdateCharacterDtoMapper;
 use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/character', name: 'character_')]
 class CharacterController extends AbstractController
 {
     public function __construct(
@@ -26,10 +27,10 @@ class CharacterController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/character', methods: ['GET'])]
+    #[Route('/', name: 'get', methods: ['GET'])]
     public function getMany(Request $request): JsonResponse
     {
-        $getCharactersDto = GetCharactersDto::fromRequest($request);
+        $getCharactersDto = GetCharactersDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($getCharactersDto);
@@ -45,7 +46,7 @@ class CharacterController extends AbstractController
      * @param int $id
      * @return JsonResponse
      */
-    #[Route('/character/{id}', methods: ['GET'])]
+    #[Route('/{id}', name: 'index', methods: ['GET'])]
     public function getById(int $id): JsonResponse
     {
         return new JsonResponse($this->characterRepository->findById($id));
@@ -55,7 +56,7 @@ class CharacterController extends AbstractController
      * @param int $id
      * @return JsonResponse
      */
-    #[Route('/character/{id}', methods: ['DELETE'])]
+    #[Route('/{id}', methods: ['DELETE'])]
     public function delete(int $id): JsonResponse
     {
         $this->characterRepository->delete($id);
@@ -68,10 +69,10 @@ class CharacterController extends AbstractController
      * @return JsonResponse
      * @throws ORMException
      */
-    #[Route('/character', methods: ['POST'])]
+    #[Route('/', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        $createCharacterDto = CreateCharacterDto::fromRequest($request);
+        $createCharacterDto = CreateCharacterDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($createCharacterDto);
@@ -88,10 +89,10 @@ class CharacterController extends AbstractController
      * @return JsonResponse
      * @throws ORMException
      */
-    #[Route('/character/{id}', methods: ['PATCH'])]
+    #[Route('/{id}', methods: ['PATCH'])]
     public function change(Request $request): JsonResponse
     {
-        $changeCharacterDto = ChangeCharacterDto::fromRequest($request);
+        $changeCharacterDto = ChangeCharacterDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($changeCharacterDto);
@@ -108,10 +109,10 @@ class CharacterController extends AbstractController
      * @return JsonResponse
      * @throws ORMException
      */
-    #[Route('/character/{id}', methods: ['PUT'])]
+    #[Route('/{id}', methods: ['PUT'])]
     public function update(Request $request): JsonResponse
     {
-        $updateCharacterDto = UpdateCharacterDto::fromRequest($request);
+        $updateCharacterDto = UpdateCharacterDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($updateCharacterDto);

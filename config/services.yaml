@@ -14,6 +14,7 @@ services:
             #Managers
             App\Contracts\Managers\Pagination\PaginateManagerInterface: '@App\Managers\Pagination\PaginateManager'
             App\Contracts\Managers\Validation\ValidateManagerInterface: '@App\Managers\Validation\ValidateManager'
+            App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface: '@App\Managers\UrlGeneration\UrlGenerateManager'
 
             #Repositories
             App\Contracts\Repositories\Location\LocationRepositoryInterface: '@App\Repository\Location\LocationRepository'

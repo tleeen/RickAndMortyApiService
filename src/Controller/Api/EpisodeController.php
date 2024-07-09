@@ -4,16 +4,18 @@ namespace App\Controller\Api;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
 use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
-use App\DTO\In\Episode\ChangeEpisodeDto;
-use App\DTO\In\Episode\CreateEpisodeDto;
-use App\DTO\In\Episode\GetEpisodesDto;
-use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\Exceptions\Validation\ValidateException;
+use App\Utils\Mappers\In\Episode\ChangeEpisodeDtoMapper;
+use App\Utils\Mappers\In\Episode\CreateEpisodeDtoMapper;
+use App\Utils\Mappers\In\Episode\GetEpisodesDtoMapper;
+use App\Utils\Mappers\In\Episode\UpdateEpisodeDtoMapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+
+#[Route('/episode', name: 'episode_')]
 class EpisodeController extends AbstractController
 {
     public function __construct(
@@ -25,10 +27,10 @@ class EpisodeController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/episode', methods: ['GET'])]
+    #[Route('/', name: "get", methods: ['GET'])]
     public function getMany(Request $request): JsonResponse
     {
-        $getEpisodesDto = GetEpisodesDto::fromRequest($request);
+        $getEpisodesDto = GetEpisodesDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($getEpisodesDto);
@@ -44,7 +46,7 @@ class EpisodeController extends AbstractController
      * @param int $id
      * @return JsonResponse
      */
-    #[Route('/episode/{id}', methods: ['GET'])]
+    #[Route('/{id}', name: "index", methods: ['GET'])]
     public function getById(int $id): JsonResponse
     {
         return new JsonResponse($this->episodeRepository->findById($id));
@@ -54,7 +56,7 @@ class EpisodeController extends AbstractController
      * @param int $id
      * @return JsonResponse
      */
-    #[Route('/episode/{id}', methods: ['DELETE'])]
+    #[Route('/{id}', methods: ['DELETE'])]
     public function delete(int $id): JsonResponse
     {
         $this->episodeRepository->delete($id);
@@ -66,10 +68,10 @@ class EpisodeController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/episode', methods: ['POST'])]
+    #[Route('/', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        $createEpisodeDto = CreateEpisodeDto::fromRequest($request);
+        $createEpisodeDto = CreateEpisodeDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($createEpisodeDto);
@@ -85,10 +87,10 @@ class EpisodeController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/episode/{id}', methods: ['PATCH'])]
+    #[Route('/{id}', methods: ['PATCH'])]
     public function change(Request $request): JsonResponse
     {
-        $changeEpisodeDto = ChangeEpisodeDto::fromRequest($request);
+        $changeEpisodeDto = ChangeEpisodeDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($changeEpisodeDto);
@@ -104,10 +106,10 @@ class EpisodeController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/character/{id}', methods: ['PUT'])]
+    #[Route('/{id}', methods: ['PUT'])]
     public function update(Request $request): JsonResponse
     {
-        $updateEpisodeDto= UpdateEpisodeDto::fromRequest($request);
+        $updateEpisodeDto= UpdateEpisodeDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($updateEpisodeDto);

@@ -4,16 +4,17 @@ namespace App\Controller\Api;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
 use App\Contracts\Repositories\Location\LocationRepositoryInterface;
-use App\DTO\In\Location\ChangeLocationDto;
-use App\DTO\In\Location\CreateLocationDto;
-use App\DTO\In\Location\GetLocationsDto;
-use App\DTO\In\Location\UpdateLocationDto;
 use App\Exceptions\Validation\ValidateException;
+use App\Utils\Mappers\In\Location\ChangeLocationDtoMapper;
+use App\Utils\Mappers\In\Location\CreateLocationDtoMapper;
+use App\Utils\Mappers\In\Location\GetLocationsDtoMapper;
+use App\Utils\Mappers\In\Location\UpdateLocationDtoMapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/location', name: 'location_')]
 class LocationController extends AbstractController
 {
     public function __construct(
@@ -25,10 +26,10 @@ class LocationController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/location', methods: ['GET'])]
+    #[Route('/', name: "get", methods: ['GET'])]
     public function getMany(Request $request): JsonResponse
     {
-        $getLocationsDto = GetLocationsDto::fromRequest($request);
+        $getLocationsDto = GetLocationsDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($getLocationsDto);
@@ -44,7 +45,7 @@ class LocationController extends AbstractController
      * @param int $id
      * @return JsonResponse
      */
-    #[Route('/location/{id}', methods: ['GET'])]
+    #[Route('/{id}', name: "index", methods: ['GET'])]
     public function getById(int $id): JsonResponse
     {
         return new JsonResponse($this->locationRepository->findById($id));
@@ -66,10 +67,10 @@ class LocationController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/location', methods: ['POST'])]
+    #[Route('/', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        $createLocationDto = CreateLocationDto::fromRequest($request);
+        $createLocationDto = CreateLocationDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($createLocationDto);
@@ -85,10 +86,10 @@ class LocationController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/location/{id}', methods: ['PATCH'])]
+    #[Route('/{id}', methods: ['PATCH'])]
     public function change(Request $request): JsonResponse
     {
-        $changeLocationDto = ChangeLocationDto::fromRequest($request);
+        $changeLocationDto = ChangeLocationDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($changeLocationDto);
@@ -100,10 +101,10 @@ class LocationController extends AbstractController
         }
     }
 
-    #[Route('/location/{id}', methods: ['PUT'])]
+    #[Route('/{id}', methods: ['PUT'])]
     public function update(Request $request): JsonResponse
     {
-        $updateLocationDto = UpdateLocationDto::fromRequest($request);
+        $updateLocationDto = UpdateLocationDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($updateLocationDto);

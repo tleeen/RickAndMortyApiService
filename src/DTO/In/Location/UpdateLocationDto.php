@@ -2,7 +2,6 @@
 
 namespace App\DTO\In\Location;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateLocationDto
@@ -35,20 +34,5 @@ class UpdateLocationDto
         $this->name = $name;
         $this->type = $type;
         $this->dimension = $dimension;
-    }
-
-    /**
-     * @param Request $request
-     * @return self
-     */
-    public static function fromRequest(Request $request): self
-    {
-        $location = $request->toArray();
-        return new self(
-            id: $request->get('id'),
-            name: $location['name'],
-            type: $location['type'],
-            dimension: $location['dimension']
-        );
     }
 }

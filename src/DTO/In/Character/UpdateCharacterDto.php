@@ -2,7 +2,6 @@
 
 namespace App\DTO\In\Character;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateCharacterDto
@@ -68,25 +67,5 @@ class UpdateCharacterDto
         $this->originId = $originId;
         $this->locationId = $locationId;
         $this->image = $image;
-    }
-
-    /**
-     * @param Request $request
-     * @return self
-     */
-    public static function fromRequest(Request $request): self
-    {
-        $character = $request->toArray();
-        return new self(
-            id: $request->get('id'),
-            name: $character['name'],
-            status: $character['status'],
-            species: $character['species'],
-            type: $character['type'],
-            gender: $character['gender'],
-            originId: $character['originId'],
-            locationId: $character['locationId'],
-            image: $character['image'],
-        );
     }
 }

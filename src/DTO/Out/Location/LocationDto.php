@@ -2,14 +2,6 @@
 
 namespace App\DTO\Out\Location;
 
-use App\DTO\Paginate\PaginateDto;
-use App\DTO\Utils\Enums\BaseUrl;
-use App\DTO\Utils\Enums\Prefixes\BasePrefixes;
-use App\DTO\Utils\Enums\Prefixes\ModulePrefixes;
-use App\DTO\Utils\UrlMaker;
-use App\Entity\Location;
-use App\Managers\Pagination\PaginateManager as Paginator;
-
 class LocationDto
 {
     public readonly int $id;
@@ -38,37 +30,5 @@ class LocationDto
         $this->residents = $residents;
         $this->url = $url;
         $this->created = $created;
-    }
-
-    /**
-     * @param Location $location
-     * @return self
-     */
-    public static function fromModel(Location $location): self
-    {
-        $locationId = $location->getId();
-
-        return new self(
-            id: $locationId,
-            name: $location->getName(),
-            type: $location->getType(),
-            dimension: $location->getDimension(),
-            residents: array_map(fn($resident) => UrlMaker::makeUnique(BaseUrl::APP_URL->value,
-                BasePrefixes::API->value,
-                ModulePrefixes::CHARACTERS->value,
-                $resident->getId()), $location->getResidents()->toArray()),
-            url: UrlMaker::makeUnique(BaseUrl::APP_URL->value,
-                BasePrefixes::API->value,
-                ModulePrefixes::LOCATIONS->value,
-                $locationId),
-            created: $location->getCreatedAt()->format('Y-m-d\TH:i:s.v\Z')
-        );
-    }
-
-    public static function fromPaginator(Paginator $paginator): PaginateDto
-    {
-        return PaginateDto::fromPaginator($paginator,
-            self::class,
-            ModulePrefixes::LOCATIONS->value);
     }
 }

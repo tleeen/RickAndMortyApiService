@@ -2,7 +2,6 @@
 
 namespace App\DTO\In\Episode;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ChangeEpisodeDto

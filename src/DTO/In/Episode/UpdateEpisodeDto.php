@@ -2,7 +2,6 @@
 
 namespace App\DTO\In\Episode;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateEpisodeDto
@@ -38,20 +37,5 @@ class UpdateEpisodeDto
         $this->name = $name;
         $this->airDate = $airDate;
         $this->code = $code;
-    }
-
-    /**
-     * @param Request $request
-     * @return self
-     */
-    public static function fromRequest(Request $request): self
-    {
-        $episode = $request->toArray();
-        return new self(
-            id: $request->get('id'),
-            name: $episode['name'],
-            airDate: $episode['airDate'],
-            code: $episode['code']
-        );
     }
 }

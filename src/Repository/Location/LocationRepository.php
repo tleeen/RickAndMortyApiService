@@ -3,6 +3,7 @@
 namespace App\Repository\Location;
 
 use App\Contracts\Managers\Pagination\PaginateManagerInterface;
+use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
 use App\Contracts\Repositories\Location\LocationRepositoryInterface;
 use App\DTO\In\Location\ChangeLocationDto;
 use App\DTO\In\Location\CreateLocationDto;
@@ -13,6 +14,7 @@ use App\DTO\Paginate\PaginateDto;
 use App\Entity\Location;
 use App\Filter\Filters\Location\LocationFilterFactory;
 use App\Filter\HasFilter;
+use App\Utils\Mappers\Out\Location\LocationDtoMapper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,7 +26,8 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
     use HasFilter;
     public function __construct(
         ManagerRegistry $registry,
-        private readonly PaginateManagerInterface $paginatorManager
+        private readonly PaginateManagerInterface $paginatorManager,
+        private readonly UrlGenerateManagerInterface $urlGenerator,
     )
     {
         parent::__construct($registry, Location::class);
@@ -45,9 +48,10 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
                 ->setParameter('ids', $getLocationsDto->ids);
         }
 
-        return LocationDto::fromPaginator($this
+        return LocationDtoMapper::fromPaginator($this
             ->paginatorManager
-            ->paginate($qb, $getLocationsDto->page ?: 1, $getLocationsDto->limit ?: 10));
+            ->paginate($qb, $getLocationsDto->page ?: 1, $getLocationsDto->limit ?: 10),
+            $this->urlGenerator);
     }
 
     /**
@@ -56,7 +60,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
      */
     public function findById(int $id): LocationDto
     {
-        return LocationDto::fromModel($this->find($id));
+        return LocationDtoMapper::fromModel($this->find($id), $this->urlGenerator);
     }
 
     /**
@@ -85,7 +89,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
         $this->getEntityManager()->persist($location);
         $this->getEntityManager()->flush();
 
-        return LocationDto::fromModel($location);
+        return LocationDtoMapper::fromModel($location, $this->urlGenerator);
     }
 
     /**
@@ -104,7 +108,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
 
         $this->getEntityManager()->flush();
 
-        return LocationDto::fromModel($location);
+        return LocationDtoMapper::fromModel($location, $this->urlGenerator);
     }
 
     /**
@@ -125,7 +129,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
 
         $this->getEntityManager()->flush();
 
-        return LocationDto::fromModel($location);
+        return LocationDtoMapper::fromModel($location, $this->urlGenerator);
     }
 
     /**
