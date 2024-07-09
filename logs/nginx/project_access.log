@@ -633,3 +633,6 @@
 172.18.0.1 - - [09/Jul/2024:15:29:18 +0000] "GET /api/episode/ HTTP/1.1" 500 116506 "http://localhost:8876/api/episode" "PostmanRuntime/7.40.0"
 172.18.0.1 - - [09/Jul/2024:15:31:51 +0000] "GET /api/episode HTTP/1.1" 301 394 "-" "PostmanRuntime/7.40.0"
 172.18.0.1 - - [09/Jul/2024:15:31:52 +0000] "GET /api/episode/ HTTP/1.1" 200 2126 "http://localhost:8876/api/episode" "PostmanRuntime/7.40.0"
+172.18.0.1 - - [09/Jul/2024:16:05:26 +0000] "GET /api/character/?page=2 HTTP/1.1" 200 23779 "-" "PostmanRuntime/7.40.0"
+172.18.0.1 - - [09/Jul/2024:16:06:52 +0000] "GET /api/character/?page=2 HTTP/1.1" 200 23764 "-" "PostmanRuntime/7.40.0"
+172.18.0.1 - - [09/Jul/2024:16:12:07 +0000] "GET /api/character/?page=2 HTTP/1.1" 200 124 "-" "PostmanRuntime/7.40.0"

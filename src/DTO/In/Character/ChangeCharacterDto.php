@@ -2,6 +2,8 @@
 
 namespace App\DTO\In\Character;
 
+use App\Enums\Character\CharacterGender;
+use App\Enums\Character\CharacterStatus;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -15,7 +17,11 @@ class ChangeCharacterDto
     public readonly ?string $name;
 
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: ['Alive', 'Dead', 'unknown'])]
+    #[Assert\Choice(choices: [
+        CharacterStatus::ALIVE->value,
+        CharacterStatus::DEAD->value,
+        CharacterStatus::UNKNOWN->value,
+    ])]
     public readonly ?string $status;
 
     #[Assert\Type('string')]
@@ -25,7 +31,12 @@ class ChangeCharacterDto
     public readonly ?string $type;
 
     #[Assert\Type('string')]
-    #[Assert\Choice(choices: ['Female', 'Male', 'Genderless', 'unknown'])]
+    #[Assert\Choice(choices: [
+        CharacterGender::MALE->value,
+        CharacterGender::FEMALE->value,
+        CharacterGender::UNKNOWN->value,
+        CharacterGender::GENDERLESS->value,
+    ])]
     public readonly ?string $gender;
 
     #[Assert\Type('integer')]
