@@ -10,7 +10,7 @@ use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
 use Doctrine\ORM\Exception\ORMException;
 
-interface ICharacterRepository
+interface CharacterRepositoryInterface
 {
     /**
      * @param GetCharactersDto $getCharactersDto

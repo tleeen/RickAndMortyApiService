@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Contracts\Managers\Validation\IValidateManager;
-use App\Contracts\Repositories\Location\ILocationRepository;
+use App\Contracts\Managers\Validation\ValidateManagerInterface;
+use App\Contracts\Repositories\Location\LocationRepositoryInterface;
 use App\DTO\In\Location\ChangeLocationDto;
 use App\DTO\In\Location\CreateLocationDto;
 use App\DTO\In\Location\GetLocationsDto;
@@ -17,8 +17,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class LocationController extends AbstractController
 {
     public function __construct(
-        private readonly ILocationRepository $locationRepository,
-        private readonly IValidateManager    $validateManager,
+        private readonly LocationRepositoryInterface $locationRepository,
+        private readonly ValidateManagerInterface    $validateManager,
     ) {}
 
     /**

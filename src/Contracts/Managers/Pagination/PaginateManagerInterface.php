@@ -6,7 +6,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-interface IPaginateManager
+interface PaginateManagerInterface
 {
     /**
      * @param Query|QueryBuilder $query

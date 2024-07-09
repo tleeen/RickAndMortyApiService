@@ -3,6 +3,7 @@
 namespace App\DTO\In\Character;
 
 use Symfony\Component\HttpFoundation\Request;
+use App\DTO\In\Character\FilterDto;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class GetCharactersDto
@@ -14,17 +15,24 @@ class GetCharactersDto
     #[Assert\Positive]
     public readonly ?int $page;
 
+    #[Assert\Type('integer')]
+    #[Assert\LessThanOrEqual(20)]
+    #[Assert\Positive]
+    public readonly ?int $limit;
+
     #[Assert\Valid]
     public readonly FilterDto $filters;
 
     public function __construct(
         ?array $ids,
         ?int $page,
+        ?int $limit,
         FilterDto $filters
     )
     {
         $this->ids = $ids;
         $this->page = $page;
+        $this->limit = $limit;
         $this->filters = $filters;
     }
 
@@ -37,6 +45,7 @@ class GetCharactersDto
         return new self(
             ids: array_map(fn($id) => (int)$id, $request->query->all('ids')),
             page: $request->query->get('page'),
+            limit: $request->query->get('limit'),
             filters: FilterDto::fromRequest($request),
         );
     }

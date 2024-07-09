@@ -2,7 +2,7 @@
 
 namespace App\Contracts\Managers\Validation;
 
-interface IValidateManager
+interface ValidateManagerInterface
 {
     /**
      * @param mixed $value

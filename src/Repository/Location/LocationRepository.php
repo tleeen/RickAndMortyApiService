@@ -2,8 +2,8 @@
 
 namespace App\Repository\Location;
 
-use App\Contracts\Managers\Pagination\IPaginateManager;
-use App\Contracts\Repositories\Location\ILocationRepository;
+use App\Contracts\Managers\Pagination\PaginateManagerInterface;
+use App\Contracts\Repositories\Location\LocationRepositoryInterface;
 use App\DTO\In\Location\ChangeLocationDto;
 use App\DTO\In\Location\CreateLocationDto;
 use App\DTO\In\Location\GetLocationsDto;
@@ -19,12 +19,12 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Location>
  */
-class LocationRepository extends ServiceEntityRepository implements ILocationRepository
+class LocationRepository extends ServiceEntityRepository implements LocationRepositoryInterface
 {
     use HasFilter;
     public function __construct(
         ManagerRegistry $registry,
-        private readonly IPaginateManager $paginatorManager
+        private readonly PaginateManagerInterface $paginatorManager
     )
     {
         parent::__construct($registry, Location::class);
@@ -47,7 +47,7 @@ class LocationRepository extends ServiceEntityRepository implements ILocationRep
 
         return LocationDto::fromPaginator($this
             ->paginatorManager
-            ->paginate($qb, $getLocationsDto->page ?: 1));
+            ->paginate($qb, $getLocationsDto->page ?: 1, $getLocationsDto->limit ?: 10));
     }
 
     /**

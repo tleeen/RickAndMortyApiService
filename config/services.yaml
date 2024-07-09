@@ -12,13 +12,13 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             #Managers
-            App\Contracts\Managers\Pagination\IPaginateManager: '@App\Managers\Pagination\PaginateManager'
-            App\Contracts\Managers\Validation\IValidateManager: '@App\Managers\Validation\ValidateManager'
+            App\Contracts\Managers\Pagination\PaginateManagerInterface: '@App\Managers\Pagination\PaginateManager'
+            App\Contracts\Managers\Validation\ValidateManagerInterface: '@App\Managers\Validation\ValidateManager'
 
             #Repositories
-            App\Contracts\Repositories\Location\ILocationRepository: '@App\Repository\Location\LocationRepository'
-            App\Contracts\Repositories\Episode\IEpisodeRepository: '@App\Repository\Episode\EpisodeRepository'
-            App\Contracts\Repositories\Character\ICharacterRepository: '@App\Repository\Character\CharacterRepository'
+            App\Contracts\Repositories\Location\LocationRepositoryInterface: '@App\Repository\Location\LocationRepository'
+            App\Contracts\Repositories\Episode\EpisodeRepositoryInterface: '@App\Repository\Episode\EpisodeRepository'
+            App\Contracts\Repositories\Character\CharacterRepositoryInterface: '@App\Repository\Character\CharacterRepository'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

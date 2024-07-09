@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Contracts\Managers\Validation\IValidateManager;
-use App\Contracts\Repositories\Episode\IEpisodeRepository;
+use App\Contracts\Managers\Validation\ValidateManagerInterface;
+use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use App\DTO\In\Episode\GetEpisodesDto;
@@ -17,8 +17,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class EpisodeController extends AbstractController
 {
     public function __construct(
-        private readonly IEpisodeRepository $episodeRepository,
-        private readonly IValidateManager    $validateManager,
+        private readonly EpisodeRepositoryInterface $episodeRepository,
+        private readonly ValidateManagerInterface   $validateManager,
     ) {}
 
     /**

@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Contracts\Managers\Validation\IValidateManager;
-use App\Contracts\Repositories\Character\ICharacterRepository;
+use App\Contracts\Managers\Validation\ValidateManagerInterface;
+use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
 use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\CreateCharacterDto;
 use App\DTO\In\Character\GetCharactersDto;
@@ -18,8 +18,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class CharacterController extends AbstractController
 {
     public function __construct(
-        private readonly ICharacterRepository $characterRepository,
-        private readonly IValidateManager     $validateManager,
+        private readonly CharacterRepositoryInterface $characterRepository,
+        private readonly ValidateManagerInterface     $validateManager,
     ) {}
 
     /**

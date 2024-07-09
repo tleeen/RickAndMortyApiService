@@ -2,8 +2,8 @@
 
 namespace App\Repository\Episode;
 
-use App\Contracts\Managers\Pagination\IPaginateManager;
-use App\Contracts\Repositories\Episode\IEpisodeRepository;
+use App\Contracts\Managers\Pagination\PaginateManagerInterface;
+use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use App\DTO\In\Episode\GetEpisodesDto;
@@ -20,13 +20,13 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Episode>
  */
-class EpisodeRepository extends ServiceEntityRepository implements IEpisodeRepository
+class EpisodeRepository extends ServiceEntityRepository implements EpisodeRepositoryInterface
 {
     use HasFilter;
 
     public function __construct(
         ManagerRegistry                   $registry,
-        private readonly IPaginateManager $paginatorManager
+        private readonly PaginateManagerInterface $paginatorManager
     )
     {
         parent::__construct($registry, Episode::class);
@@ -49,7 +49,7 @@ class EpisodeRepository extends ServiceEntityRepository implements IEpisodeRepos
 
         return EpisodeDto::fromPaginator($this
             ->paginatorManager
-            ->paginate($qb, $getEpisodeDto->page ?: 1));
+            ->paginate($qb, $getEpisodeDto->page ?: 1, $getEpisodeDto->limit ?: 10));
     }
 
     /**

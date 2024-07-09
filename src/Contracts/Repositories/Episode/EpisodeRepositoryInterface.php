@@ -9,7 +9,7 @@ use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateDto;
 
-interface IEpisodeRepository
+interface EpisodeRepositoryInterface
 {
     /**
      * @param GetEpisodesDto $getEpisodeDto

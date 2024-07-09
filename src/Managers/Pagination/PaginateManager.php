@@ -2,12 +2,12 @@
 
 namespace App\Managers\Pagination;
 
-use App\Contracts\Managers\Pagination\IPaginateManager;
+use App\Contracts\Managers\Pagination\PaginateManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class PaginateManager implements IPaginateManager
+class PaginateManager implements PaginateManagerInterface
 {
     private int $total;
     private int $lastPage;

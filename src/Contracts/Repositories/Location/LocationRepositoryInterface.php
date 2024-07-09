@@ -9,7 +9,7 @@ use App\DTO\In\Location\UpdateLocationDto;
 use App\DTO\Out\Location\LocationDto;
 use App\DTO\Paginate\PaginateDto;
 
-interface ILocationRepository
+interface LocationRepositoryInterface
 {
     /**
      * @param GetLocationsDto $getLocationsDto

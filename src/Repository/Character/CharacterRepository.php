@@ -2,8 +2,8 @@
 
 namespace App\Repository\Character;
 
-use App\Contracts\Managers\Pagination\IPaginateManager;
-use App\Contracts\Repositories\Character\ICharacterRepository;
+use App\Contracts\Managers\Pagination\PaginateManagerInterface;
+use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
 use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\CreateCharacterDto;
 use App\DTO\In\Character\GetCharactersDto;
@@ -21,12 +21,12 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Character>
  */
-class CharacterRepository extends ServiceEntityRepository implements ICharacterRepository
+class CharacterRepository extends ServiceEntityRepository implements CharacterRepositoryInterface
 {
     use HasFilter;
     public function __construct(
         ManagerRegistry $registry,
-        private readonly IPaginateManager $paginatorManager
+        private readonly PaginateManagerInterface $paginatorManager
     )
     {
         parent::__construct($registry, Character::class);
@@ -49,7 +49,7 @@ class CharacterRepository extends ServiceEntityRepository implements ICharacterR
 
         return CharacterDto::fromPaginator($this
             ->paginatorManager
-            ->paginate($qb, $getCharactersDto->page ?: 1));
+            ->paginate($qb, $getCharactersDto->page ?: 1, $getCharactersDto->limit ?: 10));
     }
 
     /**
