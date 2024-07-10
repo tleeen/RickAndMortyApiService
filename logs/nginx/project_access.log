@@ -708,3 +708,8 @@
 172.18.0.1 - - [10/Jul/2024:10:15:18 +0000] "GET /api HTTP/1.1" 200 2585 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 172.18.0.1 - - [10/Jul/2024:11:00:25 +0000] "GET /api HTTP/1.1" 200 3056 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 172.18.0.1 - - [10/Jul/2024:11:00:49 +0000] "GET /api HTTP/1.1" 200 3044 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+172.18.0.1 - - [10/Jul/2024:11:56:37 +0000] "POST /api/character HTTP/1.1" 500 97980 "-" "PostmanRuntime/7.40.0"
+172.18.0.1 - - [10/Jul/2024:11:57:24 +0000] "POST /api/character HTTP/1.1" 500 98110 "-" "PostmanRuntime/7.40.0"
+172.18.0.1 - - [10/Jul/2024:11:57:57 +0000] "POST /api/character HTTP/1.1" 400 165 "-" "PostmanRuntime/7.40.0"
+172.18.0.1 - - [10/Jul/2024:11:58:12 +0000] "POST /api/character HTTP/1.1" 500 17599 "-" "PostmanRuntime/7.40.0"
+172.18.0.1 - - [10/Jul/2024:12:07:31 +0000] "POST /api/character HTTP/1.1" 200 406 "-" "PostmanRuntime/7.40.0"

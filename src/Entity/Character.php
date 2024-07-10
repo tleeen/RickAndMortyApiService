@@ -65,7 +65,7 @@ class Character
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): Character
     {
         $this->name = $name;
 
@@ -77,7 +77,7 @@ class Character
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(string $image): Character
     {
         $this->image = $image;
         return $this;
@@ -88,7 +88,7 @@ class Character
         return $this->status;
     }
 
-    public function setStatus(?string $status): static
+    public function setStatus(?string $status): Character
     {
         $this->status = $status;
         return $this;
@@ -99,7 +99,7 @@ class Character
         return $this->species;
     }
 
-    public function setSpecies(?string $species): static
+    public function setSpecies(?string $species): Character
     {
         $this->species = $species;
         return $this;
@@ -110,7 +110,7 @@ class Character
         return $this->type;
     }
 
-    public function setType(?string $type): static
+    public function setType(?string $type): Character
     {
         $this->type = $type;
         return $this;
@@ -121,7 +121,7 @@ class Character
         return $this->gender;
     }
 
-    public function setGender(?string $gender): static
+    public function setGender(?string $gender): Character
     {
         $this->gender = $gender;
         return $this;
@@ -132,7 +132,7 @@ class Character
         return $this->origin;
     }
 
-    public function setOrigin(?Location $origin): static
+    public function setOrigin(?Location $origin): Character
     {
         $this->origin = $origin;
 
@@ -144,7 +144,7 @@ class Character
         return $this->lastLocation;
     }
 
-    public function setLastLocation(?Location $lastLocation): static
+    public function setLastLocation(?Location $lastLocation): Character
     {
         $this->lastLocation = $lastLocation;
 
@@ -159,7 +159,7 @@ class Character
         return $this->episodes;
     }
 
-    public function addEpisode(Episode $episode): static
+    public function addEpisode(Episode $episode): Character
     {
         if (!$this->episodes->contains($episode)) {
             $this->episodes->add($episode);
@@ -168,7 +168,7 @@ class Character
         return $this;
     }
 
-    public function removeEpisode(Episode $episode): static
+    public function removeEpisode(Episode $episode): Character
     {
         if ($this->episodes->removeElement($episode)) {
             $episode->removeCharacter($this);

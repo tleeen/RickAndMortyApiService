@@ -16,9 +16,9 @@ class PaginateDtoMapper
      * @return PaginateDto
      */
     public static function fromPaginator(
-        Paginator $paginator,
-        string $itemClassName,
-        string $module,
+        Paginator                   $paginator,
+        string                      $itemClassName,
+        string                      $module,
         UrlGenerateManagerInterface $urlGenerator
     ): PaginateDto
     {

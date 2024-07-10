@@ -29,7 +29,7 @@ readonly class CreateEpisodeDto
         string $name,
         string $airDate,
         string $code,
-        array $characterIds
+        array  $characterIds
     )
     {
         $this->name = $name;

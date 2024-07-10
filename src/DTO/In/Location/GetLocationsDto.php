@@ -21,9 +21,9 @@ readonly class GetLocationsDto
     public FilterDto $filters;
 
     public function __construct(
-        ?array $ids,
-        ?int $page,
-        ?int $limit,
+        ?array    $ids,
+        ?int      $page,
+        ?int      $limit,
         FilterDto $filters
     )
     {

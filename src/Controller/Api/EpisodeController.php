@@ -4,13 +4,9 @@ namespace App\Controller\Api;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
 use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
-use App\DTO\In\Character\ChangeCharacterDto;
-use App\DTO\In\Character\CreateCharacterDto;
-use App\DTO\In\Character\UpdateCharacterDto;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use App\DTO\In\Episode\UpdateEpisodeDto;
-use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateInfoDto;
 use App\Exceptions\Validation\ValidateException;
@@ -19,11 +15,11 @@ use App\Utils\Mappers\In\Episode\CreateEpisodeDtoMapper;
 use App\Utils\Mappers\In\Episode\GetEpisodesDtoMapper;
 use App\Utils\Mappers\In\Episode\UpdateEpisodeDtoMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use OpenApi\Attributes as OA;
 
 
 #[Route('/episode', name: 'episode_')]
@@ -32,7 +28,9 @@ class EpisodeController extends AbstractController
     public function __construct(
         private readonly EpisodeRepositoryInterface $episodeRepository,
         private readonly ValidateManagerInterface   $validateManager,
-    ) {}
+    )
+    {
+    }
 
     /**
      * @param Request $request
@@ -264,7 +262,7 @@ class EpisodeController extends AbstractController
     )]
     public function update(Request $request): JsonResponse
     {
-        $updateEpisodeDto= UpdateEpisodeDtoMapper::fromRequest($request);
+        $updateEpisodeDto = UpdateEpisodeDtoMapper::fromRequest($request);
 
         try {
             $this->validateManager->validate($updateEpisodeDto);

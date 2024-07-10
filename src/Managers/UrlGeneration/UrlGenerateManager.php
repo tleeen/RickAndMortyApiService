@@ -5,11 +5,13 @@ namespace App\Managers\UrlGeneration;
 use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class UrlGenerateManager implements UrlGenerateManagerInterface
+readonly class UrlGenerateManager implements UrlGenerateManagerInterface
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator
-    ) {}
+        private UrlGeneratorInterface $urlGenerator
+    )
+    {
+    }
 
     /**
      * @param string $name

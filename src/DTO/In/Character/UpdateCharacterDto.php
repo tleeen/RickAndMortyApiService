@@ -59,15 +59,15 @@ readonly class UpdateCharacterDto
     public string $image;
 
     public function __construct(
-        int $id,
-        string $name,
-        string $status,
-        string $species,
+        int     $id,
+        string  $name,
+        string  $status,
+        string  $species,
         ?string $type,
-        string $gender,
-        int $originId,
-        int $locationId,
-        string $image
+        string  $gender,
+        int     $originId,
+        int     $locationId,
+        string  $image
     )
     {
         $this->id = $id;

@@ -4,35 +4,35 @@ namespace App\DTO\Out\Character;
 
 use App\DTO\Out\Location\ShortLocationDto;
 
-class CharacterDto
+readonly class CharacterDto
 {
-    public readonly int $id;
-    public readonly string $name;
-    public readonly string $status;
-    public readonly string $species;
-    public readonly ?string $type;
-    public readonly string $gender;
-    public readonly ShortLocationDto $origin;
-    public readonly ShortLocationDto $location;
-    public readonly string $image;
-    public readonly array $episode;
-    public readonly string $url;
-    public readonly string $created;
+    public int $id;
+    public string $name;
+    public string $status;
+    public string $species;
+    public ?string $type;
+    public string $gender;
+    public ShortLocationDto $origin;
+    public ShortLocationDto $location;
+    public string $image;
+    public array $episode;
+    public string $url;
+    public string $created;
 
 
     public function __construct(
-        int    $id,
-        string  $name,
-        string  $status,
-        string  $species,
-        ?string $type,
-        string  $gender,
+        int              $id,
+        string           $name,
+        string           $status,
+        string           $species,
+        ?string          $type,
+        string           $gender,
         ShortLocationDto $origin,
         ShortLocationDto $location,
-        string $image,
-        array $episode,
-        string $url,
-        string $created
+        string           $image,
+        array            $episode,
+        string           $url,
+        string           $created
     )
     {
         $this->id = $id;

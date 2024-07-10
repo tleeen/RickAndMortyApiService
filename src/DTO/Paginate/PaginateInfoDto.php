@@ -2,17 +2,17 @@
 
 namespace App\DTO\Paginate;
 
-class PaginateInfoDto
+readonly class PaginateInfoDto
 {
-    public readonly int $count;
-    public readonly int $pages;
-    public readonly ?string $next;
-    public readonly ?string $prev;
+    public int $count;
+    public int $pages;
+    public ?string $next;
+    public ?string $prev;
 
 
     public function __construct(
-        int $count,
-        int $pages,
+        int     $count,
+        int     $pages,
         ?string $next,
         ?string $prev,
     )

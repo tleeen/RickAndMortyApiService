@@ -20,8 +20,8 @@ class PaginateInfoDtoMapper
             count: $paginator->getTotal(),
             pages: $paginator->getLastPage(),
             next: $paginator->getNextPage() ? $urlGenerator->generate(
-                $module . '_get',
-                [],
+                    $module . '_get',
+                    [],
                     UrlGenerateManagerInterface::ABSOLUTE_URL)
                 . "?page="
                 . $paginator->getNextPage() : $paginator->getNextPage(),

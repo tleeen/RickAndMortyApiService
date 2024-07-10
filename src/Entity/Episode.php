@@ -51,7 +51,7 @@ class Episode
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): Episode
     {
         $this->name = $name;
 
@@ -63,7 +63,7 @@ class Episode
         return $this->airDate;
     }
 
-    public function setAirDate(DateTime $airDate): static
+    public function setAirDate(DateTime $airDate): Episode
     {
         $this->airDate = $airDate;
         return $this;
@@ -74,7 +74,7 @@ class Episode
         return $this->code;
     }
 
-    public function setCode(string $code): static
+    public function setCode(string $code): Episode
     {
         $this->code = $code;
         return $this;
@@ -88,7 +88,7 @@ class Episode
         return $this->characters;
     }
 
-    public function addCharacter(Character $character): static
+    public function addCharacter(Character $character): Episode
     {
         if (!$this->characters->contains($character)) {
             $this->characters->add($character);
@@ -96,7 +96,7 @@ class Episode
         return $this;
     }
 
-    public function removeCharacter(Character $character): static
+    public function removeCharacter(Character $character): Episode
     {
         $this->characters->removeElement($character);
         return $this;

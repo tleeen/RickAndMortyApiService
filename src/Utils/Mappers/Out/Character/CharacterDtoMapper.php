@@ -32,8 +32,8 @@ class CharacterDtoMapper
             origin: ShortLocationDtoMapper::fromModel($character->getOrigin(), $urlGenerator),
             location: ShortLocationDtoMapper::fromModel($character->getLastLocation(), $urlGenerator),
             image: $urlGenerator->generate('character_get')
-                . StoragePath::CharacterAvatar->value
-                . "/" . $character->getImage(),
+            . StoragePath::CharacterAvatar->value
+            . "/" . $character->getImage(),
             episode: array_map(fn($episode) => $urlGenerator->generate(
                 'episode_index',
                 ['id' => $episode->getId()],

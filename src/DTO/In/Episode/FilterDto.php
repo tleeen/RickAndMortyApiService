@@ -21,6 +21,6 @@ readonly class FilterDto
     )
     {
         $this->name = $name;
-       $this->code = $code;
+        $this->code = $code;
     }
 }

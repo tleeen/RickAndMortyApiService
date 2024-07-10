@@ -2,10 +2,10 @@
 
 namespace App\DTO\Out\Location;
 
-class ShortLocationDto
+readonly class ShortLocationDto
 {
-    public readonly string $name;
-    public readonly string $url;
+    public string $name;
+    public string $url;
 
 
     public function __construct(

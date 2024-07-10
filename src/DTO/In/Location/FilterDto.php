@@ -21,8 +21,8 @@ readonly class FilterDto
         ?string $dimension
     )
     {
-       $this->name = $name;
-       $this->type = $type;
-       $this->dimension = $dimension;
+        $this->name = $name;
+        $this->type = $type;
+        $this->dimension = $dimension;
     }
 }

@@ -54,14 +54,14 @@ readonly class CreateCharacterDto
     public string $image;
 
     public function __construct(
-        string $name,
-        string $status,
-        string $species,
+        string  $name,
+        string  $status,
+        string  $species,
         ?string $type,
-        string $gender,
-        int $originId,
-        int $locationId,
-        string $image
+        string  $gender,
+        int     $originId,
+        int     $locationId,
+        string  $image
     )
     {
         $this->name = $name;

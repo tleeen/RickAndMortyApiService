@@ -2,15 +2,15 @@
 
 namespace App\DTO\Out\Episode;
 
-class EpisodeDto
+readonly class EpisodeDto
 {
-    public readonly int $id;
-    public readonly string $name;
-    public readonly string $air_date;
-    public readonly string $episode;
-    public readonly array $characters;
-    public readonly string $url;
-    public readonly string $created;
+    public int $id;
+    public string $name;
+    public string $air_date;
+    public string $episode;
+    public array $characters;
+    public string $url;
+    public string $created;
 
 
     public function __construct(

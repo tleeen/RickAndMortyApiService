@@ -51,7 +51,7 @@ readonly class ChangeCharacterDto
     public ?string $image;
 
     public function __construct(
-        int      $id,
+        int     $id,
         ?string $name,
         ?string $status,
         ?string $species,

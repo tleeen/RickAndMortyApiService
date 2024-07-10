@@ -19,6 +19,7 @@ use App\Utils\Mappers\Out\Episode\EpisodeDtoMapper;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @extends ServiceEntityRepository<Episode>
@@ -28,10 +29,11 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     use HasFilter;
 
     public function __construct(
-        ManagerRegistry                   $registry,
-        private readonly PaginateManagerInterface $paginatorManager,
+        ManagerRegistry                               $registry,
+        private readonly PaginateManagerInterface     $paginatorManager,
         private readonly CharacterRepositoryInterface $characterRepository,
-        private readonly UrlGenerateManagerInterface $urlGenerator,
+        private readonly UrlGenerateManagerInterface  $urlGenerator,
+        private readonly SerializerInterface          $serializer,
     )
     {
         parent::__construct($registry, Episode::class);
@@ -85,11 +87,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     {
         $episode = new Episode();
 
-        $this->setAttributes($episode, [
-            'name' => $createEpisodeDto->name,
-            'airDate' => $createEpisodeDto->airDate,
-            'code' => $createEpisodeDto->code,
-            'characterIds' => $createEpisodeDto->characterIds]);
+        $this->setAttributes($episode, $this->serializer->normalize($createEpisodeDto));
 
         $this->getEntityManager()->persist($episode);
         $this->getEntityManager()->flush();
@@ -106,11 +104,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         /** @var Episode $episode */
         $episode = $this->find($changeEpisodeDto->id);
 
-        $this->setAttributes($episode, [
-            'name' => $changeEpisodeDto->name,
-            'airDate' => $changeEpisodeDto->airDate,
-            'code' => $changeEpisodeDto->code,
-            'characterIds' => $changeEpisodeDto->characterIds]);
+        $this->setAttributes($episode, $this->serializer->normalize($changeEpisodeDto));
 
         $this->getEntityManager()->flush();
 
@@ -128,11 +122,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
 
         if (!$episode) $episode = new Episode();
 
-        $this->setAttributes($episode, [
-            'name' => $updateEpisodeDto->name,
-            'airDate' => $updateEpisodeDto->airDate,
-            'code' => $updateEpisodeDto->code,
-            'characterIds' => $updateEpisodeDto->characterIds]);
+        $this->setAttributes($episode, $this->serializer->normalize($updateEpisodeDto));
 
         $this->getEntityManager()->flush();
 

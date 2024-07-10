@@ -21,7 +21,7 @@ class PaginateManager implements PaginateManagerInterface
      * @param int $limit
      * @return self
      */
-    public function paginate(Query|QueryBuilder $query, int $page = 1, int $limit = 3): self
+    public function paginate(Query|QueryBuilder $query, int $page = 1, int $limit = 10): self
     {
         $paginator = new Paginator($query);
 
@@ -32,7 +32,7 @@ class PaginateManager implements PaginateManagerInterface
 
         $this->currentPage = $page;
         $this->total = $paginator->count();
-        $this->lastPage = (int) ceil($paginator->count() / $paginator->getQuery()->getMaxResults());
+        $this->lastPage = (int)ceil($paginator->count() / $paginator->getQuery()->getMaxResults());
         $this->items = $paginator;
 
         return $this;

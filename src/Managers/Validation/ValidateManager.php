@@ -7,11 +7,13 @@ use App\Contracts\Managers\Validation\ValidateManagerInterface;
 use App\Exceptions\Validation\ValidateException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ValidateManager implements ValidateManagerInterface
+readonly class ValidateManager implements ValidateManagerInterface
 {
     public function __construct(
-        private readonly ValidatorInterface $validator
-    ) {}
+        private ValidatorInterface $validator
+    )
+    {
+    }
 
     /**
      * @param mixed $value

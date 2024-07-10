@@ -19,6 +19,7 @@ use App\Utils\Mappers\Out\Character\CharacterDtoMapper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @extends ServiceEntityRepository<Character>
@@ -31,6 +32,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         ManagerRegistry                              $registry,
         private readonly PaginateManagerInterface    $paginatorManager,
         private readonly UrlGenerateManagerInterface $urlGenerator,
+        private readonly SerializerInterface         $serializer
     )
     {
         parent::__construct($registry, Character::class);
@@ -85,15 +87,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
     {
         $character = new Character();
 
-        $this->setAttributes($character, [
-            'name' => $createCharacterDto->name,
-            'status' => $createCharacterDto->status,
-            'species' => $createCharacterDto->species,
-            'type' => $createCharacterDto->type,
-            'gender' => $createCharacterDto->gender,
-            'originId' => $createCharacterDto->originId,
-            'locationId' => $createCharacterDto->locationId,
-            'image' => $createCharacterDto->image]);
+        $this->setAttributes($character, $this->serializer->normalize($createCharacterDto));
 
         $this->getEntityManager()->persist($character);
         $this->getEntityManager()->flush();
@@ -111,15 +105,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         /** @var Character $character */
         $character = $this->find($changeCharacterDto->id);
 
-        $this->setAttributes($character, [
-            'name' => $changeCharacterDto->name,
-            'status' => $changeCharacterDto->status,
-            'species' => $changeCharacterDto->species,
-            'type' => $changeCharacterDto->type,
-            'gender' => $changeCharacterDto->gender,
-            'originId' => $changeCharacterDto->originId,
-            'locationId' => $changeCharacterDto->locationId,
-            'image' => $changeCharacterDto->image]);
+        $this->setAttributes($character, $this->serializer->normalize($changeCharacterDto));
 
         $this->getEntityManager()->flush();
 
@@ -138,15 +124,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
 
         if (!$character) $character = new Character();
 
-        $this->setAttributes($character, [
-            'name' => $updateCharacterDto->name,
-            'status' => $updateCharacterDto->status,
-            'species' => $updateCharacterDto->species,
-            'type' => $updateCharacterDto->type,
-            'gender' => $updateCharacterDto->gender,
-            'originId' => $updateCharacterDto->originId,
-            'locationId' => $updateCharacterDto->locationId,
-            'image' => $updateCharacterDto->image]);
+        $this->setAttributes($character, $this->serializer->normalize($updateCharacterDto));
 
         $this->getEntityManager()->flush();
 

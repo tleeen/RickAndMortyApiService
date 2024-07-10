@@ -15,12 +15,12 @@ use App\Utils\Mappers\In\Character\CreateCharacterDtoMapper;
 use App\Utils\Mappers\In\Character\GetCharactersDtoMapper;
 use App\Utils\Mappers\In\Character\UpdateCharacterDtoMapper;
 use Doctrine\ORM\Exception\ORMException;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
 
 #[Route('/character', name: 'character_')]
 class CharacterController extends AbstractController
@@ -28,7 +28,9 @@ class CharacterController extends AbstractController
     public function __construct(
         private readonly CharacterRepositoryInterface $characterRepository,
         private readonly ValidateManagerInterface     $validateManager,
-    ) {}
+    )
+    {
+    }
 
     /**
      * @param Request $request

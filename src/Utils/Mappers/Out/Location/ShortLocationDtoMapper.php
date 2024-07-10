@@ -20,7 +20,7 @@ class ShortLocationDtoMapper
             url: $urlGenerator->generate(
                 'location_index',
                 ['id' => $location->getId()],
-            UrlGenerateManagerInterface::ABSOLUTE_URL)
+                UrlGenerateManagerInterface::ABSOLUTE_URL)
         );
     }
 }

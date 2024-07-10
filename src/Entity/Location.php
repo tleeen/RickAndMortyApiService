@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Location
 {
     use Timestampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -55,7 +56,7 @@ class Location
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): Location
     {
         $this->name = $name;
 
@@ -67,7 +68,7 @@ class Location
         return $this->dimension;
     }
 
-    public function setDimension(?string $dimension): static
+    public function setDimension(?string $dimension): Location
     {
         $this->dimension = $dimension;
         return $this;
@@ -78,7 +79,7 @@ class Location
         return $this->type;
     }
 
-    public function setType(?string $type): static
+    public function setType(?string $type): Location
     {
         $this->type = $type;
         return $this;
@@ -92,7 +93,7 @@ class Location
         return $this->characters;
     }
 
-    public function addCharacter(Character $character): static
+    public function addCharacter(Character $character): Location
     {
         if (!$this->characters->contains($character)) {
             $this->characters->add($character);
@@ -102,7 +103,7 @@ class Location
         return $this;
     }
 
-    public function removeCharacter(Character $character): static
+    public function removeCharacter(Character $character): Location
     {
         if ($this->characters->removeElement($character)) {
             // set the owning side to null (unless already changed)
@@ -122,7 +123,7 @@ class Location
         return $this->residents;
     }
 
-    public function addResident(Character $resident): static
+    public function addResident(Character $resident): Location
     {
         if (!$this->residents->contains($resident)) {
             $this->residents->add($resident);
@@ -131,7 +132,7 @@ class Location
         return $this;
     }
 
-    public function removeResident(Character $resident): static
+    public function removeResident(Character $resident): Location
     {
         if ($this->residents->removeElement($resident)) {
             // set the owning side to null (unless already changed)

@@ -17,6 +17,7 @@ use App\Filter\HasFilter;
 use App\Utils\Mappers\Out\Location\LocationDtoMapper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @extends ServiceEntityRepository<Location>
@@ -24,10 +25,12 @@ use Doctrine\Persistence\ManagerRegistry;
 class LocationRepository extends ServiceEntityRepository implements LocationRepositoryInterface
 {
     use HasFilter;
+
     public function __construct(
-        ManagerRegistry $registry,
-        private readonly PaginateManagerInterface $paginatorManager,
+        ManagerRegistry                              $registry,
+        private readonly PaginateManagerInterface    $paginatorManager,
         private readonly UrlGenerateManagerInterface $urlGenerator,
+        private readonly SerializerInterface         $serializer
     )
     {
         parent::__construct($registry, Location::class);
@@ -81,10 +84,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
     {
         $location = new Location();
 
-        $this->setAttributes($location, [
-            'name' => $createLocationDto->name,
-            'type' => $createLocationDto->type,
-            'dimension' => $createLocationDto->dimension]);
+        $this->setAttributes($location, $this->serializer->normalize($createLocationDto));
 
         $this->getEntityManager()->persist($location);
         $this->getEntityManager()->flush();
@@ -101,10 +101,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
         /** @var Location $location */
         $location = $this->find($changeLocationDto->id);
 
-        $this->setAttributes($location, [
-            'name' => $changeLocationDto->name,
-            'type' => $changeLocationDto->type,
-            'dimension' => $changeLocationDto->dimension]);
+        $this->setAttributes($location, $this->serializer->normalize($changeLocationDto));
 
         $this->getEntityManager()->flush();
 
@@ -122,10 +119,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
 
         if (!$location) $location = new Location();
 
-        $this->setAttributes($location, [
-            'name' => $updateLocationDto->name,
-            'type' => $updateLocationDto->type,
-            'dimension' => $updateLocationDto->dimension]);
+        $this->setAttributes($location, $this->serializer->normalize($updateLocationDto));
 
         $this->getEntityManager()->flush();
 

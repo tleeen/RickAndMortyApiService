@@ -23,9 +23,9 @@ readonly class GetEpisodesDto
     public FilterDto $filters;
 
     public function __construct(
-        ?array $ids,
-        ?int $page,
-        ?int $limit,
+        ?array    $ids,
+        ?int      $page,
+        ?int      $limit,
         FilterDto $filters
     )
     {

@@ -31,11 +31,11 @@ readonly class UpdateEpisodeDto
     public array $characterIds;
 
     public function __construct(
-        int $id,
+        int    $id,
         string $name,
         string $airDate,
         string $code,
-        array $characterIds
+        array  $characterIds
     )
     {
         $this->id = $id;

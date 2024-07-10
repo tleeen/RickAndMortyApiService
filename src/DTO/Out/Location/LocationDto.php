@@ -2,15 +2,15 @@
 
 namespace App\DTO\Out\Location;
 
-class LocationDto
+readonly class LocationDto
 {
-    public readonly int $id;
-    public readonly string $name;
-    public readonly string $type;
-    public readonly string $dimension;
-    public readonly array $residents;
-    public readonly string $url;
-    public readonly string $created;
+    public int $id;
+    public string $name;
+    public string $type;
+    public string $dimension;
+    public array $residents;
+    public string $url;
+    public string $created;
 
 
     public function __construct(
