@@ -4,50 +4,40 @@ namespace App\DTO\In\Episode;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ChangeEpisodeDto
+readonly class ChangeEpisodeDto
 {
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
     #[Assert\Positive]
-    public readonly int $id;
+    public int $id;
 
     #[Assert\Type('string')]
-    public readonly ?string $name;
+    public ?string $name;
 
     #[Assert\Date]
-    public readonly ?string $airDate;
+    public ?string $airDate;
 
     #[Assert\Type('string')]
     #[Assert\Regex(
         pattern: '/^S\d{2}E\d{2}$/',
     )]
-    public readonly ?string $code;
+    public ?string $code;
+
+    #[Assert\Type('array')]
+    public ?array $characterIds;
 
     public function __construct(
         int $id,
         ?string $name,
         ?string $airDate,
-        ?string $code
+        ?string $code,
+        ?array $characterIds
     )
     {
         $this->id = $id;
         $this->name = $name;
         $this->airDate = $airDate;
         $this->code = $code;
-    }
-
-    /**
-     * @param Request $request
-     * @return self
-     */
-    public static function fromRequest(Request $request): self
-    {
-        $episode = $request->toArray();
-        return new self(
-            id: $request->get('id'),
-            name: $episode['name'] ?? null,
-            airDate: $episode['airDate'] ?? null,
-            code: $episode['code'] ?? null
-        );
+        $this->characterIds = $characterIds;
     }
 }

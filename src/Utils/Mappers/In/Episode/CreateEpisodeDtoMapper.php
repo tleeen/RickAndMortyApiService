@@ -17,7 +17,8 @@ class CreateEpisodeDtoMapper
         return new CreateEpisodeDto(
             name: $episode['name'],
             airDate: $episode['airDate'],
-            code: $episode['code']
+            code: $episode['code'],
+            characterIds: $episode['characterIds'],
         );
     }
 }

@@ -18,7 +18,8 @@ class ChangeEpisodeDtoMapper
             id: $request->get('id'),
             name: $episode['name'] ?? null,
             airDate: $episode['airDate'] ?? null,
-            code: $episode['code'] ?? null
+            code: $episode['code'] ?? null,
+            characterIds: $episode['characterIds'] ?? null
         );
     }
 }

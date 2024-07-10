@@ -4,6 +4,11 @@ namespace App\Controller\Api;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
 use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
+use App\DTO\In\Character\ChangeCharacterDto;
+use App\DTO\In\Character\CreateCharacterDto;
+use App\DTO\In\Character\UpdateCharacterDto;
+use App\DTO\Out\Character\CharacterDto;
+use App\DTO\Paginate\PaginateInfoDto;
 use App\Exceptions\Validation\ValidateException;
 use App\Utils\Mappers\In\Character\ChangeCharacterDtoMapper;
 use App\Utils\Mappers\In\Character\CreateCharacterDtoMapper;
@@ -14,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 
 #[Route('/character', name: 'character_')]
 class CharacterController extends AbstractController
@@ -27,7 +34,73 @@ class CharacterController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/', name: 'get', methods: ['GET'])]
+    #[Route(name: 'get', methods: ['GET'])]
+    #[OA\Tag(name: 'Characters')]
+    #[OA\Parameter(
+        name: 'ids',
+        in: 'query',
+        schema: new OA\Schema(type: 'array[number]')
+    )]
+    #[OA\Parameter(
+        name: 'page',
+        in: 'query',
+        schema: new OA\Schema(type: 'number')
+    )]
+    #[OA\Parameter(
+        name: 'name',
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Parameter(
+        name: 'status',
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Parameter(
+        name: 'species',
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Parameter(
+        name: 'type',
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Parameter(
+        name: 'gender',
+        in: 'query',
+        schema: new OA\Schema(type: 'string')
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'info',
+                    ref: new Model(type: PaginateInfoDto::class),
+                ),
+                new OA\Property(
+                    property: 'results',
+                    type: 'array',
+                    items: new OA\Items(ref: new Model(type: CharacterDto::class)),
+                ),
+            ],
+            type: 'object')
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Invalid data',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    type: 'string',
+                    example: 'Object(App\\DTO\\In\\Episode\\GetEpisodesDto).filters.code: This value is not valid.'
+                ),
+            ],
+            type: 'object')
+    )]
     public function getMany(Request $request): JsonResponse
     {
         $getCharactersDto = GetCharactersDtoMapper::fromRequest($request);
@@ -47,6 +120,17 @@ class CharacterController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/{id}', name: 'index', methods: ['GET'])]
+    #[OA\Tag(name: 'Characters')]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'path',
+        schema: new OA\Schema(type: 'number')
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+        content: new Model(type: CharacterDto::class),
+    )]
     public function getById(int $id): JsonResponse
     {
         return new JsonResponse($this->characterRepository->findById($id));
@@ -57,6 +141,16 @@ class CharacterController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/{id}', methods: ['DELETE'])]
+    #[OA\Tag(name: 'Characters')]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'path',
+        schema: new OA\Schema(type: 'number')
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+    )]
     public function delete(int $id): JsonResponse
     {
         $this->characterRepository->delete($id);
@@ -69,7 +163,31 @@ class CharacterController extends AbstractController
      * @return JsonResponse
      * @throws ORMException
      */
-    #[Route('/', methods: ['POST'])]
+    #[Route(methods: ['POST'])]
+    #[OA\Tag(name: 'Characters')]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(
+            ref: new Model(type: CreateCharacterDto::class)
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+        content: new Model(type: CharacterDto::class),
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Invalid data',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    type: 'string',
+                    example: 'Object(App\\DTO\\In\\Episode\\GetEpisodesDto).filters.code: This value is not valid.'
+                ),
+            ],
+            type: 'object')
+    )]
     public function create(Request $request): JsonResponse
     {
         $createCharacterDto = CreateCharacterDtoMapper::fromRequest($request);
@@ -90,6 +208,30 @@ class CharacterController extends AbstractController
      * @throws ORMException
      */
     #[Route('/{id}', methods: ['PATCH'])]
+    #[OA\Tag(name: 'Characters')]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(
+            ref: new Model(type: ChangeCharacterDto::class)
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+        content: new Model(type: CharacterDto::class),
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Invalid data',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    type: 'string',
+                    example: 'Object(App\\DTO\\In\\Episode\\GetEpisodesDto).filters.code: This value is not valid.'
+                ),
+            ],
+            type: 'object')
+    )]
     public function change(Request $request): JsonResponse
     {
         $changeCharacterDto = ChangeCharacterDtoMapper::fromRequest($request);
@@ -110,6 +252,30 @@ class CharacterController extends AbstractController
      * @throws ORMException
      */
     #[Route('/{id}', methods: ['PUT'])]
+    #[OA\Tag(name: 'Characters')]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(
+            ref: new Model(type: UpdateCharacterDto::class)
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+        content: new Model(type: CharacterDto::class),
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Invalid data',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    type: 'string',
+                    example: 'Object(App\\DTO\\In\\Episode\\GetEpisodesDto).filters.code: This value is not valid.'
+                ),
+            ],
+            type: 'object')
+    )]
     public function update(Request $request): JsonResponse
     {
         $updateCharacterDto = UpdateCharacterDtoMapper::fromRequest($request);

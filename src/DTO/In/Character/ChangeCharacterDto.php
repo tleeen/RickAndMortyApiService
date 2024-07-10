@@ -7,14 +7,14 @@ use App\Enums\Character\CharacterStatus;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class ChangeCharacterDto
+readonly class ChangeCharacterDto
 {
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
-    public readonly int $id;
+    public int $id;
 
     #[Assert\Type('string')]
-    public readonly ?string $name;
+    public ?string $name;
 
     #[Assert\Type('string')]
     #[Assert\Choice(choices: [
@@ -22,13 +22,13 @@ class ChangeCharacterDto
         CharacterStatus::DEAD->value,
         CharacterStatus::UNKNOWN->value,
     ])]
-    public readonly ?string $status;
+    public ?string $status;
 
     #[Assert\Type('string')]
-    public readonly ?string $species;
+    public ?string $species;
 
     #[Assert\Type('string')]
-    public readonly ?string $type;
+    public ?string $type;
 
     #[Assert\Type('string')]
     #[Assert\Choice(choices: [
@@ -37,18 +37,18 @@ class ChangeCharacterDto
         CharacterGender::UNKNOWN->value,
         CharacterGender::GENDERLESS->value,
     ])]
-    public readonly ?string $gender;
+    public ?string $gender;
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
-    public readonly ?int $originId;
+    public ?int $originId;
 
     #[Assert\Type('integer')]
     #[Assert\Positive]
-    public readonly ?int $locationId;
+    public ?int $locationId;
 
     #[Assert\Type('string')]
-    public readonly ?string $image;
+    public ?string $image;
 
     public function __construct(
         int      $id,

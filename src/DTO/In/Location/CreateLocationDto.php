@@ -4,19 +4,19 @@ namespace App\DTO\In\Location;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateLocationDto
+readonly class CreateLocationDto
 {
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    public readonly string $name;
+    public string $name;
 
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    public readonly string $type;
+    public string $type;
 
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    public readonly string $dimension;
+    public string $dimension;
 
     public function __construct(
         string $name,

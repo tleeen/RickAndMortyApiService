@@ -4,23 +4,23 @@ namespace App\DTO\In\Episode;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class GetEpisodesDto
+readonly class GetEpisodesDto
 {
     #[Assert\Type('array')]
-    public readonly ?array $ids;
+    public ?array $ids;
 
     #[Assert\Type('integer')]
     #[Assert\LessThanOrEqual(20)]
     #[Assert\Positive]
-    public readonly ?int $page;
+    public ?int $page;
 
     #[Assert\Type('integer')]
     #[Assert\LessThanOrEqual(20)]
     #[Assert\Positive]
-    public readonly ?int $limit;
+    public ?int $limit;
 
     #[Assert\Valid]
-    public readonly FilterDto $filters;
+    public FilterDto $filters;
 
     public function __construct(
         ?array $ids,

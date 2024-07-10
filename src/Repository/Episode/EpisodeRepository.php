@@ -4,6 +4,7 @@ namespace App\Repository\Episode;
 
 use App\Contracts\Managers\Pagination\PaginateManagerInterface;
 use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
+use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
 use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
@@ -29,6 +30,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     public function __construct(
         ManagerRegistry                   $registry,
         private readonly PaginateManagerInterface $paginatorManager,
+        private readonly CharacterRepositoryInterface $characterRepository,
         private readonly UrlGenerateManagerInterface $urlGenerator,
     )
     {
@@ -86,7 +88,8 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         $this->setAttributes($episode, [
             'name' => $createEpisodeDto->name,
             'airDate' => $createEpisodeDto->airDate,
-            'code' => $createEpisodeDto->code]);
+            'code' => $createEpisodeDto->code,
+            'characterIds' => $createEpisodeDto->characterIds]);
 
         $this->getEntityManager()->persist($episode);
         $this->getEntityManager()->flush();
@@ -106,7 +109,8 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         $this->setAttributes($episode, [
             'name' => $changeEpisodeDto->name,
             'airDate' => $changeEpisodeDto->airDate,
-            'code' => $changeEpisodeDto->code]);
+            'code' => $changeEpisodeDto->code,
+            'characterIds' => $changeEpisodeDto->characterIds]);
 
         $this->getEntityManager()->flush();
 
@@ -127,7 +131,8 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         $this->setAttributes($episode, [
             'name' => $updateEpisodeDto->name,
             'airDate' => $updateEpisodeDto->airDate,
-            'code' => $updateEpisodeDto->code]);
+            'code' => $updateEpisodeDto->code,
+            'characterIds' => $updateEpisodeDto->characterIds]);
 
         $this->getEntityManager()->flush();
 
@@ -145,5 +150,23 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         if (isset($attributes['airDate']))
             $episode->setAirDate(DateTime::createFromFormat('Y-m-d', $attributes['airDate']));
         if (isset($attributes['code'])) $episode->setCode($attributes['code']);
+        if (isset($attributes['characterIds'])) {
+            $existingCharacterIds = $episode->getCharacters()->map(function ($character) {
+                return $character->getId();
+            })->toArray();
+
+            $characterIdsToAdd = array_diff($attributes['characterIds'], $existingCharacterIds);
+            $characterIdsToRemove = array_diff($existingCharacterIds, $attributes['characterIds']);
+
+            foreach ($characterIdsToAdd as $characterId) {
+                $character = $this->characterRepository->find($characterId);
+                $episode->addCharacter($character);
+            }
+
+            foreach ($characterIdsToRemove as $characterId) {
+                $character = $this->characterRepository->find($characterId);
+                $episode->removeCharacter($character);
+            }
+        }
     }
 }

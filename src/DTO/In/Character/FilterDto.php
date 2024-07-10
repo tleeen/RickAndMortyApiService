@@ -4,24 +4,24 @@ namespace App\DTO\In\Character;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class FilterDto
+readonly class FilterDto
 {
     #[Assert\Type('string')]
-    public readonly ?string $name;
+    public ?string $name;
 
     #[Assert\Type('string')]
     #[Assert\Choice(choices: ['Alive', 'Dead', 'unknown'])]
-    public readonly ?string $status;
+    public ?string $status;
 
     #[Assert\Type('string')]
-    public readonly ?string $species;
+    public ?string $species;
 
     #[Assert\Type('string')]
-    public readonly ?string $type;
+    public ?string $type;
 
     #[Assert\Type('string')]
     #[Assert\Choice(choices: ['Female', 'Male', 'Genderless', 'unknown'])]
-    public readonly ?string $gender;
+    public ?string $gender;
 
     public function __construct(
         ?string $name,

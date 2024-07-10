@@ -4,31 +4,37 @@ namespace App\DTO\In\Episode;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateEpisodeDto
+readonly class CreateEpisodeDto
 {
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    public readonly string $name;
+    public string $name;
 
     #[Assert\Date]
     #[Assert\NotBlank]
-    public readonly string $airDate;
+    public string $airDate;
 
     #[Assert\Type('string')]
     #[Assert\NotBlank]
     #[Assert\Regex(
         pattern: '/^S\d{2}E\d{2}$/',
     )]
-    public readonly string $code;
+    public string $code;
+
+    #[Assert\Type('array')]
+    #[Assert\NotBlank]
+    public array $characterIds;
 
     public function __construct(
         string $name,
         string $airDate,
-        string $code
+        string $code,
+        array $characterIds
     )
     {
         $this->name = $name;
         $this->airDate = $airDate;
         $this->code = $code;
+        $this->characterIds = $characterIds;
     }
 }

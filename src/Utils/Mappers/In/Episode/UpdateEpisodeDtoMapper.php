@@ -18,7 +18,8 @@ class UpdateEpisodeDtoMapper
             id: $request->get('id'),
             name: $episode['name'],
             airDate: $episode['airDate'],
-            code: $episode['code']
+            code: $episode['code'],
+            characterIds: $episode['characterIds']
         );
     }
 }

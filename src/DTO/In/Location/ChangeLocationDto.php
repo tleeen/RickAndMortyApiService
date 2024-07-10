@@ -4,21 +4,21 @@ namespace App\DTO\In\Location;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ChangeLocationDto
+readonly class ChangeLocationDto
 {
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
     #[Assert\Positive]
-    public readonly int $id;
+    public int $id;
 
     #[Assert\Type('string')]
-    public readonly ?string $name;
+    public ?string $name;
 
     #[Assert\Type('string')]
-    public readonly ?string $type;
+    public ?string $type;
 
     #[Assert\Type('string')]
-    public readonly ?string $dimension;
+    public ?string $dimension;
 
     public function __construct(
         int     $id,

@@ -6,11 +6,11 @@ use App\Enums\Character\CharacterGender;
 use App\Enums\Character\CharacterStatus;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateCharacterDto
+readonly class CreateCharacterDto
 {
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    public readonly string $name;
+    public string $name;
 
     #[Assert\Type('string')]
     #[Assert\Choice(choices: [
@@ -19,15 +19,15 @@ class CreateCharacterDto
         CharacterStatus::UNKNOWN->value,
     ])]
     #[Assert\NotBlank]
-    public readonly ?string $status;
+    public ?string $status;
 
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    public readonly ?string $species;
+    public ?string $species;
 
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    public readonly ?string $type;
+    public ?string $type;
 
     #[Assert\Type('string')]
     #[Assert\Choice(choices: [
@@ -37,21 +37,21 @@ class CreateCharacterDto
         CharacterGender::GENDERLESS->value,
     ])]
     #[Assert\NotBlank]
-    public readonly ?string $gender;
+    public ?string $gender;
 
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
     #[Assert\Positive]
-    public readonly int $originId;
+    public int $originId;
 
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
     #[Assert\Positive]
-    public readonly int $locationId;
+    public int $locationId;
 
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    public readonly string $image;
+    public string $image;
 
     public function __construct(
         string $name,

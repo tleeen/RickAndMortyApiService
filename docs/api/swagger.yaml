@@ -74,34 +74,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /character/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
-      tags:
-        - characters
-      summary: Get a single character
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetCharacter"
-
     post:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
       tags:
         - characters
       summary: Create character
@@ -125,6 +98,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  /character/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - characters
+      summary: Get a single character
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCharacter"
 
     put:
       parameters:
@@ -249,34 +242,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /episode/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
-      tags:
-        - episodes
-      summary: Get a single episode
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetEpisode"
-
     post:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
       tags:
         - episodes
       summary: Create episode
@@ -300,6 +266,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  /episode/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - episodes
+      summary: Get a single episode
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetEpisode"
 
     put:
       parameters:
@@ -432,34 +418,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /location/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
-      tags:
-        - locations
-      summary: Get a single location
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetLocation"
-
     post:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
       tags:
         - locations
       summary: Create location
@@ -482,6 +441,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  /location/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      tags:
+        - locations
+      summary: Get a single location
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetLocation"
 
     put:
       parameters:

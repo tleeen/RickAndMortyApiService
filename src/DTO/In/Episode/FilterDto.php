@@ -4,16 +4,16 @@ namespace App\DTO\In\Episode;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class FilterDto
+readonly class FilterDto
 {
     #[Assert\Type('string')]
-    public readonly ?string $name;
+    public ?string $name;
 
     #[Assert\Type('string')]
     #[Assert\Regex(
         pattern: '/^S\d{2}E\d{2}$/',
     )]
-    public readonly ?string $code;
+    public ?string $code;
 
     public function __construct(
         ?string $name,
