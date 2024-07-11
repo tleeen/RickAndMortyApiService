@@ -2,22 +2,26 @@
 
 namespace App\Utils\Mappers\In\Location;
 
+use App\Contracts\Mappers\In\Location\GetLocationsDtoMapperInterface;
+use App\Contracts\Mappers\In\Location\LocationFilterDtoMapperInterface;
 use App\DTO\In\Location\GetLocationsDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class GetLocationsDtoMapper
+class GetLocationsDtoMapper implements GetLocationsDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return GetLocationsDto
-     */
-    public static function fromRequest(Request $request): GetLocationsDto
+    public function __construct(
+        private readonly LocationFilterDtoMapperInterface $filterDtoMapper,
+    )
+    {
+    }
+
+    public function fromRequest(Request $request): GetLocationsDto
     {
         return new GetLocationsDto(
             ids: array_map(fn($id) => (int)$id, $request->query->all('ids')),
-            page: $request->query->get('page'),
-            limit: $request->query->get('limit'),
-            filters: FilterDtoMapper::fromRequest($request),
+            page: (int) $request->query->get('page'),
+            limit: (int) $request->query->get('limit'),
+            filters: $this->filterDtoMapper->fromRequest($request),
         );
     }
 }

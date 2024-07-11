@@ -3,22 +3,27 @@
 namespace App\Utils\Mappers\Out\Character;
 
 use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
+use App\Contracts\Mappers\Out\Character\CharacterDtoMapperInterface;
+use App\Contracts\Mappers\Out\Location\ShortLocationDtoMapperInterface;
+use App\Contracts\Mappers\Paginate\PaginateDtoMapperInterface;
 use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
 use App\Enums\Storage\StoragePath;
 use App\Managers\Pagination\PaginateManager as Paginator;
-use App\Utils\Mappers\Out\Location\ShortLocationDtoMapper;
-use App\Utils\Mappers\Paginate\PaginateDtoMapper;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class CharacterDtoMapper
+class CharacterDtoMapper implements CharacterDtoMapperInterface
 {
-    /**
-     * @param Character $character
-     * @param UrlGenerateManagerInterface $urlGenerator
-     * @return CharacterDto
-     */
-    public static function fromModel(Character $character, UrlGenerateManagerInterface $urlGenerator): CharacterDto
+    public function __construct(
+        private readonly ShortLocationDtoMapperInterface $shortLocationDtoMapper,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly PaginateDtoMapperInterface $paginateDtoMapper
+    )
+    {
+    }
+
+    public function fromModel(Character $character): CharacterDto
     {
         $characterId = $character->getId();
 
@@ -29,30 +34,34 @@ class CharacterDtoMapper
             species: $character->getSpecies(),
             type: $character->getType(),
             gender: $character->getGender(),
-            origin: ShortLocationDtoMapper::fromModel($character->getOrigin(), $urlGenerator),
-            location: ShortLocationDtoMapper::fromModel($character->getLastLocation(), $urlGenerator),
-            image: $urlGenerator->generate('character_get')
+            origin: $this->shortLocationDtoMapper->fromModel($character->getOrigin()),
+            location: $this->shortLocationDtoMapper->fromModel($character->getLastLocation()),
+            image: $this->urlGenerator->generate('character_get')
             . StoragePath::CharacterAvatar->value
             . "/" . $character->getImage(),
-            episode: array_map(fn($episode) => $urlGenerator->generate(
+            episode: array_map(
+                fn($episode) => $this->urlGenerator->generate(
                 'episode_index',
                 ['id' => $episode->getId()],
-                UrlGenerateManagerInterface::ABSOLUTE_URL)
-                , $character->getEpisodes()->toArray()),
-            url: $urlGenerator->generate(
+                UrlGenerateManagerInterface::ABSOLUTE_URL
+                ),
+                $character->getEpisodes()->toArray()
+            ),
+            url: $this->urlGenerator->generate(
                 'character_index',
                 ['id' => $characterId],
-                UrlGenerateManagerInterface::ABSOLUTE_URL),
+                UrlGenerateManagerInterface::ABSOLUTE_URL
+            ),
             created: $character->getCreatedAt()->format('Y-m-d\TH:i:s.v\Z')
         );
     }
 
-    public static function fromPaginator(Paginator $paginator, UrlGenerateManagerInterface $urlGenerator): PaginateDto
+    public function fromPaginator(Paginator $paginator): PaginateDto
     {
-        return PaginateDtoMapper::fromPaginator(
+        return $this->paginateDtoMapper->fromPaginator(
             $paginator,
-            self::class,
-            'character',
-            $urlGenerator);
+            $this,
+            'character'
+        );
     }
 }

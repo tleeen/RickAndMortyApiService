@@ -2,21 +2,17 @@
 
 namespace App\Utils\Mappers\In\Character;
 
+use App\Contracts\Mappers\In\Character\ChangeCharacterDtoMapperInterface;
 use App\DTO\In\Character\ChangeCharacterDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class ChangeCharacterDtoMapper
+class ChangeCharacterDtoMapper implements ChangeCharacterDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return ChangeCharacterDto
-     */
-    public
-    static function fromRequest(Request $request): ChangeCharacterDto
+    public function fromRequest(Request $request): ChangeCharacterDto
     {
         $character = $request->toArray();
         return new ChangeCharacterDto(
-            id: $request->get('id'),
+            id: (int) $request->get('id'),
             name: $character['name'] ?? null,
             status: $character['status'] ?? null,
             species: $character['species'] ?? null,

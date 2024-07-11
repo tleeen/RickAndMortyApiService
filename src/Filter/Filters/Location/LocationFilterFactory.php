@@ -2,11 +2,11 @@
 
 namespace App\Filter\Filters\Location;
 
-use App\DTO\In\Location\FilterDto;
+use App\DTO\In\Location\LocationFilterDto;
 
 class LocationFilterFactory
 {
-    public static function create(FilterDto $filters): LocationFilter
+    public static function create(LocationFilterDto $filters): LocationFilter
     {
         return new LocationFilter($filters);
     }

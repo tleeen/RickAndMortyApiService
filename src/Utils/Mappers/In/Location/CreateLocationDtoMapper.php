@@ -2,16 +2,13 @@
 
 namespace App\Utils\Mappers\In\Location;
 
+use App\Contracts\Mappers\In\Location\CreateLocationDtoMapperInterface;
 use App\DTO\In\Location\CreateLocationDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class CreateLocationDtoMapper
+class CreateLocationDtoMapper implements CreateLocationDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return CreateLocationDto
-     */
-    public static function fromRequest(Request $request): CreateLocationDto
+    public function fromRequest(Request $request): CreateLocationDto
     {
         $location = $request->toArray();
         return new CreateLocationDto(

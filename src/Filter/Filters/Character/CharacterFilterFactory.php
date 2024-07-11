@@ -2,11 +2,11 @@
 
 namespace App\Filter\Filters\Character;
 
-use App\DTO\In\Character\FilterDto;
+use App\DTO\In\Character\CharacterFilterDto;
 
 class CharacterFilterFactory
 {
-    public static function create(FilterDto $filters): CharacterFilter
+    public static function create(CharacterFilterDto $filters): CharacterFilter
     {
         return new CharacterFilter($filters);
     }

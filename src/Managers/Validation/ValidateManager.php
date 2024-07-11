@@ -16,8 +16,6 @@ readonly class ValidateManager implements ValidateManagerInterface
     }
 
     /**
-     * @param mixed $value
-     * @return void
      * @throws ValidateException
      */
     public function validate(mixed $value): void

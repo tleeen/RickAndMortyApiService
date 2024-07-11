@@ -2,16 +2,13 @@
 
 namespace App\Utils\Mappers\In\Episode;
 
+use App\Contracts\Mappers\In\Episode\CreateEpisodeDtoMapperInterface;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class CreateEpisodeDtoMapper
+class CreateEpisodeDtoMapper implements CreateEpisodeDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return CreateEpisodeDto
-     */
-    public static function fromRequest(Request $request): CreateEpisodeDto
+    public function fromRequest(Request $request): CreateEpisodeDto
     {
         $episode = $request->toArray();
         return new CreateEpisodeDto(

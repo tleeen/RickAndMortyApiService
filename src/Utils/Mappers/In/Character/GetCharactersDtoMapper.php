@@ -2,22 +2,26 @@
 
 namespace App\Utils\Mappers\In\Character;
 
+use App\Contracts\Mappers\In\Character\CharacterFilterDtoMapperInterface;
+use App\Contracts\Mappers\In\Character\GetCharactersDtoMapperInterface;
 use App\DTO\In\Character\GetCharactersDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class GetCharactersDtoMapper
+class GetCharactersDtoMapper implements GetCharactersDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return GetCharactersDto
-     */
-    public static function fromRequest(Request $request): GetCharactersDto
+    public function __construct(
+        private readonly CharacterFilterDtoMapperInterface $filterDtoMapper,
+    )
+    {
+    }
+
+    public function fromRequest(Request $request): GetCharactersDto
     {
         return new GetCharactersDto(
-            ids: array_map(fn($id) => (int)$id, $request->query->all('ids')),
-            page: $request->query->get('page'),
-            limit: $request->query->get('limit'),
-            filters: FilterDtoMapper::fromRequest($request),
+            ids: array_map(fn($id) => (int) $id, $request->query->all('ids')),
+            page: (int) $request->query->get('page'),
+            limit: (int) $request->query->get('limit'),
+            filters: $this->filterDtoMapper->fromRequest($request),
         );
     }
 }

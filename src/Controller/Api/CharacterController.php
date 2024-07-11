@@ -3,18 +3,16 @@
 namespace App\Controller\Api;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
+use App\Contracts\Mappers\In\Character\ChangeCharacterDtoMapperInterface;
+use App\Contracts\Mappers\In\Character\CreateCharacterDtoMapperInterface;
+use App\Contracts\Mappers\In\Character\GetCharactersDtoMapperInterface;
+use App\Contracts\Mappers\In\Character\UpdateCharacterDtoMapperInterface;
 use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
 use App\DTO\In\Character\ChangeCharacterDto;
 use App\DTO\In\Character\CreateCharacterDto;
 use App\DTO\In\Character\UpdateCharacterDto;
 use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateInfoDto;
-use App\Exceptions\Validation\ValidateException;
-use App\Utils\Mappers\In\Character\ChangeCharacterDtoMapper;
-use App\Utils\Mappers\In\Character\CreateCharacterDtoMapper;
-use App\Utils\Mappers\In\Character\GetCharactersDtoMapper;
-use App\Utils\Mappers\In\Character\UpdateCharacterDtoMapper;
-use Doctrine\ORM\Exception\ORMException;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,14 +26,14 @@ class CharacterController extends AbstractController
     public function __construct(
         private readonly CharacterRepositoryInterface $characterRepository,
         private readonly ValidateManagerInterface     $validateManager,
+        private readonly GetCharactersDtoMapperInterface $getCharactersDtoMapper,
+        private readonly ChangeCharacterDtoMapperInterface $changeCharacterDtoMapper,
+        private readonly CreateCharacterDtoMapperInterface $createCharacterDtoMapper,
+        private readonly UpdateCharacterDtoMapperInterface $updateCharacterDtoMapper
     )
     {
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     #[Route(name: 'get', methods: ['GET'])]
     #[OA\Tag(name: 'Characters')]
     #[OA\Parameter(
@@ -105,22 +103,11 @@ class CharacterController extends AbstractController
     )]
     public function getMany(Request $request): JsonResponse
     {
-        $getCharactersDto = GetCharactersDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($getCharactersDto);
-            return new JsonResponse($this->characterRepository->findMany($getCharactersDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $getCharactersDto = $this->getCharactersDtoMapper->fromRequest($request);
+        $this->validateManager->validate($getCharactersDto);
+        return new JsonResponse($this->characterRepository->findMany($getCharactersDto));
     }
 
-    /**
-     * @param int $id
-     * @return JsonResponse
-     */
     #[Route('/{id}', name: 'index', methods: ['GET'])]
     #[OA\Tag(name: 'Characters')]
     #[OA\Parameter(
@@ -156,15 +143,9 @@ class CharacterController extends AbstractController
     public function delete(int $id): JsonResponse
     {
         $this->characterRepository->delete($id);
-
         return new JsonResponse();
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ORMException
-     */
     #[Route(methods: ['POST'])]
     #[OA\Tag(name: 'Characters')]
     #[OA\RequestBody(
@@ -192,23 +173,11 @@ class CharacterController extends AbstractController
     )]
     public function create(Request $request): JsonResponse
     {
-        $createCharacterDto = CreateCharacterDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($createCharacterDto);
-            return new JsonResponse($this->characterRepository->create($createCharacterDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $createCharacterDto = $this->createCharacterDtoMapper->fromRequest($request);
+        $this->validateManager->validate($createCharacterDto);
+        return new JsonResponse($this->characterRepository->create($createCharacterDto));
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ORMException
-     */
     #[Route('/{id}', methods: ['PATCH'])]
     #[OA\Tag(name: 'Characters')]
     #[OA\RequestBody(
@@ -236,23 +205,11 @@ class CharacterController extends AbstractController
     )]
     public function change(Request $request): JsonResponse
     {
-        $changeCharacterDto = ChangeCharacterDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($changeCharacterDto);
-            return new JsonResponse($this->characterRepository->change($changeCharacterDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $changeCharacterDto = $this->changeCharacterDtoMapper->fromRequest($request);
+        $this->validateManager->validate($changeCharacterDto);
+        return new JsonResponse($this->characterRepository->change($changeCharacterDto));
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ORMException
-     */
     #[Route('/{id}', methods: ['PUT'])]
     #[OA\Tag(name: 'Characters')]
     #[OA\RequestBody(
@@ -280,15 +237,8 @@ class CharacterController extends AbstractController
     )]
     public function update(Request $request): JsonResponse
     {
-        $updateCharacterDto = UpdateCharacterDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($updateCharacterDto);
-            return new JsonResponse($this->characterRepository->updateOrCreate($updateCharacterDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $updateCharacterDto = $this->updateCharacterDtoMapper->fromRequest($request);
+        $this->validateManager->validate($updateCharacterDto);
+        return new JsonResponse($this->characterRepository->updateOrCreate($updateCharacterDto));
     }
 }

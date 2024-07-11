@@ -2,16 +2,13 @@
 
 namespace App\Utils\Mappers\In\Character;
 
+use App\Contracts\Mappers\In\Character\CreateCharacterDtoMapperInterface;
 use App\DTO\In\Character\CreateCharacterDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class CreateCharacterDtoMapper
+class CreateCharacterDtoMapper implements CreateCharacterDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return CreateCharacterDto
-     */
-    public static function fromRequest(Request $request): CreateCharacterDto
+    public function fromRequest(Request $request): CreateCharacterDto
     {
         $character = $request->toArray();
         return new CreateCharacterDto(

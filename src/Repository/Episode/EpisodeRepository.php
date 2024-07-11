@@ -3,7 +3,7 @@
 namespace App\Repository\Episode;
 
 use App\Contracts\Managers\Pagination\PaginateManagerInterface;
-use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
+use App\Contracts\Mappers\Out\Episode\EpisodeDtoMapperInterface;
 use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
 use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
 use App\DTO\In\Episode\ChangeEpisodeDto;
@@ -15,11 +15,9 @@ use App\DTO\Paginate\PaginateDto;
 use App\Entity\Episode;
 use App\Filter\Filters\Episode\EpisodeFilterFactory;
 use App\Filter\HasFilter;
-use App\Utils\Mappers\Out\Episode\EpisodeDtoMapper;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @extends ServiceEntityRepository<Episode>
@@ -32,121 +30,79 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         ManagerRegistry                               $registry,
         private readonly PaginateManagerInterface     $paginatorManager,
         private readonly CharacterRepositoryInterface $characterRepository,
-        private readonly UrlGenerateManagerInterface  $urlGenerator,
-        private readonly SerializerInterface          $serializer,
+        private readonly EpisodeDtoMapperInterface $episodeDtoMapper
     )
     {
         parent::__construct($registry, Episode::class);
     }
 
-    /**
-     * @param GetEpisodesDto $getEpisodeDto
-     * @return PaginateDto
-     */
     public function findMany(GetEpisodesDto $getEpisodeDto): PaginateDto
     {
-        $qb = $this->createQueryBuilder('episode');
+        $queryBuilder = $this->createQueryBuilder('episode');
 
-        $qb = $this->filterBy($qb, EpisodeFilterFactory::create($getEpisodeDto->filters));
+        $queryBuilder = $this->filterBy($queryBuilder, EpisodeFilterFactory::create($getEpisodeDto->filters));
 
         if ($getEpisodeDto->ids) {
-            $qb->andWhere('episode.id IN (:ids)')
+            $queryBuilder->andWhere('episode.id IN (:ids)')
                 ->setParameter('ids', $getEpisodeDto->ids);
         }
 
-        return EpisodeDtoMapper::fromPaginator($this
+        return $this->episodeDtoMapper->fromPaginator($this
             ->paginatorManager
-            ->paginate($qb, $getEpisodeDto->page ?: 1, $getEpisodeDto->limit ?: 10),
-            $this->urlGenerator);
+            ->paginate($queryBuilder, $getEpisodeDto->page ?: 1, $getEpisodeDto->limit ?: 10),
+            );
     }
 
-    /**
-     * @param int $id
-     * @return EpisodeDto
-     */
     public function findById(int $id): EpisodeDto
     {
-        return EpisodeDtoMapper::fromModel($this->find($id), $this->urlGenerator);
+        return $this->episodeDtoMapper->fromModel($this->find($id));
     }
 
-    /**
-     * @param int $id
-     * @return void
-     */
     public function delete(int $id): void
     {
         $this->getEntityManager()->remove($this->find($id));
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * @param CreateEpisodeDto $createEpisodeDto
-     * @return EpisodeDto
-     */
     public function create(CreateEpisodeDto $createEpisodeDto): EpisodeDto
     {
         $episode = new Episode();
-
-        $this->setAttributes($episode, $this->serializer->normalize($createEpisodeDto));
-
+        $this->setAttributes($episode, $createEpisodeDto);
         $this->getEntityManager()->persist($episode);
         $this->getEntityManager()->flush();
-
-        return EpisodeDtoMapper::fromModel($episode, $this->urlGenerator);
+        return $this->episodeDtoMapper->fromModel($episode);
     }
 
-    /**
-     * @param ChangeEpisodeDto $changeEpisodeDto
-     * @return EpisodeDto
-     */
     public function change(ChangeEpisodeDto $changeEpisodeDto): EpisodeDto
     {
-        /** @var Episode $episode */
         $episode = $this->find($changeEpisodeDto->id);
-
-        $this->setAttributes($episode, $this->serializer->normalize($changeEpisodeDto));
-
+        $this->setAttributes($episode, $changeEpisodeDto);
         $this->getEntityManager()->flush();
-
-        return EpisodeDtoMapper::fromModel($episode, $this->urlGenerator);
+        return $this->episodeDtoMapper->fromModel($episode);
     }
 
-    /**
-     * @param UpdateEpisodeDto $updateEpisodeDto
-     * @return EpisodeDto
-     */
     public function updateOrCreate(UpdateEpisodeDto $updateEpisodeDto): EpisodeDto
     {
-        /** @var Episode $episode */
         $episode = $this->find($updateEpisodeDto->id);
-
         if (!$episode) $episode = new Episode();
-
-        $this->setAttributes($episode, $this->serializer->normalize($updateEpisodeDto));
-
+        $this->setAttributes($episode, $updateEpisodeDto);
         $this->getEntityManager()->flush();
-
-        return EpisodeDtoMapper::fromModel($episode, $this->urlGenerator);
+        return $this->episodeDtoMapper->fromModel($episode);
     }
 
-    /**
-     * @param Episode $episode
-     * @param array $attributes
-     * @return void
-     */
-    private function setAttributes(Episode $episode, array $attributes): void
+    private function setAttributes(Episode $episode, UpdateEpisodeDto|ChangeEpisodeDto|CreateEpisodeDto $episodeDto): void
     {
-        if (isset($attributes['name'])) $episode->setName($attributes['name']);
-        if (isset($attributes['airDate']))
-            $episode->setAirDate(DateTime::createFromFormat('Y-m-d', $attributes['airDate']));
-        if (isset($attributes['code'])) $episode->setCode($attributes['code']);
-        if (isset($attributes['characterIds'])) {
+        if ($episodeDto->name) $episode->setName($episodeDto->name);
+        if ($episodeDto->airDate)
+            $episode->setAirDate(DateTime::createFromFormat('Y-m-d', $episodeDto->airDate));
+        if ($episodeDto->code) $episode->setCode($episodeDto->code);
+        if ($episodeDto->characterIds) {
             $existingCharacterIds = $episode->getCharacters()->map(function ($character) {
                 return $character->getId();
             })->toArray();
 
-            $characterIdsToAdd = array_diff($attributes['characterIds'], $existingCharacterIds);
-            $characterIdsToRemove = array_diff($existingCharacterIds, $attributes['characterIds']);
+            $characterIdsToAdd = array_diff($episodeDto->characterIds, $existingCharacterIds);
+            $characterIdsToRemove = array_diff($existingCharacterIds, $episodeDto->characterIds);
 
             foreach ($characterIdsToAdd as $characterId) {
                 $character = $this->characterRepository->find($characterId);

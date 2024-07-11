@@ -2,11 +2,11 @@
 
 namespace App\Filter\Filters\Episode;
 
-use App\DTO\In\Episode\FilterDto;
+use App\DTO\In\Episode\EpisodeFilterDto;
 
 class EpisodeFilterFactory
 {
-    public static function create(FilterDto $filters): EpisodeFilter
+    public static function create(EpisodeFilterDto $filters): EpisodeFilter
     {
         return new EpisodeFilter($filters);
     }

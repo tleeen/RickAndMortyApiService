@@ -2,11 +2,12 @@
 
 namespace App\Contracts\Managers\Validation;
 
+use App\Exceptions\Validation\ValidateException;
+
 interface ValidateManagerInterface
 {
     /**
-     * @param mixed $value
-     * @return void
+     * @throws ValidateException
      */
     public function validate(mixed $value): void;
 }

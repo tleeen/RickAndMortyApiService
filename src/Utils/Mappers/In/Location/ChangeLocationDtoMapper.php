@@ -2,20 +2,17 @@
 
 namespace App\Utils\Mappers\In\Location;
 
+use App\Contracts\Mappers\In\Location\ChangeLocationDtoMapperInterface;
 use App\DTO\In\Location\ChangeLocationDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class ChangeLocationDtoMapper
+class ChangeLocationDtoMapper implements ChangeLocationDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return ChangeLocationDto
-     */
-    public static function fromRequest(Request $request): ChangeLocationDto
+    public function fromRequest(Request $request): ChangeLocationDto
     {
         $location = $request->toArray();
         return new ChangeLocationDto(
-            id: $request->get('id'),
+            id: (int) $request->get('id'),
             name: $location['name'] ?? null,
             type: $location['type'] ?? null,
             dimension: $location['dimension'] ?? null

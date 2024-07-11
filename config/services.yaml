@@ -14,12 +14,43 @@ services:
             #Managers
             App\Contracts\Managers\Pagination\PaginateManagerInterface: '@App\Managers\Pagination\PaginateManager'
             App\Contracts\Managers\Validation\ValidateManagerInterface: '@App\Managers\Validation\ValidateManager'
-            App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface: '@App\Managers\UrlGeneration\UrlGenerateManager'
+
 
             #Repositories
             App\Contracts\Repositories\Location\LocationRepositoryInterface: '@App\Repository\Location\LocationRepository'
             App\Contracts\Repositories\Episode\EpisodeRepositoryInterface: '@App\Repository\Episode\EpisodeRepository'
             App\Contracts\Repositories\Character\CharacterRepositoryInterface: '@App\Repository\Character\CharacterRepository'
+
+
+            #Mappers
+            #Character
+            App\Contracts\Mappers\In\Character\ChangeCharacterDtoMapperInterface: '@App\Utils\Mappers\In\Character\ChangeCharacterDtoMapper'
+            App\Contracts\Mappers\In\Character\CharacterFilterDtoMapperInterface: '@App\Utils\Mappers\In\Character\CharacterFilterDtoMapper'
+            App\Contracts\Mappers\In\Character\CreateCharacterDtoMapperInterface: '@App\Utils\Mappers\In\Character\CreateCharacterDtoMapper'
+            App\Contracts\Mappers\In\Character\GetCharactersDtoMapperInterface: '@App\Utils\Mappers\In\Character\GetCharactersDtoMapper'
+            App\Contracts\Mappers\In\Character\UpdateCharacterDtoMapperInterface: '@App\Utils\Mappers\In\Character\UpdateCharacterDtoMapper'
+            App\Contracts\Mappers\Out\Character\CharacterDtoMapperInterface: '@App\Utils\Mappers\Out\Character\CharacterDtoMapper'
+
+            #Episode
+            App\Contracts\Mappers\In\Episode\ChangeEpisodeDtoMapperInterface: '@App\Utils\Mappers\In\Episode\ChangeEpisodeDtoMapper'
+            App\Contracts\Mappers\In\Episode\EpisodeFilterDtoMapperInterface: '@App\Utils\Mappers\In\Episode\EpisodeFilterDtoMapper'
+            App\Contracts\Mappers\In\Episode\CreateEpisodeDtoMapperInterface: '@App\Utils\Mappers\In\Episode\CreateEpisodeDtoMapper'
+            App\Contracts\Mappers\In\Episode\GetEpisodesDtoMapperInterface: '@App\Utils\Mappers\In\Episode\GetEpisodesDtoMapper'
+            App\Contracts\Mappers\In\Episode\UpdateEpisodeDtoMapperInterface: '@App\Utils\Mappers\In\Episode\UpdateEpisodeDtoMapper'
+            App\Contracts\Mappers\Out\Episode\EpisodeDtoMapperInterface: '@App\Utils\Mappers\Out\Episode\EpisodeDtoMapper'
+
+            #Location
+            App\Contracts\Mappers\In\Location\ChangeLocationDtoMapperInterface: '@App\Utils\Mappers\In\Location\ChangeLocationDtoMapper'
+            App\Contracts\Mappers\In\Location\LocationFilterDtoMapperInterface: '@App\Utils\Mappers\In\Location\LocationFilterDtoMapper'
+            App\Contracts\Mappers\In\Location\CreateLocationDtoMapperInterface: '@App\Utils\Mappers\In\Location\CreateLocationDtoMapper'
+            App\Contracts\Mappers\In\Location\GetLocationsDtoMapperInterface: '@App\Utils\Mappers\In\Location\GetLocationsDtoMapper'
+            App\Contracts\Mappers\In\Location\UpdateLocationDtoMapperInterface: '@App\Utils\Mappers\In\Location\UpdateLocationDtoMapper'
+            App\Contracts\Mappers\Out\Location\LocationDtoMapperInterface: '@App\Utils\Mappers\Out\Location\LocationDtoMapper'
+            App\Contracts\Mappers\Out\Location\ShortLocationDtoMapperInterface: '@App\Utils\Mappers\Out\Location\ShortLocationDtoMapper'
+
+            #Pagination
+            App\Contracts\Mappers\Paginate\PaginateDtoMapperInterface: '@App\Utils\Mappers\Paginate\PaginateDtoMapper'
+            App\Contracts\Mappers\Paginate\PaginateInfoDtoMapperInterface: '@App\Utils\Mappers\Paginate\PaginateInfoDtoMapper'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -33,15 +64,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Utils\Serialization\Normalization\Character\CharacterNormalizer:
+    #Normalizers
+    App\Serializers\Normalizers\Exception\ExceptionNormalizer:
         tags: [ 'serializer.normalizer' ]
 
-    App\Utils\Serialization\Normalization\Episode\EpisodeNormalizer:
-        tags: [ 'serializer.normalizer' ]
-
-    App\Utils\Serialization\Normalization\Location\LocationNormalizer:
-        tags: [ 'serializer.normalizer' ]
-
-#    App\Controller\Api\LocationController:
-#        arguments:
-#            $appUrl: '%env(APP_URL)%'
+    #Listeners
+    App\Listeners\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

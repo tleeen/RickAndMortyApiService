@@ -3,6 +3,10 @@
 namespace App\Controller\Api;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
+use App\Contracts\Mappers\In\Location\ChangeLocationDtoMapperInterface;
+use App\Contracts\Mappers\In\Location\CreateLocationDtoMapperInterface;
+use App\Contracts\Mappers\In\Location\GetLocationsDtoMapperInterface;
+use App\Contracts\Mappers\In\Location\UpdateLocationDtoMapperInterface;
 use App\Contracts\Repositories\Location\LocationRepositoryInterface;
 use App\DTO\In\Location\ChangeLocationDto;
 use App\DTO\In\Location\CreateLocationDto;
@@ -10,7 +14,6 @@ use App\DTO\In\Location\UpdateLocationDto;
 use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Out\Location\LocationDto;
 use App\DTO\Paginate\PaginateInfoDto;
-use App\Exceptions\Validation\ValidateException;
 use App\Utils\Mappers\In\Location\ChangeLocationDtoMapper;
 use App\Utils\Mappers\In\Location\CreateLocationDtoMapper;
 use App\Utils\Mappers\In\Location\GetLocationsDtoMapper;
@@ -28,6 +31,10 @@ class LocationController extends AbstractController
     public function __construct(
         private readonly LocationRepositoryInterface $locationRepository,
         private readonly ValidateManagerInterface    $validateManager,
+        private readonly GetLocationsDtoMapperInterface $getLocationsDtoMapper,
+        private readonly CreateLocationDtoMapperInterface $createLocationDtoMapper,
+        private readonly ChangeLocationDtoMapperInterface $changeLocationDtoMapper,
+        private readonly UpdateLocationDtoMapperInterface $updateLocationDtoMapper
     )
     {
     }
@@ -95,16 +102,9 @@ class LocationController extends AbstractController
     )]
     public function getMany(Request $request): JsonResponse
     {
-        $getLocationsDto = GetLocationsDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($getLocationsDto);
-            return new JsonResponse($this->locationRepository->findMany($getLocationsDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $getLocationsDto = $this->getLocationsDtoMapper->fromRequest($request);
+        $this->validateManager->validate($getLocationsDto);
+        return new JsonResponse($this->locationRepository->findMany($getLocationsDto));
     }
 
     /**
@@ -146,7 +146,6 @@ class LocationController extends AbstractController
     public function delete(int $id): JsonResponse
     {
         $this->locationRepository->delete($id);
-
         return new JsonResponse();
     }
 
@@ -181,16 +180,9 @@ class LocationController extends AbstractController
     )]
     public function create(Request $request): JsonResponse
     {
-        $createLocationDto = CreateLocationDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($createLocationDto);
-            return new JsonResponse($this->locationRepository->create($createLocationDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $createLocationDto = $this->createLocationDtoMapper->fromRequest($request);
+        $this->validateManager->validate($createLocationDto);
+        return new JsonResponse($this->locationRepository->create($createLocationDto));
     }
 
     /**
@@ -224,16 +216,9 @@ class LocationController extends AbstractController
     )]
     public function change(Request $request): JsonResponse
     {
-        $changeLocationDto = ChangeLocationDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($changeLocationDto);
-            return new JsonResponse($this->locationRepository->change($changeLocationDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $changeLocationDto = $this->changeLocationDtoMapper->fromRequest($request);
+        $this->validateManager->validate($changeLocationDto);
+        return new JsonResponse($this->locationRepository->change($changeLocationDto));
     }
 
     #[Route('/{id}', methods: ['PUT'])]
@@ -263,16 +248,8 @@ class LocationController extends AbstractController
     )]
     public function update(Request $request): JsonResponse
     {
-        $updateLocationDto = UpdateLocationDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($updateLocationDto);
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
-
+        $updateLocationDto = $this->updateLocationDtoMapper->fromRequest($request);
+        $this->validateManager->validate($updateLocationDto);
         return new JsonResponse($this->locationRepository->updateOrCreate($updateLocationDto));
     }
 }

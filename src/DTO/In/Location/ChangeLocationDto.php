@@ -4,32 +4,43 @@ namespace App\DTO\In\Location;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly class ChangeLocationDto
+/**
+ * @property int $id
+ * @property string|null $name
+ * @property string|null $type
+ * @property string|null $dimension
+ */
+class ChangeLocationDto
 {
-    #[Assert\Type('integer')]
-    #[Assert\NotBlank]
-    #[Assert\Positive]
-    public int $id;
-
-    #[Assert\Type('string')]
-    public ?string $name;
-
-    #[Assert\Type('string')]
-    public ?string $type;
-
-    #[Assert\Type('string')]
-    public ?string $dimension;
-
     public function __construct(
-        int     $id,
-        ?string $name,
-        ?string $type,
-        ?string $dimension
+        #[Assert\Type(
+            type: 'integer',
+            message: 'The id is not a valid {{ type }}.'
+        )]
+        #[Assert\Positive(
+            message: 'The id is not a positive.'
+        )]
+        #[Assert\NotNull]
+        public $id,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The name is not a valid {{ type }} or null.'
+        )]
+        public $name,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The type is not a valid {{ type }} or null.'
+        )]
+        public $type,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The dimension is not a valid {{ type }} or null.'
+        )]
+        public $dimension
     )
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->type = $type;
-        $this->dimension = $dimension;
     }
 }

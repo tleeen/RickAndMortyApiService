@@ -6,78 +6,113 @@ use App\Enums\Character\CharacterGender;
 use App\Enums\Character\CharacterStatus;
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly class UpdateCharacterDto
+/**
+ * @property int $id
+ * @property string $name
+ * @property string|null $status
+ * @property string $species
+ * @property string $type
+ * @property string $gender
+ * @property int $originId
+ * @property int $locationId
+ * @property string $image
+ */
+class UpdateCharacterDto
 {
-    #[Assert\Type('integer')]
-    #[Assert\NotBlank]
-    #[Assert\Positive]
-    public int $id;
-
-    #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    public string $name;
-
-    #[Assert\Type('string')]
-    #[Assert\Choice(choices: [
-        CharacterStatus::ALIVE->value,
-        CharacterStatus::DEAD->value,
-        CharacterStatus::UNKNOWN->value,
-    ])]
-    #[Assert\NotBlank]
-    public ?string $status;
-
-    #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    public ?string $species;
-
-    #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    public ?string $type;
-
-    #[Assert\Type('string')]
-    #[Assert\Choice(choices: [
-        CharacterGender::MALE->value,
-        CharacterGender::FEMALE->value,
-        CharacterGender::UNKNOWN->value,
-        CharacterGender::GENDERLESS->value,
-    ])]
-    #[Assert\NotBlank]
-    public ?string $gender;
-
-    #[Assert\Type('integer')]
-    #[Assert\NotBlank]
-    #[Assert\Positive]
-    public int $originId;
-
-    #[Assert\Type('integer')]
-    #[Assert\NotBlank]
-    #[Assert\Positive]
-    public int $locationId;
-
-    #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    public string $image;
-
     public function __construct(
-        int     $id,
-        string  $name,
-        string  $status,
-        string  $species,
-        ?string $type,
-        string  $gender,
-        int     $originId,
-        int     $locationId,
-        string  $image
+        #[Assert\Type(
+            type: 'integer',
+            message: 'The id is not a valid {{ type }}.'
+        )]
+        #[Assert\Positive(
+            message: 'The id is not a positive.'
+        )]
+        #[Assert\NotNull]
+        public $id,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The name is not a valid {{ type }}.'
+        )]
+        #[Assert\NotBlank]
+        public $name,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The status is not a valid {{ type }}.'
+        )]
+        #[Assert\Choice(
+            choices: [
+                CharacterStatus::ALIVE->value,
+                CharacterStatus::DEAD->value,
+                CharacterStatus::UNKNOWN->value,
+            ],
+            message: 'The status is not a {{ choices }}'
+        )]
+        #[Assert\NotBlank]
+        public $status,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The species is not a valid {{ type }}.'
+        )]
+        #[Assert\NotBlank]
+        public $species,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The type is not a valid {{ type }}.'
+        )]
+        #[Assert\NotNull]
+        public $type,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The gender is not a valid {{ type }}.'
+        )]
+        #[Assert\Choice(
+            choices: [
+                CharacterGender::MALE->value,
+                CharacterGender::FEMALE->value,
+                CharacterGender::UNKNOWN->value,
+                CharacterGender::GENDERLESS->value
+            ],
+            message: 'The gender is not a {{ choices }}'
+        )]
+        #[Assert\NotBlank]
+        public $gender,
+
+        #[Assert\Type(
+            type: 'integer',
+            message: 'The originId is not a valid {{ type }}.'
+        )]
+        #[Assert\Positive(
+            message: 'The originId is not a positive.'
+        )]
+        #[Assert\NotNull]
+        public $originId,
+
+        #[Assert\Type(
+            type: 'integer',
+            message: 'The locationId is not a valid {{ type }}.'
+        )]
+        #[Assert\Positive(
+            message: 'The locationId is not a positive.'
+        )]
+        #[Assert\NotNull]
+        public $locationId,
+
+        #[Assert\Type(
+            type: 'string',
+            message: 'The image is not a valid {{ type }}.'
+        )]
+        #[Assert\Regex(
+            pattern: '/^.+\.jpeg$/i',
+            message: 'The image is not a valid {{ pattern }}'
+        )]
+        #[Assert\NotBlank]
+        public $image
     )
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->status = $status;
-        $this->species = $species;
-        $this->type = $type;
-        $this->gender = $gender;
-        $this->originId = $originId;
-        $this->locationId = $locationId;
-        $this->image = $image;
     }
 }

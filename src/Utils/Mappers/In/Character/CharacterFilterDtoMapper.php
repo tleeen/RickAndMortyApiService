@@ -2,18 +2,15 @@
 
 namespace App\Utils\Mappers\In\Character;
 
-use App\DTO\In\Character\FilterDto;
+use App\Contracts\Mappers\In\Character\CharacterFilterDtoMapperInterface;
+use App\DTO\In\Character\CharacterFilterDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class FilterDtoMapper
+class CharacterFilterDtoMapper implements CharacterFilterDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return FilterDto
-     */
-    public static function fromRequest(Request $request): FilterDto
+    public function fromRequest(Request $request): CharacterFilterDto
     {
-        return new FilterDto(
+        return new CharacterFilterDto(
             name: $request->query->get('name') ?? null,
             status: $request->query->get('status') ?? null,
             species: $request->query->get('species') ?? null,

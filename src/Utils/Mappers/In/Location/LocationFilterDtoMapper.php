@@ -2,18 +2,15 @@
 
 namespace App\Utils\Mappers\In\Location;
 
-use App\DTO\In\Location\FilterDto;
+use App\Contracts\Mappers\In\Location\LocationFilterDtoMapperInterface;
+use App\DTO\In\Location\LocationFilterDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class FilterDtoMapper
+class LocationFilterDtoMapper implements LocationFilterDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return FilterDto
-     */
-    public static function fromRequest(Request $request): FilterDto
+    public function fromRequest(Request $request): LocationFilterDto
     {
-        return new FilterDto(
+        return new LocationFilterDto(
             name: $request->query->get('name') ?? null,
             type: $request->query->get('type') ?? null,
             dimension: $request->query->get('dimension') ?? null

@@ -2,20 +2,17 @@
 
 namespace App\Utils\Mappers\In\Location;
 
+use App\Contracts\Mappers\In\Location\UpdateLocationDtoMapperInterface;
 use App\DTO\In\Location\UpdateLocationDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class UpdateLocationDtoMapper
+class UpdateLocationDtoMapper implements UpdateLocationDtoMapperInterface
 {
-    /**
-     * @param Request $request
-     * @return UpdateLocationDto
-     */
-    public static function fromRequest(Request $request): UpdateLocationDto
+    public function fromRequest(Request $request): UpdateLocationDto
     {
         $location = $request->toArray();
         return new UpdateLocationDto(
-            id: $request->get('id'),
+            id: (int) $request->get('id'),
             name: $location['name'],
             type: $location['type'],
             dimension: $location['dimension']

@@ -2,29 +2,36 @@
 
 namespace App\Utils\Mappers\Paginate;
 
-use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
+use App\Contracts\Mappers\Out\Character\CharacterDtoMapperInterface;
+use App\Contracts\Mappers\Out\Episode\EpisodeDtoMapperInterface;
+use App\Contracts\Mappers\Out\Location\LocationDtoMapperInterface;
+use App\Contracts\Mappers\Paginate\PaginateDtoMapperInterface;
+use App\Contracts\Mappers\Paginate\PaginateInfoDtoMapperInterface;
 use App\DTO\Paginate\PaginateDto;
 use App\Managers\Pagination\PaginateManager as Paginator;
 
-class PaginateDtoMapper
+class PaginateDtoMapper implements PaginateDtoMapperInterface
 {
-    /**
-     * @param Paginator $paginator
-     * @param string $itemClassName
-     * @param string $module
-     * @param UrlGenerateManagerInterface $urlGenerator
-     * @return PaginateDto
-     */
-    public static function fromPaginator(
-        Paginator                   $paginator,
-        string                      $itemClassName,
-        string                      $module,
-        UrlGenerateManagerInterface $urlGenerator
+    public function __construct(
+        private readonly PaginateInfoDtoMapperInterface $paginateInfoDtoMapper
+    )
+    {
+    }
+
+    public function fromPaginator(
+        Paginator $paginator,
+        CharacterDtoMapperInterface|EpisodeDtoMapperInterface|LocationDtoMapperInterface $dtoMapper,
+        string $module
     ): PaginateDto
     {
         return new PaginateDto(
-            info: PaginateInfoDtoMapper::fromPaginator($paginator, $module, $urlGenerator),
-            results: array_map(fn($item) => $itemClassName::fromModel($item, $urlGenerator), $paginator->getItems()->getQuery()->getResult())
+            info: $this->paginateInfoDtoMapper->fromPaginator($paginator, $module),
+            results: array_map(
+                function($item) use ($dtoMapper) {
+                    return $dtoMapper->fromModel($item);
+                },
+                $paginator->getItems()->getQuery()->getResult()
+            )
         );
     }
 }

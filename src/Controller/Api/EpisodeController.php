@@ -3,17 +3,16 @@
 namespace App\Controller\Api;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
+use App\Contracts\Mappers\In\Episode\ChangeEpisodeDtoMapperInterface;
+use App\Contracts\Mappers\In\Episode\CreateEpisodeDtoMapperInterface;
+use App\Contracts\Mappers\In\Episode\GetEpisodesDtoMapperInterface;
+use App\Contracts\Mappers\In\Episode\UpdateEpisodeDtoMapperInterface;
 use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
 use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateInfoDto;
-use App\Exceptions\Validation\ValidateException;
-use App\Utils\Mappers\In\Episode\ChangeEpisodeDtoMapper;
-use App\Utils\Mappers\In\Episode\CreateEpisodeDtoMapper;
-use App\Utils\Mappers\In\Episode\GetEpisodesDtoMapper;
-use App\Utils\Mappers\In\Episode\UpdateEpisodeDtoMapper;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +27,10 @@ class EpisodeController extends AbstractController
     public function __construct(
         private readonly EpisodeRepositoryInterface $episodeRepository,
         private readonly ValidateManagerInterface   $validateManager,
+        private readonly GetEpisodesDtoMapperInterface $getEpisodesDtoMapper,
+        private readonly CreateEpisodeDtoMapperInterface $createEpisodeDtoMapper,
+        private readonly ChangeEpisodeDtoMapperInterface $changeEpisodeDtoMapper,
+        private readonly UpdateEpisodeDtoMapperInterface $updateEpisodeDtoMapper
     )
     {
     }
@@ -90,16 +93,9 @@ class EpisodeController extends AbstractController
     )]
     public function getMany(Request $request): JsonResponse
     {
-        $getEpisodesDto = GetEpisodesDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($getEpisodesDto);
-            return new JsonResponse($this->episodeRepository->findMany($getEpisodesDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $getEpisodesDto = $this->getEpisodesDtoMapper->fromRequest($request);
+        $this->validateManager->validate($getEpisodesDto);
+        return new JsonResponse($this->episodeRepository->findMany($getEpisodesDto));
     }
 
     /**
@@ -141,7 +137,6 @@ class EpisodeController extends AbstractController
     public function delete(int $id): JsonResponse
     {
         $this->episodeRepository->delete($id);
-
         return new JsonResponse();
     }
 
@@ -176,16 +171,9 @@ class EpisodeController extends AbstractController
     )]
     public function create(Request $request): JsonResponse
     {
-        $createEpisodeDto = CreateEpisodeDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($createEpisodeDto);
-            return new JsonResponse($this->episodeRepository->create($createEpisodeDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $createEpisodeDto = $this->createEpisodeDtoMapper->fromRequest($request);
+        $this->validateManager->validate($createEpisodeDto);
+        return new JsonResponse($this->episodeRepository->create($createEpisodeDto));
     }
 
     /**
@@ -219,16 +207,9 @@ class EpisodeController extends AbstractController
     )]
     public function change(Request $request): JsonResponse
     {
-        $changeEpisodeDto = ChangeEpisodeDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($changeEpisodeDto);
-            return new JsonResponse($this->episodeRepository->change($changeEpisodeDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $changeEpisodeDto = $this->changeEpisodeDtoMapper->fromRequest($request);
+        $this->validateManager->validate($changeEpisodeDto);
+        return new JsonResponse($this->episodeRepository->change($changeEpisodeDto));
     }
 
     /**
@@ -262,15 +243,8 @@ class EpisodeController extends AbstractController
     )]
     public function update(Request $request): JsonResponse
     {
-        $updateEpisodeDto = UpdateEpisodeDtoMapper::fromRequest($request);
-
-        try {
-            $this->validateManager->validate($updateEpisodeDto);
-            return new JsonResponse($this->episodeRepository->updateOrCreate($updateEpisodeDto));
-        } catch (ValidateException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], $e->getStatusCode());
-        }
+        $updateEpisodeDto = $this->updateEpisodeDtoMapper->fromRequest($request);
+        $this->validateManager->validate($updateEpisodeDto);
+        return new JsonResponse($this->episodeRepository->updateOrCreate($updateEpisodeDto));
     }
 }
