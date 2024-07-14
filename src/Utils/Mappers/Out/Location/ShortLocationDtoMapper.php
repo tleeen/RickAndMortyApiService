@@ -2,16 +2,15 @@
 
 namespace App\Utils\Mappers\Out\Location;
 
-use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
 use App\Contracts\Mappers\Out\Location\ShortLocationDtoMapperInterface;
 use App\DTO\Out\Location\ShortLocationDto;
 use App\Entity\Location;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ShortLocationDtoMapper implements ShortLocationDtoMapperInterface
+readonly class ShortLocationDtoMapper implements ShortLocationDtoMapperInterface
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
     )
     {
     }
@@ -23,7 +22,7 @@ class ShortLocationDtoMapper implements ShortLocationDtoMapperInterface
             url: $this->urlGenerator->generate(
                 'location_index',
                 ['id' => $location->getId()],
-                UrlGenerateManagerInterface::ABSOLUTE_URL
+                UrlGeneratorInterface::ABSOLUTE_URL
             )
         );
     }

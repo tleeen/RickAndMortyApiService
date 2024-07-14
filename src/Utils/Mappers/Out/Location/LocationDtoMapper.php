@@ -2,7 +2,6 @@
 
 namespace App\Utils\Mappers\Out\Location;
 
-use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
 use App\Contracts\Mappers\Out\Location\LocationDtoMapperInterface;
 use App\Contracts\Mappers\Paginate\PaginateDtoMapperInterface;
 use App\DTO\Out\Location\LocationDto;
@@ -11,11 +10,11 @@ use App\Entity\Location;
 use App\Managers\Pagination\PaginateManager as Paginator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class LocationDtoMapper implements LocationDtoMapperInterface
+readonly class LocationDtoMapper implements LocationDtoMapperInterface
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly PaginateDtoMapperInterface $paginateDtoMapper
+        private UrlGeneratorInterface      $urlGenerator,
+        private PaginateDtoMapperInterface $paginateDtoMapper
     )
     {
     }
@@ -33,14 +32,14 @@ class LocationDtoMapper implements LocationDtoMapperInterface
                 fn($resident) => $this->urlGenerator->generate(
                 'character_index',
                 ['id' => $resident->getId()],
-                UrlGenerateManagerInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL
                 ),
                 $location->getResidents()->toArray()
             ),
             url: $this->urlGenerator->generate(
                 'location_index',
                 ['id' => $locationId],
-                UrlGenerateManagerInterface::ABSOLUTE_URL
+                UrlGeneratorInterface::ABSOLUTE_URL
             ),
             created: $location->getCreatedAt()->format('Y-m-d\TH:i:s.v\Z')
         );

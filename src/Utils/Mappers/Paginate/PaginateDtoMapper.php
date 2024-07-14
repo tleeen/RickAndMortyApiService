@@ -10,10 +10,10 @@ use App\Contracts\Mappers\Paginate\PaginateInfoDtoMapperInterface;
 use App\DTO\Paginate\PaginateDto;
 use App\Managers\Pagination\PaginateManager as Paginator;
 
-class PaginateDtoMapper implements PaginateDtoMapperInterface
+readonly class PaginateDtoMapper implements PaginateDtoMapperInterface
 {
     public function __construct(
-        private readonly PaginateInfoDtoMapperInterface $paginateInfoDtoMapper
+        private PaginateInfoDtoMapperInterface $paginateInfoDtoMapper
     )
     {
     }

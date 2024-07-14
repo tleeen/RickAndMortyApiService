@@ -2,7 +2,6 @@
 
 namespace App\Utils\Mappers\Out\Episode;
 
-use App\Contracts\Managers\UrlGeneration\UrlGenerateManagerInterface;
 use App\Contracts\Mappers\Out\Episode\EpisodeDtoMapperInterface;
 use App\Contracts\Mappers\Paginate\PaginateDtoMapperInterface;
 use App\DTO\Out\Episode\EpisodeDto;
@@ -11,11 +10,11 @@ use App\Entity\Episode;
 use App\Managers\Pagination\PaginateManager as Paginator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class EpisodeDtoMapper implements EpisodeDtoMapperInterface
+readonly class EpisodeDtoMapper implements EpisodeDtoMapperInterface
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly PaginateDtoMapperInterface $paginateDtoMapper
+        private UrlGeneratorInterface      $urlGenerator,
+        private PaginateDtoMapperInterface $paginateDtoMapper
     )
     {
     }
@@ -33,14 +32,14 @@ class EpisodeDtoMapper implements EpisodeDtoMapperInterface
                 fn($character) => $this->urlGenerator->generate(
                 'character_index',
                 ['id' => $character->getId()],
-                UrlGenerateManagerInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL
                 ),
                 $episode->getCharacters()->toArray()
             ),
             url: $this->urlGenerator->generate(
                 'episode_index',
                 ['id' => $episode->getId()],
-                UrlGenerateManagerInterface::ABSOLUTE_URL
+                UrlGeneratorInterface::ABSOLUTE_URL
             ),
             created: $episode->getCreatedAt()->format('Y-m-d\TH:i:s.v\Z')
         );

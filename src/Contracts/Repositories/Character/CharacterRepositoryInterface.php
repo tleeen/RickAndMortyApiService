@@ -8,9 +8,6 @@ use App\DTO\In\Character\GetCharactersDto;
 use App\DTO\In\Character\UpdateCharacterDto;
 use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
-use App\Exceptions\Character\CharacterNotFound;
-use App\Exceptions\Character\LastLocationNotFound;
-use App\Exceptions\Character\OriginNotFound;
 
 interface CharacterRepositoryInterface
 {
