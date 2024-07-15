@@ -47,11 +47,7 @@ class ChangeCharacterDto
             message: 'The status is not a valid {{ type }} or null.'
         )]
         #[Assert\Choice(
-            choices: [
-            CharacterStatus::ALIVE->value,
-            CharacterStatus::DEAD->value,
-            CharacterStatus::UNKNOWN->value,
-            ],
+            callback: [CharacterStatus::class, 'values'],
             message: 'The status is not a {{ choices }}'
         )]
         /**
@@ -82,12 +78,7 @@ class ChangeCharacterDto
             message: 'The gender is not a valid {{ type }} or null.'
         )]
         #[Assert\Choice(
-            choices: [
-            CharacterGender::MALE->value,
-            CharacterGender::FEMALE->value,
-            CharacterGender::UNKNOWN->value,
-            CharacterGender::GENDERLESS->value
-            ],
+            callback: [CharacterGender::class, 'values'],
             message: 'The gender is not a {{ choices }}'
         )]
         /**

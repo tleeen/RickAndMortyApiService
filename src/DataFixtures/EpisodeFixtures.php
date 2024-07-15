@@ -12,7 +12,7 @@ class EpisodeFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 9; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $episode = new Episode();
 
             $randomTimestamp = rand(strtotime('-1 year'), time());
