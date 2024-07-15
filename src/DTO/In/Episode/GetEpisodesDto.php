@@ -5,7 +5,7 @@ namespace App\DTO\In\Episode;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @property array|null $ids
+ * @property int[]|null $ids
  * @property int|null $page
  * @property int|null $limit
  * @property EpisodeFilterDto $filters

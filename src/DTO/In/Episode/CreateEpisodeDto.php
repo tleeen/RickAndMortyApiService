@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @property string $name
  * @property string $airDate
  * @property string $code
- * @property array $characterIds
+ * @property int[] $characterIds
  */
 class CreateEpisodeDto
 {

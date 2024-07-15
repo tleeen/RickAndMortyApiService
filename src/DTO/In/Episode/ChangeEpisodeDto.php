@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @property string|null $name
  * @property string|null $airDate
  * @property string|null $code
- * @property array|null $characterIds
+ * @property int[]|null $characterIds
  */
 class ChangeEpisodeDto
 {
