@@ -24,6 +24,9 @@ class CreateCharacterDto
             message: 'The name is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $name,
 
         #[Assert\Type(
@@ -39,6 +42,9 @@ class CreateCharacterDto
             message: 'The status is not a {{ choices }}'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $status,
 
         #[Assert\Type(
@@ -46,6 +52,9 @@ class CreateCharacterDto
             message: 'The species is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $species,
 
         #[Assert\Type(
@@ -53,6 +62,9 @@ class CreateCharacterDto
             message: 'The type is not a valid {{ type }}.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var string
+         */
         public $type,
 
         #[Assert\Type(
@@ -69,6 +81,9 @@ class CreateCharacterDto
             message: 'The gender is not a {{ choices }}'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $gender,
 
         #[Assert\Type(
@@ -79,6 +94,9 @@ class CreateCharacterDto
             message: 'The originId is not a positive.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var integer
+         */
         public $originId,
 
         #[Assert\Type(
@@ -89,6 +107,9 @@ class CreateCharacterDto
             message: 'The locationId is not a positive.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var integer
+         */
         public $locationId,
 
         #[Assert\Type(
@@ -100,6 +121,9 @@ class CreateCharacterDto
             message: 'The image is not a valid {{ pattern }}'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $image
     )
     {

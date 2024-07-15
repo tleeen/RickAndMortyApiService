@@ -22,6 +22,9 @@ class UpdateEpisodeDto
             message: 'The id is not a positive.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var integer
+         */
         public $id,
 
         #[Assert\Type(
@@ -29,12 +32,18 @@ class UpdateEpisodeDto
             message: 'The name is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $name,
 
         #[Assert\Date(
             message: 'The air date "{{ value }}" is not a valid date.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $airDate,
 
         #[Assert\Type(
@@ -46,6 +55,9 @@ class UpdateEpisodeDto
             message: 'The code "{{ value }}" is not valid. It should be in the format "SxxExx" where x is a digit.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $code,
 
         #[Assert\Type(
@@ -62,6 +74,9 @@ class UpdateEpisodeDto
             ])
         ])]
         #[Assert\NotBlank]
+        /**
+         * @var int[]
+         */
         public $characterIds
     )
     {

@@ -735,10 +735,15 @@ components:
           example: "Pilot"
         air_date:
           type: string
-          example: "December 2, 2013"
+          example: "2023-10-18"
         episode:
           type: string
           example: "S01E01"
+        characterIds:
+          type: array
+          items:
+            type: integer
+            example: 1
 
     GetLocation:
       type: object

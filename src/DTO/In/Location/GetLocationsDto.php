@@ -26,6 +26,9 @@ class GetLocationsDto
                 'message' => 'The ids item is not a positive.'
             ])
         ])]
+        /**
+         * @var int[]|null
+         */
         public $ids,
 
         #[Assert\Type(
@@ -35,6 +38,9 @@ class GetLocationsDto
         #[Assert\PositiveOrZero(
             message: 'The page is not a positive.'
         )]
+        /**
+         * @var int|null
+         */
         public $page,
 
         #[Assert\Type(
@@ -48,9 +54,15 @@ class GetLocationsDto
             value: 20,
             message: 'The limit should be less than or equal to {{ compared_value }}.'
         )]
+        /**
+         * @var int|null
+         */
         public $limit,
 
         #[Assert\Valid]
+        /**
+         * @var LocationFilterDto
+         */
         public $filters
     )
     {

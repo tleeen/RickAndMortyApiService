@@ -14,8 +14,8 @@ class UpdateEpisodeDtoMapper implements UpdateEpisodeDtoMapperInterface
         return new UpdateEpisodeDto(
             id: (int) $request->get('id'),
             name: $episode['name'],
-            airDate: $episode['airDate'],
-            code: $episode['code'],
+            airDate: $episode['air_date'],
+            code: $episode['episode'],
             characterIds: $episode['characterIds']
         );
     }

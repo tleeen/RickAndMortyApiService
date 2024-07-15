@@ -17,6 +17,9 @@ class CreateLocationDto
             message: 'The name is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $name,
 
         #[Assert\Type(
@@ -24,6 +27,9 @@ class CreateLocationDto
             message: 'The type is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $type,
 
         #[Assert\Type(
@@ -31,6 +37,9 @@ class CreateLocationDto
             message: 'The dimension is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $dimension
     )
     {

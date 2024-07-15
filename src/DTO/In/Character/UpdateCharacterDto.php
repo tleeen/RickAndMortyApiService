@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @property int $id
  * @property string $name
- * @property string|null $status
+ * @property string $status
  * @property string $species
  * @property string $type
  * @property string $gender
@@ -28,6 +28,9 @@ class UpdateCharacterDto
             message: 'The id is not a positive.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var integer
+         */
         public $id,
 
         #[Assert\Type(
@@ -35,6 +38,9 @@ class UpdateCharacterDto
             message: 'The name is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $name,
 
         #[Assert\Type(
@@ -50,6 +56,9 @@ class UpdateCharacterDto
             message: 'The status is not a {{ choices }}'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $status,
 
         #[Assert\Type(
@@ -57,6 +66,9 @@ class UpdateCharacterDto
             message: 'The species is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $species,
 
         #[Assert\Type(
@@ -64,6 +76,9 @@ class UpdateCharacterDto
             message: 'The type is not a valid {{ type }}.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var string
+         */
         public $type,
 
         #[Assert\Type(
@@ -80,6 +95,9 @@ class UpdateCharacterDto
             message: 'The gender is not a {{ choices }}'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $gender,
 
         #[Assert\Type(
@@ -90,6 +108,9 @@ class UpdateCharacterDto
             message: 'The originId is not a positive.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var integer
+         */
         public $originId,
 
         #[Assert\Type(
@@ -100,6 +121,9 @@ class UpdateCharacterDto
             message: 'The locationId is not a positive.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var integer
+         */
         public $locationId,
 
         #[Assert\Type(
@@ -111,6 +135,9 @@ class UpdateCharacterDto
             message: 'The image is not a valid {{ pattern }}'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $image
     )
     {

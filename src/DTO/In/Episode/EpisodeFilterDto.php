@@ -15,6 +15,9 @@ class EpisodeFilterDto
             type: 'string',
             message: 'The name is not a valid {{ type }} or null.'
         )]
+        /**
+         * @var string|null
+         */
         public $name,
 
         #[Assert\Type(
@@ -25,6 +28,9 @@ class EpisodeFilterDto
             pattern: '/^S\d{2}E\d{2}$/',
             message: 'The code "{{ value }}" is not valid. It should be in the format "SxxExx" where x is a digit.'
         )]
+        /**
+         * @var string|null
+         */
         public $code
     )
     {

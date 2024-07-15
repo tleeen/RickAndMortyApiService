@@ -21,6 +21,9 @@ class UpdateLocationDto
             message: 'The id is not a positive.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var integer
+         */
         public $id,
 
         #[Assert\Type(
@@ -28,6 +31,9 @@ class UpdateLocationDto
             message: 'The name is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $name,
 
         #[Assert\Type(
@@ -35,6 +41,9 @@ class UpdateLocationDto
             message: 'The type is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $type,
 
         #[Assert\Type(
@@ -42,6 +51,9 @@ class UpdateLocationDto
             message: 'The dimension is not a valid {{ type }}.'
         )]
         #[Assert\NotBlank]
+        /**
+         * @var string
+         */
         public $dimension
     )
     {

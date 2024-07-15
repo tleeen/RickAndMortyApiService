@@ -22,17 +22,26 @@ class ChangeEpisodeDto
             message: 'The id is not a positive.'
         )]
         #[Assert\NotNull]
+        /**
+         * @var integer
+         */
         public $id,
 
         #[Assert\Type(
             type: 'string',
             message: 'The name is not a valid {{ type }} or null.'
         )]
+        /**
+         * @var string|null
+         */
         public $name,
 
         #[Assert\Date(
             message: 'The air date "{{ value }}" is not a valid date or null.'
         )]
+        /**
+         * @var string|null
+         */
         public $airDate,
 
         #[Assert\Type(
@@ -43,6 +52,9 @@ class ChangeEpisodeDto
             pattern: '/^S\d{2}E\d{2}$/',
             message: 'The code "{{ value }}" is not valid. It should be in the format "SxxExx" where x is a digit.'
         )]
+        /**
+         * @var string|null
+         */
         public $code,
 
         #[Assert\Type(
@@ -58,6 +70,9 @@ class ChangeEpisodeDto
                 'message' => 'The characterIds item is not a positive.'
             ])
         ])]
+        /**
+         * @var int[]|null
+         */
         public $characterIds
     )
     {

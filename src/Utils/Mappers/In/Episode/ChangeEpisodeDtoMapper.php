@@ -14,8 +14,8 @@ class ChangeEpisodeDtoMapper implements ChangeEpisodeDtoMapperInterface
         return new ChangeEpisodeDto(
             id: (int) $request->get('id'),
             name: $episode['name'] ?? null,
-            airDate: $episode['airDate'] ?? null,
-            code: $episode['code'] ?? null,
+            airDate: $episode['air_date'] ?? null,
+            code: $episode['episode'] ?? null,
             characterIds: $episode['characterIds'] ?? null
         );
     }
