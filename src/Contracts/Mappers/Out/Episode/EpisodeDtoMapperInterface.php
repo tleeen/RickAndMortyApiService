@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Contracts\Mappers\Out\Episode;
 
+use App\Contracts\Managers\Pagination\PaginateManagerInterface as Paginator;
 use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Episode;
-use App\Managers\Pagination\PaginateManager as Paginator;
 
 interface EpisodeDtoMapperInterface
 {

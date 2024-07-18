@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Managers\Pagination;
 
 use App\Contracts\Managers\Pagination\PaginateManagerInterface;
+use App\Entity\Character;
+use App\Entity\Episode;
+use App\Entity\Location;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -45,6 +48,9 @@ class PaginateManager implements PaginateManagerInterface
         return $this->lastPage;
     }
 
+    /**
+     * @return Paginator<Character|Episode|Location>
+     */
     public function getItems(): Paginator
     {
         return $this->items;

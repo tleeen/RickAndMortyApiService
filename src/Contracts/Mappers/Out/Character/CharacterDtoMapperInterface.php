@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Contracts\Mappers\Out\Character;
 
+use App\Contracts\Managers\Pagination\PaginateManagerInterface as Paginator;
 use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
-use App\Managers\Pagination\PaginateManager as Paginator;
 
 interface CharacterDtoMapperInterface
 {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Contracts\Mappers\Out\Location;
 
+use App\Contracts\Managers\Pagination\PaginateManagerInterface as Paginator;
 use App\DTO\Out\Location\LocationDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Location;
-use App\Managers\Pagination\PaginateManager as Paginator;
 
 interface LocationDtoMapperInterface
 {

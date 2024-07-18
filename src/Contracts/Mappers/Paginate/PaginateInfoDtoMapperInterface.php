@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Contracts\Mappers\Paginate;
 
+use App\Contracts\Managers\Pagination\PaginateManagerInterface as Paginator;
 use App\DTO\Paginate\PaginateInfoDto;
-use App\Managers\Pagination\PaginateManager as Paginator;
 
 interface PaginateInfoDtoMapperInterface
 {

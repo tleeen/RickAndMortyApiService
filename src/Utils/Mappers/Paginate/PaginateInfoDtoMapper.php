@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Utils\Mappers\Paginate;
 
+use App\Contracts\Managers\Pagination\PaginateManagerInterface as Paginator;
 use App\Contracts\Mappers\Paginate\PaginateInfoDtoMapperInterface;
 use App\DTO\Paginate\PaginateInfoDto;
-use App\Managers\Pagination\PaginateManager as Paginator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 readonly class PaginateInfoDtoMapper implements PaginateInfoDtoMapperInterface

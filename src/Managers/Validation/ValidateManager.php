@@ -6,6 +6,7 @@ namespace App\Managers\Validation;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
 use App\Exceptions\Validation\ValidateException;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 readonly class ValidateManager implements ValidateManagerInterface
@@ -23,7 +24,12 @@ readonly class ValidateManager implements ValidateManagerInterface
         $errors = $this->validator->validate($value);
 
         if (count($errors) > 0) {
-            throw new ValidateException((string) $errors);
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                /* @var ConstraintViolationInterface $error */
+                $errorMessages[] = $error->getMessage();
+            }
+            throw new ValidateException(implode(', ', $errorMessages));
         }
     }
 }

@@ -6,7 +6,6 @@ namespace App\Repository\Episode;
 
 use App\Contracts\Managers\Pagination\PaginateManagerInterface;
 use App\Contracts\Mappers\Out\Episode\EpisodeDtoMapperInterface;
-use App\Contracts\Repositories\Character\CharacterRepositoryInterface;
 use App\Contracts\Repositories\Episode\EpisodeRepositoryInterface;
 use App\DTO\In\Episode\ChangeEpisodeDto;
 use App\DTO\In\Episode\CreateEpisodeDto;
@@ -14,6 +13,7 @@ use App\DTO\In\Episode\GetEpisodesDto;
 use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateDto;
+use App\Entity\Character;
 use App\Entity\Episode;
 use App\Filter\Filters\Episode\EpisodeFilterFactory;
 use App\Filter\HasFilter;
@@ -30,7 +30,6 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginateManagerInterface $paginatorManager,
-        private readonly CharacterRepositoryInterface $characterRepository,
         private readonly EpisodeDtoMapperInterface $episodeDtoMapper
     ) {
         parent::__construct($registry, Episode::class);
@@ -116,13 +115,15 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
             $characterIdsToAdd = array_diff($episodeDto->characterIds, $existingCharacterIds);
             $characterIdsToRemove = array_diff($existingCharacterIds, $episodeDto->characterIds);
 
+            $characterRepository = $this->getEntityManager()->getRepository(Character::class);
+
             foreach ($characterIdsToAdd as $characterId) {
-                $character = $this->characterRepository->find($characterId);
+                $character = $characterRepository->find($characterId);
                 $episode->addCharacter($character);
             }
 
             foreach ($characterIdsToRemove as $characterId) {
-                $character = $this->characterRepository->find($characterId);
+                $character = $characterRepository->find($characterId);
                 $episode->removeCharacter($character);
             }
         }

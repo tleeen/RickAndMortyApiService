@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Mappers\Out\Character;
 
+use App\Contracts\Managers\Pagination\PaginateManagerInterface as Paginator;
 use App\Contracts\Mappers\Out\Character\CharacterDtoMapperInterface;
 use App\Contracts\Mappers\Out\Location\ShortLocationDtoMapperInterface;
 use App\Contracts\Mappers\Paginate\PaginateDtoMapperInterface;
@@ -11,7 +12,6 @@ use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
 use App\Enums\Storage\StoragePath;
-use App\Managers\Pagination\PaginateManager as Paginator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 readonly class CharacterDtoMapper implements CharacterDtoMapperInterface

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Utils\Mappers\Out\Episode;
 
+use App\Contracts\Managers\Pagination\PaginateManagerInterface as Paginator;
 use App\Contracts\Mappers\Out\Episode\EpisodeDtoMapperInterface;
 use App\Contracts\Mappers\Paginate\PaginateDtoMapperInterface;
 use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Episode;
-use App\Managers\Pagination\PaginateManager as Paginator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 readonly class EpisodeDtoMapper implements EpisodeDtoMapperInterface

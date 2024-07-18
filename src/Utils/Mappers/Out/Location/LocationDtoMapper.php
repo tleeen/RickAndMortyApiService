@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Utils\Mappers\Out\Location;
 
+use App\Contracts\Managers\Pagination\PaginateManagerInterface as Paginator;
 use App\Contracts\Mappers\Out\Location\LocationDtoMapperInterface;
 use App\Contracts\Mappers\Paginate\PaginateDtoMapperInterface;
 use App\DTO\Out\Location\LocationDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Location;
-use App\Managers\Pagination\PaginateManager as Paginator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 readonly class LocationDtoMapper implements LocationDtoMapperInterface

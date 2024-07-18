@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Contracts\Managers\Pagination;
 
+use App\Entity\Character;
+use App\Entity\Episode;
+use App\Entity\Location;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -15,6 +18,9 @@ interface PaginateManagerInterface
 
     public function getLastPage(): int;
 
+    /**
+     * @return Paginator<Character|Episode|Location>
+     */
     public function getItems(): Paginator;
 
     public function getNextPage(): ?int;
