@@ -13,8 +13,11 @@ class PaginateManager implements PaginateManagerInterface
     private int $currentPage;
     private Paginator $items;
 
-    public function paginate(QueryBuilder $query, int $page = 1, int $limit = 10): self
+    public function paginate(QueryBuilder $query, ?int $page, ?int $limit): self
     {
+        $page ??= 1;
+        $limit ??= 10;
+
         $paginator = new Paginator($query);
 
         $paginator

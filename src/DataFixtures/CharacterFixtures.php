@@ -21,7 +21,7 @@ class CharacterFixtures extends Fixture implements DependentFixtureInterface
             $character = new Character();
 
             $character->setName(sprintf('Character %d', $i));
-            $character->setImage(sprintf('character%d.jpg', $i));
+            $character->setImage(sprintf('%d.jpg', $i));
             $character->setStatus($statusValues[array_rand($statusValues)]);
             $character->setSpecies(sprintf('CharacterSpecies %d', $i));
             $character->setType(sprintf('CharacterType %d', $i));

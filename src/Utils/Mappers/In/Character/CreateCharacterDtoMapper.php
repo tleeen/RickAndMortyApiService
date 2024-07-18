@@ -15,7 +15,7 @@ class CreateCharacterDtoMapper implements CreateCharacterDtoMapperInterface
             name: $character['name'],
             status: $character['status'],
             species: $character['species'],
-            type: $character['type'] ?? null,
+            type: $character['type'],
             gender: $character['gender'],
             originId: $character['originId'],
             locationId: $character['locationId'],

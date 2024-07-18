@@ -31,7 +31,7 @@ class Character
     #[ORM\Column(length: 255)]
     private ?string $species = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]

@@ -73,7 +73,7 @@ class UpdateEpisodeDto
                 'message' => 'The characterIds item is not a positive.'
             ])
         ])]
-        #[Assert\NotBlank]
+        #[Assert\NotNull]
         /**
          * @var int[]
          */

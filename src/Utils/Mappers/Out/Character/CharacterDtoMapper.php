@@ -31,7 +31,7 @@ readonly class CharacterDtoMapper implements CharacterDtoMapperInterface
             name: $character->getName(),
             status: $character->getStatus(),
             species: $character->getSpecies(),
-            type: (string) $character->getType(),
+            type: $character->getType(),
             gender: $character->getGender(),
             origin: $this->shortLocationDtoMapper->fromModel($character->getOrigin()),
             location: $this->shortLocationDtoMapper->fromModel($character->getLastLocation()),

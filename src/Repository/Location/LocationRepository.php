@@ -39,14 +39,14 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
 
         $queryBuilder = $this->filterBy($queryBuilder, LocationFilterFactory::create($getLocationsDto->filters));
 
-        if ($getLocationsDto->ids) {
+        if (isset($getLocationsDto->ids)) {
             $queryBuilder->andWhere('location.id IN (:ids)')
                 ->setParameter('ids', $getLocationsDto->ids);
         }
 
         return $this->locationDtoMapper->fromPaginator($this
             ->paginatorManager
-            ->paginate($queryBuilder, $getLocationsDto->page ?: 1, $getLocationsDto->limit ?: 10),
+            ->paginate($queryBuilder, $getLocationsDto->page, $getLocationsDto->limit),
             );
     }
 
@@ -87,10 +87,13 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
         return $this->locationDtoMapper->fromModel($location);
     }
 
-    private function setAttributes(Location $location, UpdateLocationDto|CreateLocationDto|ChangeLocationDto $locationDto): void
+    private function setAttributes(
+        Location $location,
+        UpdateLocationDto|CreateLocationDto|ChangeLocationDto $locationDto
+    ): void
     {
-        if ($locationDto->name) $location->setName($locationDto->name);
-        if ($locationDto->type) $location->setType($locationDto->type);
-        if ($locationDto->dimension) $location->setDimension($locationDto->dimension);
+        if (isset($locationDto->name)) $location->setName($locationDto->name);
+        if (isset($locationDto->type)) $location->setType($locationDto->type);
+        if (isset($locationDto->dimension)) $location->setDimension($locationDto->dimension);
     }
 }

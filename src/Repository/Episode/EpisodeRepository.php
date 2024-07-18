@@ -42,14 +42,14 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
 
         $queryBuilder = $this->filterBy($queryBuilder, EpisodeFilterFactory::create($getEpisodeDto->filters));
 
-        if ($getEpisodeDto->ids) {
+        if (isset($getEpisodeDto->ids)) {
             $queryBuilder->andWhere('episode.id IN (:ids)')
                 ->setParameter('ids', $getEpisodeDto->ids);
         }
 
         return $this->episodeDtoMapper->fromPaginator($this
             ->paginatorManager
-            ->paginate($queryBuilder, $getEpisodeDto->page ?: 1, $getEpisodeDto->limit ?: 10),
+            ->paginate($queryBuilder, $getEpisodeDto->page, $getEpisodeDto->limit),
             );
     }
 
@@ -90,13 +90,18 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         return $this->episodeDtoMapper->fromModel($episode);
     }
 
-    private function setAttributes(Episode $episode, UpdateEpisodeDto|ChangeEpisodeDto|CreateEpisodeDto $episodeDto): void
+    private function setAttributes(
+        Episode $episode,
+        UpdateEpisodeDto|ChangeEpisodeDto|CreateEpisodeDto $episodeDto
+    ): void
     {
-        if ($episodeDto->name) $episode->setName($episodeDto->name);
-        if ($episodeDto->airDate)
+        if (isset($episodeDto->name))
+            $episode->setName($episodeDto->name);
+        if (isset($episodeDto->airDate))
             $episode->setAirDate(DateTime::createFromFormat('Y-m-d', $episodeDto->airDate));
-        if ($episodeDto->code) $episode->setCode($episodeDto->code);
-        if ($episodeDto->characterIds) {
+        if (isset($episodeDto->code))
+            $episode->setCode($episodeDto->code);
+        if (isset($episodeDto->characterIds)) {
             $existingCharacterIds = $episode->getCharacters()->map(function ($character) {
                 return $character->getId();
             })->toArray();

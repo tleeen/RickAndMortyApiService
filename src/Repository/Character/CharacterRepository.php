@@ -40,14 +40,14 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
 
         $queryBuilder = $this->filterBy($queryBuilder, CharacterFilterFactory::create($getCharactersDto->filters));
 
-        if ($getCharactersDto->ids) {
+        if (isset($getCharactersDto->ids)) {
             $queryBuilder->andWhere('character.id IN (:ids)')
                 ->setParameter('ids', $getCharactersDto->ids);
         }
 
         return $this->characterDtoMapper->fromPaginator($this
             ->paginatorManager
-            ->paginate($queryBuilder, $getCharactersDto->page ?: 1, $getCharactersDto->limit ?: 10)
+            ->paginate($queryBuilder, $getCharactersDto->page, $getCharactersDto->limit)
         );
     }
 
@@ -94,15 +94,15 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
     {
         $em = $this->getEntityManager();
 
-        if ($characterDto->name) $character->setName($characterDto->name);
-        if ($characterDto->status) $character->setStatus($characterDto->status);
-        if ($characterDto->species) $character->setSpecies($characterDto->species);
-        if ($characterDto->type) $character->setType($characterDto->type);
-        if ($characterDto->gender) $character->setGender($characterDto->gender);
-        if ($characterDto->originId)
+        if (isset($characterDto->name)) $character->setName($characterDto->name);
+        if (isset($characterDto->status)) $character->setStatus($characterDto->status);
+        if (isset($characterDto->species)) $character->setSpecies($characterDto->species);
+        if (isset($characterDto->type)) $character->setType($characterDto->type);
+        if (isset($characterDto->gender)) $character->setGender($characterDto->gender);
+        if (isset($characterDto->originId))
             $character->setOrigin($em->getReference(Location::class, $characterDto->originId));
-        if ($characterDto->locationId)
+        if (isset($characterDto->locationId))
             $character->setLastLocation($em->getReference(Location::class, $characterDto->locationId));
-        if ($characterDto->image) $character->setImage($characterDto->image);
+        if (isset($characterDto->image)) $character->setImage($characterDto->image);
     }
 }

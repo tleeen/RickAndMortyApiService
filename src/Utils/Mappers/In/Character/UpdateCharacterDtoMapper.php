@@ -18,8 +18,8 @@ class UpdateCharacterDtoMapper implements UpdateCharacterDtoMapperInterface
             species: $character['species'],
             type: $character['type'],
             gender: $character['gender'],
-            originId: (int) $character['originId'],
-            locationId: (int) $character['locationId'],
+            originId: $character['originId'],
+            locationId: $character['locationId'],
             image: $character['image'],
         );
     }

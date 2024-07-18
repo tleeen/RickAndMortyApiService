@@ -18,9 +18,9 @@ class GetEpisodesDtoMapper implements GetEpisodesDtoMapperInterface
     public function fromRequest(Request $request): GetEpisodesDto
     {
         return new GetEpisodesDto(
-            ids: array_map(fn($id) => (int)$id, $request->query->all('ids')),
-            page: (int) $request->query->get('page'),
-            limit: (int) $request->query->get('limit'),
+            ids: array_map(fn($id) => (int) $id, $request->query->all('ids')) ?: null,
+            page: (int) $request->query->get('page') ?: null,
+            limit: (int) $request->query->get('limit') ?: null,
             filters: $this->filterDtoMapper->fromRequest($request),
         );
     }
