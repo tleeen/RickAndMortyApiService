@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utils\Mappers\In\Episode;
 
 use App\Contracts\Mappers\In\Episode\UpdateEpisodeDtoMapperInterface;

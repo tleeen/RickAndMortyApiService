@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Managers\Validation;
+declare(strict_types=1);
 
+namespace App\Managers\Validation;
 
 use App\Contracts\Managers\Validation\ValidateManagerInterface;
 use App\Exceptions\Validation\ValidateException;

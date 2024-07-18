@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Contracts\Mappers\Out\Location;
 
 use App\DTO\Out\Location\LocationDto;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Contracts\Repositories\Episode;
 
 use App\DTO\In\Episode\ChangeEpisodeDto;

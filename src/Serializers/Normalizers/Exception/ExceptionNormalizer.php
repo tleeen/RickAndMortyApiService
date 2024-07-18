@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Serializers\Normalizers\Exception;
 
 use Symfony\Component\ErrorHandler\Exception\FlattenException;

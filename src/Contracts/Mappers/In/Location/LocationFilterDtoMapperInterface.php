@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Contracts\Mappers\In\Location;
 
 use App\DTO\In\Location\LocationFilterDto;

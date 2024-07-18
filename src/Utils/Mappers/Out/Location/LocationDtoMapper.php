@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utils\Mappers\Out\Location;
 
 use App\Contracts\Mappers\Out\Location\LocationDtoMapperInterface;

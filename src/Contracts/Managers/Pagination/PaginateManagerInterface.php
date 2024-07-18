@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Contracts\Managers\Pagination;
 
 use Doctrine\ORM\QueryBuilder;
@@ -7,7 +9,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 interface PaginateManagerInterface
 {
-    public function paginate(QueryBuilder $query, int $page, int $limit): self;
+    public function paginate(QueryBuilder $query, ?int $page, ?int $limit): self;
 
     public function getTotal(): int;
 

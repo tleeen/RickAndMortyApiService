@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Contracts\Mappers\In\Character;
 
 use App\DTO\In\Character\CharacterFilterDto;

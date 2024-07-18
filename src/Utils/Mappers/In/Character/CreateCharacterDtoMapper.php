@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utils\Mappers\In\Character;
 
 use App\Contracts\Mappers\In\Character\CreateCharacterDtoMapperInterface;

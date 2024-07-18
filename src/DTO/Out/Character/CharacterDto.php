@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Out\Character;
 
 use App\DTO\Out\Location\ShortLocationDto;

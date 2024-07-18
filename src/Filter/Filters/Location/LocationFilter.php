@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filter\Filters\Location;
 
 use App\Filter\AbstractIFilter;

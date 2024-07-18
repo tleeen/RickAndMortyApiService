@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filter\Filters\Character;
 
 use App\Filter\AbstractIFilter;
