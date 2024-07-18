@@ -34,7 +34,6 @@ class EpisodeFilterDto
          * @var string|null
          */
         public $code
-    )
-    {
+    ) {
     }
 }

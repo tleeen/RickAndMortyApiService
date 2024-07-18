@@ -22,26 +22,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-
 #[Route('/episode', name: 'episode_')]
 class EpisodeController extends AbstractController
 {
     public function __construct(
         private readonly EpisodeRepositoryInterface $episodeRepository,
-        private readonly ValidateManagerInterface   $validateManager,
+        private readonly ValidateManagerInterface $validateManager,
         private readonly GetEpisodesDtoMapperInterface $getEpisodesDtoMapper,
         private readonly CreateEpisodeDtoMapperInterface $createEpisodeDtoMapper,
         private readonly ChangeEpisodeDtoMapperInterface $changeEpisodeDtoMapper,
         private readonly UpdateEpisodeDtoMapperInterface $updateEpisodeDtoMapper
-    )
-    {
+    ) {
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    #[Route(name: "get", methods: ['GET'])]
+    #[Route(name: 'get', methods: ['GET'])]
     #[OA\Tag(name: 'Episodes')]
     #[OA\Parameter(
         name: 'ids',
@@ -97,14 +91,11 @@ class EpisodeController extends AbstractController
     {
         $getEpisodesDto = $this->getEpisodesDtoMapper->fromRequest($request);
         $this->validateManager->validate($getEpisodesDto);
+
         return new JsonResponse($this->episodeRepository->findMany($getEpisodesDto));
     }
 
-    /**
-     * @param int $id
-     * @return JsonResponse
-     */
-    #[Route('/{id}', name: "index", methods: ['GET'])]
+    #[Route('/{id}', name: 'index', methods: ['GET'])]
     #[OA\Tag(name: 'Episodes')]
     #[OA\Parameter(
         name: 'id',
@@ -121,10 +112,6 @@ class EpisodeController extends AbstractController
         return new JsonResponse($this->episodeRepository->findById($id));
     }
 
-    /**
-     * @param int $id
-     * @return JsonResponse
-     */
     #[Route('/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Episodes')]
     #[OA\Parameter(
@@ -139,13 +126,10 @@ class EpisodeController extends AbstractController
     public function delete(int $id): JsonResponse
     {
         $this->episodeRepository->delete($id);
+
         return new JsonResponse();
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     #[Route(methods: ['POST'])]
     #[OA\Tag(name: 'Episodes')]
     #[OA\RequestBody(
@@ -175,13 +159,10 @@ class EpisodeController extends AbstractController
     {
         $createEpisodeDto = $this->createEpisodeDtoMapper->fromRequest($request);
         $this->validateManager->validate($createEpisodeDto);
+
         return new JsonResponse($this->episodeRepository->create($createEpisodeDto));
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     #[Route('/{id}', methods: ['PATCH'])]
     #[OA\Tag(name: 'Episodes')]
     #[OA\RequestBody(
@@ -211,13 +192,10 @@ class EpisodeController extends AbstractController
     {
         $changeEpisodeDto = $this->changeEpisodeDtoMapper->fromRequest($request);
         $this->validateManager->validate($changeEpisodeDto);
+
         return new JsonResponse($this->episodeRepository->change($changeEpisodeDto));
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     #[Route('/{id}', methods: ['PUT'])]
     #[OA\Tag(name: 'Episodes')]
     #[OA\RequestBody(
@@ -247,6 +225,7 @@ class EpisodeController extends AbstractController
     {
         $updateEpisodeDto = $this->updateEpisodeDtoMapper->fromRequest($request);
         $this->validateManager->validate($updateEpisodeDto);
+
         return new JsonResponse($this->episodeRepository->updateOrCreate($updateEpisodeDto));
     }
 }

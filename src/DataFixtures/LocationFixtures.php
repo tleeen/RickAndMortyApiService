@@ -13,7 +13,7 @@ class LocationFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $location = new Location();
 
             $location->setName(sprintf('Location %d', $i));
@@ -22,7 +22,7 @@ class LocationFixtures extends Fixture
 
             $manager->persist($location);
 
-            $this->addReference(References::LOCATION->value . $i, $location);
+            $this->addReference(References::LOCATION->value.$i, $location);
         }
 
         $manager->flush();

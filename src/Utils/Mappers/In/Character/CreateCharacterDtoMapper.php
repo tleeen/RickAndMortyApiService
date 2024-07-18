@@ -13,6 +13,7 @@ class CreateCharacterDtoMapper implements CreateCharacterDtoMapperInterface
     public function fromRequest(Request $request): CreateCharacterDto
     {
         $character = $request->toArray();
+
         return new CreateCharacterDto(
             name: $character['name'],
             status: $character['status'],

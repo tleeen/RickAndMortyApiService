@@ -27,13 +27,12 @@ class CharacterController extends AbstractController
 {
     public function __construct(
         private readonly CharacterRepositoryInterface $characterRepository,
-        private readonly ValidateManagerInterface     $validateManager,
+        private readonly ValidateManagerInterface $validateManager,
         private readonly GetCharactersDtoMapperInterface $getCharactersDtoMapper,
         private readonly ChangeCharacterDtoMapperInterface $changeCharacterDtoMapper,
         private readonly CreateCharacterDtoMapperInterface $createCharacterDtoMapper,
         private readonly UpdateCharacterDtoMapperInterface $updateCharacterDtoMapper
-    )
-    {
+    ) {
     }
 
     #[Route(name: 'get', methods: ['GET'])]
@@ -107,6 +106,7 @@ class CharacterController extends AbstractController
     {
         $getCharactersDto = $this->getCharactersDtoMapper->fromRequest($request);
         $this->validateManager->validate($getCharactersDto);
+
         return new JsonResponse($this->characterRepository->findMany($getCharactersDto));
     }
 
@@ -127,10 +127,6 @@ class CharacterController extends AbstractController
         return new JsonResponse($this->characterRepository->findById($id));
     }
 
-    /**
-     * @param int $id
-     * @return JsonResponse
-     */
     #[Route('/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Characters')]
     #[OA\Parameter(
@@ -145,6 +141,7 @@ class CharacterController extends AbstractController
     public function delete(int $id): JsonResponse
     {
         $this->characterRepository->delete($id);
+
         return new JsonResponse();
     }
 
@@ -177,6 +174,7 @@ class CharacterController extends AbstractController
     {
         $createCharacterDto = $this->createCharacterDtoMapper->fromRequest($request);
         $this->validateManager->validate($createCharacterDto);
+
         return new JsonResponse($this->characterRepository->create($createCharacterDto));
     }
 
@@ -209,6 +207,7 @@ class CharacterController extends AbstractController
     {
         $changeCharacterDto = $this->changeCharacterDtoMapper->fromRequest($request);
         $this->validateManager->validate($changeCharacterDto);
+
         return new JsonResponse($this->characterRepository->change($changeCharacterDto));
     }
 
@@ -241,6 +240,7 @@ class CharacterController extends AbstractController
     {
         $updateCharacterDto = $this->updateCharacterDtoMapper->fromRequest($request);
         $this->validateManager->validate($updateCharacterDto);
+
         return new JsonResponse($this->characterRepository->updateOrCreate($updateCharacterDto));
     }
 }

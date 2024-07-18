@@ -13,6 +13,7 @@ class UpdateEpisodeDtoMapper implements UpdateEpisodeDtoMapperInterface
     public function fromRequest(Request $request): UpdateEpisodeDto
     {
         $episode = $request->toArray();
+
         return new UpdateEpisodeDto(
             id: (int) $request->get('id'),
             name: $episode['name'],

@@ -15,10 +15,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 readonly class LocationDtoMapper implements LocationDtoMapperInterface
 {
     public function __construct(
-        private UrlGeneratorInterface      $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
         private PaginateDtoMapperInterface $paginateDtoMapper
-    )
-    {
+    ) {
     }
 
     public function fromModel(Location $location): LocationDto
@@ -31,9 +30,9 @@ readonly class LocationDtoMapper implements LocationDtoMapperInterface
             type: $location->getType(),
             dimension: $location->getDimension(),
             residents: array_map(
-                fn($resident) => $this->urlGenerator->generate(
-                'character_index',
-                ['id' => $resident->getId()],
+                fn ($resident) => $this->urlGenerator->generate(
+                    'character_index',
+                    ['id' => $resident->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
                 $location->getResidents()->toArray()

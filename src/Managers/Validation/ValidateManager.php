@@ -12,8 +12,7 @@ readonly class ValidateManager implements ValidateManagerInterface
 {
     public function __construct(
         private ValidatorInterface $validator
-    )
-    {
+    ) {
     }
 
     /**
@@ -24,7 +23,7 @@ readonly class ValidateManager implements ValidateManagerInterface
         $errors = $this->validator->validate($value);
 
         if (count($errors) > 0) {
-            throw new ValidateException((string)$errors);
+            throw new ValidateException((string) $errors);
         }
     }
 }

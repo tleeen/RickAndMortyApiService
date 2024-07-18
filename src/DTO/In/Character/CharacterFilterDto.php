@@ -70,7 +70,6 @@ class CharacterFilterDto
          * @var string|null
          */
         public $gender
-    )
-    {
+    ) {
     }
 }

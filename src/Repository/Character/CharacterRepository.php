@@ -28,11 +28,10 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
     use HasFilter;
 
     public function __construct(
-        ManagerRegistry                              $registry,
-        private readonly PaginateManagerInterface    $paginatorManager,
+        ManagerRegistry $registry,
+        private readonly PaginateManagerInterface $paginatorManager,
         private readonly CharacterDtoMapperInterface $characterDtoMapper
-    )
-    {
+    ) {
         parent::__construct($registry, Character::class);
     }
 
@@ -70,6 +69,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         $this->setAttributes($character, $createCharacterDto);
         $this->getEntityManager()->persist($character);
         $this->getEntityManager()->flush();
+
         return $this->characterDtoMapper->fromModel($character);
     }
 
@@ -78,6 +78,7 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         $character = $this->find($changeCharacterDto->id);
         $this->setAttributes($character, $changeCharacterDto);
         $this->getEntityManager()->flush();
+
         return $this->characterDtoMapper->fromModel($character);
     }
 
@@ -86,25 +87,39 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         $character = $this->find($updateCharacterDto->id);
         $this->setAttributes($character, $updateCharacterDto);
         $this->getEntityManager()->flush();
+
         return $this->characterDtoMapper->fromModel($character);
     }
 
     private function setAttributes(
         Character $character,
         UpdateCharacterDto|ChangeCharacterDto|CreateCharacterDto $characterDto
-    ): void
-    {
+    ): void {
         $em = $this->getEntityManager();
 
-        if (isset($characterDto->name)) $character->setName($characterDto->name);
-        if (isset($characterDto->status)) $character->setStatus($characterDto->status);
-        if (isset($characterDto->species)) $character->setSpecies($characterDto->species);
-        if (isset($characterDto->type)) $character->setType($characterDto->type);
-        if (isset($characterDto->gender)) $character->setGender($characterDto->gender);
-        if (isset($characterDto->originId))
+        if (isset($characterDto->name)) {
+            $character->setName($characterDto->name);
+        }
+        if (isset($characterDto->status)) {
+            $character->setStatus($characterDto->status);
+        }
+        if (isset($characterDto->species)) {
+            $character->setSpecies($characterDto->species);
+        }
+        if (isset($characterDto->type)) {
+            $character->setType($characterDto->type);
+        }
+        if (isset($characterDto->gender)) {
+            $character->setGender($characterDto->gender);
+        }
+        if (isset($characterDto->originId)) {
             $character->setOrigin($em->getReference(Location::class, $characterDto->originId));
-        if (isset($characterDto->locationId))
+        }
+        if (isset($characterDto->locationId)) {
             $character->setLastLocation($em->getReference(Location::class, $characterDto->locationId));
-        if (isset($characterDto->image)) $character->setImage($characterDto->image);
+        }
+        if (isset($characterDto->image)) {
+            $character->setImage($characterDto->image);
+        }
     }
 }

@@ -13,8 +13,7 @@ readonly class PaginateInfoDtoMapper implements PaginateInfoDtoMapperInterface
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-    )
-    {
+    ) {
     }
 
     public function fromPaginator(Paginator $paginator, string $module): PaginateInfoDto
@@ -23,16 +22,16 @@ readonly class PaginateInfoDtoMapper implements PaginateInfoDtoMapperInterface
             count: $paginator->getTotal(),
             pages: $paginator->getLastPage(),
             next: $paginator->getNextPage() ? $this->urlGenerator->generate(
-                    $module . '_get',
-                    [],
-                    UrlGeneratorInterface::ABSOLUTE_URL)
-                . "?page="
-                . $paginator->getNextPage() : $paginator->getNextPage(),
-            prev: $paginator->getPreviousPage() ? $this->urlGenerator->generate($module . '_get',
-                    [],
-                    UrlGeneratorInterface::ABSOLUTE_URL)
-                . "?page="
-                . $paginator->getPreviousPage() : $paginator->getPreviousPage()
+                $module.'_get',
+                [],
+                UrlGeneratorInterface::ABSOLUTE_URL)
+                .'?page='
+                .$paginator->getNextPage() : $paginator->getNextPage(),
+            prev: $paginator->getPreviousPage() ? $this->urlGenerator->generate($module.'_get',
+                [],
+                UrlGeneratorInterface::ABSOLUTE_URL)
+                .'?page='
+                .$paginator->getPreviousPage() : $paginator->getPreviousPage()
         );
     }
 }

@@ -13,14 +13,13 @@ class GetCharactersDtoMapper implements GetCharactersDtoMapperInterface
 {
     public function __construct(
         private readonly CharacterFilterDtoMapperInterface $filterDtoMapper,
-    )
-    {
+    ) {
     }
 
     public function fromRequest(Request $request): GetCharactersDto
     {
         return new GetCharactersDto(
-            ids: array_map(fn($id) => (int) $id, $request->query->all('ids')) ?: null,
+            ids: array_map(fn ($id) => (int) $id, $request->query->all('ids')) ?: null,
             page: (int) $request->query->get('page') ?: null,
             limit: (int) $request->query->get('limit') ?: null,
             filters: $this->filterDtoMapper->fromRequest($request),

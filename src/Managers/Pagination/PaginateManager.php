@@ -29,7 +29,7 @@ class PaginateManager implements PaginateManagerInterface
 
         $this->currentPage = $page;
         $this->total = $paginator->count();
-        $this->lastPage = (int)ceil($paginator->count() / $paginator->getQuery()->getMaxResults());
+        $this->lastPage = (int) ceil($paginator->count() / $paginator->getQuery()->getMaxResults());
         $this->items = $paginator;
 
         return $this;

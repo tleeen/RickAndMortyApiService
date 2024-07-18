@@ -18,10 +18,9 @@ readonly class CharacterDtoMapper implements CharacterDtoMapperInterface
 {
     public function __construct(
         private ShortLocationDtoMapperInterface $shortLocationDtoMapper,
-        private UrlGeneratorInterface           $urlGenerator,
-        private PaginateDtoMapperInterface      $paginateDtoMapper
-    )
-    {
+        private UrlGeneratorInterface $urlGenerator,
+        private PaginateDtoMapperInterface $paginateDtoMapper
+    ) {
     }
 
     public function fromModel(Character $character): CharacterDto
@@ -38,13 +37,13 @@ readonly class CharacterDtoMapper implements CharacterDtoMapperInterface
             origin: $this->shortLocationDtoMapper->fromModel($character->getOrigin()),
             location: $this->shortLocationDtoMapper->fromModel($character->getLastLocation()),
             image: $this->urlGenerator->generate('character_get')
-            . StoragePath::CharacterAvatar->value
-            . "/" . $character->getImage(),
+            .StoragePath::CharacterAvatar->value
+            .'/'.$character->getImage(),
             episode: array_map(
-                fn($episode) => $this->urlGenerator->generate(
-                'episode_index',
-                ['id' => $episode->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
+                fn ($episode) => $this->urlGenerator->generate(
+                    'episode_index',
+                    ['id' => $episode->getId()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
                 ),
                 $character->getEpisodes()->toArray()
             ),

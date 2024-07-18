@@ -28,20 +28,15 @@ class LocationController extends AbstractController
 {
     public function __construct(
         private readonly LocationRepositoryInterface $locationRepository,
-        private readonly ValidateManagerInterface    $validateManager,
+        private readonly ValidateManagerInterface $validateManager,
         private readonly GetLocationsDtoMapperInterface $getLocationsDtoMapper,
         private readonly CreateLocationDtoMapperInterface $createLocationDtoMapper,
         private readonly ChangeLocationDtoMapperInterface $changeLocationDtoMapper,
         private readonly UpdateLocationDtoMapperInterface $updateLocationDtoMapper
-    )
-    {
+    ) {
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    #[Route(name: "get", methods: ['GET'])]
+    #[Route(name: 'get', methods: ['GET'])]
     #[OA\Tag(name: 'Locations')]
     #[OA\Parameter(
         name: 'ids',
@@ -102,14 +97,11 @@ class LocationController extends AbstractController
     {
         $getLocationsDto = $this->getLocationsDtoMapper->fromRequest($request);
         $this->validateManager->validate($getLocationsDto);
+
         return new JsonResponse($this->locationRepository->findMany($getLocationsDto));
     }
 
-    /**
-     * @param int $id
-     * @return JsonResponse
-     */
-    #[Route('/{id}', name: "index", methods: ['GET'])]
+    #[Route('/{id}', name: 'index', methods: ['GET'])]
     #[OA\Tag(name: 'Locations')]
     #[OA\Parameter(
         name: 'id',
@@ -126,10 +118,6 @@ class LocationController extends AbstractController
         return new JsonResponse($this->locationRepository->findById($id));
     }
 
-    /**
-     * @param int $id
-     * @return JsonResponse
-     */
     #[Route('/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Locations')]
     #[OA\Parameter(
@@ -144,13 +132,10 @@ class LocationController extends AbstractController
     public function delete(int $id): JsonResponse
     {
         $this->locationRepository->delete($id);
+
         return new JsonResponse();
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     #[Route(methods: ['POST'])]
     #[OA\Tag(name: 'Locations')]
     #[OA\RequestBody(
@@ -180,13 +165,10 @@ class LocationController extends AbstractController
     {
         $createLocationDto = $this->createLocationDtoMapper->fromRequest($request);
         $this->validateManager->validate($createLocationDto);
+
         return new JsonResponse($this->locationRepository->create($createLocationDto));
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     #[Route('/{id}', methods: ['PATCH'])]
     #[OA\Tag(name: 'Locations')]
     #[OA\RequestBody(
@@ -216,6 +198,7 @@ class LocationController extends AbstractController
     {
         $changeLocationDto = $this->changeLocationDtoMapper->fromRequest($request);
         $this->validateManager->validate($changeLocationDto);
+
         return new JsonResponse($this->locationRepository->change($changeLocationDto));
     }
 
@@ -248,6 +231,7 @@ class LocationController extends AbstractController
     {
         $updateLocationDto = $this->updateLocationDtoMapper->fromRequest($request);
         $this->validateManager->validate($updateLocationDto);
+
         return new JsonResponse($this->locationRepository->updateOrCreate($updateLocationDto));
     }
 }

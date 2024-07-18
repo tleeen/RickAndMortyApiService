@@ -16,20 +16,18 @@ readonly class PaginateDtoMapper implements PaginateDtoMapperInterface
 {
     public function __construct(
         private PaginateInfoDtoMapperInterface $paginateInfoDtoMapper
-    )
-    {
+    ) {
     }
 
     public function fromPaginator(
         Paginator $paginator,
         CharacterDtoMapperInterface|EpisodeDtoMapperInterface|LocationDtoMapperInterface $dtoMapper,
         string $module
-    ): PaginateDto
-    {
+    ): PaginateDto {
         return new PaginateDto(
             info: $this->paginateInfoDtoMapper->fromPaginator($paginator, $module),
             results: array_map(
-                function($item) use ($dtoMapper) {
+                function ($item) use ($dtoMapper) {
                     return $dtoMapper->fromModel($item);
                 },
                 $paginator->getItems()->getQuery()->getResult()

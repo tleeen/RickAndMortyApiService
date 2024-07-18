@@ -13,6 +13,7 @@ class UpdateLocationDtoMapper implements UpdateLocationDtoMapperInterface
     public function fromRequest(Request $request): UpdateLocationDto
     {
         $location = $request->toArray();
+
         return new UpdateLocationDto(
             id: (int) $request->get('id'),
             name: $location['name'],

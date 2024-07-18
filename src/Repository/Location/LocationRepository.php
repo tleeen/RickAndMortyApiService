@@ -27,11 +27,10 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
     use HasFilter;
 
     public function __construct(
-        ManagerRegistry                              $registry,
-        private readonly PaginateManagerInterface    $paginatorManager,
+        ManagerRegistry $registry,
+        private readonly PaginateManagerInterface $paginatorManager,
         private readonly LocationDtoMapperInterface $locationDtoMapper,
-    )
-    {
+    ) {
         parent::__construct($registry, Location::class);
     }
 
@@ -49,7 +48,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
         return $this->locationDtoMapper->fromPaginator($this
             ->paginatorManager
             ->paginate($queryBuilder, $getLocationsDto->page, $getLocationsDto->limit),
-            );
+        );
     }
 
     public function findById(int $id): LocationDto
@@ -69,6 +68,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
         $this->setAttributes($location, $createLocationDto);
         $this->getEntityManager()->persist($location);
         $this->getEntityManager()->flush();
+
         return $this->locationDtoMapper->fromModel($location);
     }
 
@@ -77,25 +77,34 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
         $location = $this->find($changeLocationDto->id);
         $this->setAttributes($location, $changeLocationDto);
         $this->getEntityManager()->flush();
+
         return $this->locationDtoMapper->fromModel($location);
     }
 
     public function updateOrCreate(UpdateLocationDto $updateLocationDto): LocationDto
     {
         $location = $this->find($updateLocationDto->id);
-        if (!$location) $location = new Location();
+        if (!$location) {
+            $location = new Location();
+        }
         $this->setAttributes($location, $updateLocationDto);
         $this->getEntityManager()->flush();
+
         return $this->locationDtoMapper->fromModel($location);
     }
 
     private function setAttributes(
         Location $location,
         UpdateLocationDto|CreateLocationDto|ChangeLocationDto $locationDto
-    ): void
-    {
-        if (isset($locationDto->name)) $location->setName($locationDto->name);
-        if (isset($locationDto->type)) $location->setType($locationDto->type);
-        if (isset($locationDto->dimension)) $location->setDimension($locationDto->dimension);
+    ): void {
+        if (isset($locationDto->name)) {
+            $location->setName($locationDto->name);
+        }
+        if (isset($locationDto->type)) {
+            $location->setType($locationDto->type);
+        }
+        if (isset($locationDto->dimension)) {
+            $location->setDimension($locationDto->dimension);
+        }
     }
 }

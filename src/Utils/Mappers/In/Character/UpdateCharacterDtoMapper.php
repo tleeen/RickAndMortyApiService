@@ -13,6 +13,7 @@ class UpdateCharacterDtoMapper implements UpdateCharacterDtoMapperInterface
     public function fromRequest(Request $request): UpdateCharacterDto
     {
         $character = $request->toArray();
+
         return new UpdateCharacterDto(
             id: (int) $request->get('id'),
             name: $character['name'],

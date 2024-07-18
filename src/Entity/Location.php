@@ -73,6 +73,7 @@ class Location
     public function setDimension(?string $dimension): Location
     {
         $this->dimension = $dimension;
+
         return $this;
     }
 
@@ -84,6 +85,7 @@ class Location
     public function setType(?string $type): Location
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -131,6 +133,7 @@ class Location
             $this->residents->add($resident);
             $resident->setLastLocation($this);
         }
+
         return $this;
     }
 
@@ -142,6 +145,7 @@ class Location
                 $resident->setLastLocation(null);
             }
         }
+
         return $this;
     }
 }

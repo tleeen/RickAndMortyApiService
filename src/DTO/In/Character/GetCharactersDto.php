@@ -7,9 +7,9 @@ namespace App\DTO\In\Character;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @property int[]|null $ids
- * @property int|null $page
- * @property int|null $limit
+ * @property int[]|null         $ids
+ * @property int|null           $page
+ * @property int|null           $limit
  * @property CharacterFilterDto $filters
  */
 class GetCharactersDto
@@ -22,11 +22,11 @@ class GetCharactersDto
         #[Assert\All([
             new Assert\Type([
                 'type' => 'integer',
-                'message' => 'The ids item is not a valid integer.'
+                'message' => 'The ids item is not a valid integer.',
             ]),
             new Assert\Positive([
-                'message' => 'The ids item is not a positive.'
-            ])
+                'message' => 'The ids item is not a positive.',
+            ]),
         ])]
         /**
          * @var int[]|null
@@ -41,7 +41,7 @@ class GetCharactersDto
             message: 'The page is not a positive.'
         )]
         /**
-         * @var integer|null
+         * @var int|null
          */
         public $page,
 
@@ -57,7 +57,7 @@ class GetCharactersDto
             message: 'The limit should be less than or equal to {{ compared_value }}.'
         )]
         /**
-         * @var integer|null
+         * @var int|null
          */
         public $limit,
 
@@ -66,7 +66,6 @@ class GetCharactersDto
          * @var CharacterFilterDto
          */
         public $filters
-    )
-    {
+    ) {
     }
 }

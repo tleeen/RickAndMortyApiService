@@ -40,7 +40,6 @@ class LocationFilterDto
          * @var string|null
          */
         public $dimension
-    )
-    {
+    ) {
     }
 }

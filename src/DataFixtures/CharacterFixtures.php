@@ -19,7 +19,7 @@ class CharacterFixtures extends Fixture implements DependentFixtureInterface
         $genderValues = array_column(CharacterGender::cases(), 'value');
         $statusValues = array_column(CharacterStatus::cases(), 'value');
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $character = new Character();
 
             $character->setName(sprintf('Character %d', $i));
@@ -29,14 +29,14 @@ class CharacterFixtures extends Fixture implements DependentFixtureInterface
             $character->setType(sprintf('CharacterType %d', $i));
             $character->setGender($genderValues[array_rand($genderValues)]);
 
-            $character->setOrigin($this->getReference(References::LOCATION->value . rand(0, 9)));
-            $character->setLastLocation($this->getReference(References::LOCATION->value . rand(0, 9)));
+            $character->setOrigin($this->getReference(References::LOCATION->value.rand(0, 9)));
+            $character->setLastLocation($this->getReference(References::LOCATION->value.rand(0, 9)));
 
-            $character->addEpisode($this->getReference(References::EPISODE->value . rand(0, 9)));
+            $character->addEpisode($this->getReference(References::EPISODE->value.rand(0, 9)));
 
             $manager->persist($character);
 
-            $this->addReference(References::CHARACTER->value . $i, $character);
+            $this->addReference(References::CHARACTER->value.$i, $character);
         }
 
         $manager->flush();

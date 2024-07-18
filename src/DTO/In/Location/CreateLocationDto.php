@@ -43,7 +43,6 @@ class CreateLocationDto
          * @var string
          */
         public $dimension
-    )
-    {
+    ) {
     }
 }

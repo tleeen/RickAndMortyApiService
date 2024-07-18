@@ -14,8 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @property string $species
  * @property string $type
  * @property string $gender
- * @property int $originId
- * @property int $locationId
+ * @property int    $originId
+ * @property int    $locationId
  * @property string $image
  */
 class CreateCharacterDto
@@ -88,7 +88,7 @@ class CreateCharacterDto
         )]
         #[Assert\NotNull]
         /**
-         * @var integer
+         * @var int
          */
         public $originId,
 
@@ -101,7 +101,7 @@ class CreateCharacterDto
         )]
         #[Assert\NotNull]
         /**
-         * @var integer
+         * @var int
          */
         public $locationId,
 
@@ -118,7 +118,6 @@ class CreateCharacterDto
          * @var string
          */
         public $image
-    )
-    {
+    ) {
     }
 }

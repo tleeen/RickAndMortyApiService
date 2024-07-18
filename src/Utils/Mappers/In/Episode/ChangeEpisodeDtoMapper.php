@@ -13,6 +13,7 @@ class ChangeEpisodeDtoMapper implements ChangeEpisodeDtoMapperInterface
     public function fromRequest(Request $request): ChangeEpisodeDto
     {
         $episode = $request->toArray();
+
         return new ChangeEpisodeDto(
             id: (int) $request->get('id'),
             name: $episode['name'] ?? null,

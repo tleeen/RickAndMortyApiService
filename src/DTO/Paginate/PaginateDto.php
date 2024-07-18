@@ -8,8 +8,7 @@ readonly class PaginateDto
 {
     public function __construct(
         public PaginateInfoDto $info,
-        public array           $results
-    )
-    {
+        public array $results
+    ) {
     }
 }

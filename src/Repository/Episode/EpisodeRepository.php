@@ -17,7 +17,6 @@ use App\DTO\Paginate\PaginateDto;
 use App\Entity\Episode;
 use App\Filter\Filters\Episode\EpisodeFilterFactory;
 use App\Filter\HasFilter;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -29,12 +28,11 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     use HasFilter;
 
     public function __construct(
-        ManagerRegistry                               $registry,
-        private readonly PaginateManagerInterface     $paginatorManager,
+        ManagerRegistry $registry,
+        private readonly PaginateManagerInterface $paginatorManager,
         private readonly CharacterRepositoryInterface $characterRepository,
         private readonly EpisodeDtoMapperInterface $episodeDtoMapper
-    )
-    {
+    ) {
         parent::__construct($registry, Episode::class);
     }
 
@@ -52,7 +50,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         return $this->episodeDtoMapper->fromPaginator($this
             ->paginatorManager
             ->paginate($queryBuilder, $getEpisodeDto->page, $getEpisodeDto->limit),
-            );
+        );
     }
 
     public function findById(int $id): EpisodeDto
@@ -72,6 +70,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         $this->setAttributes($episode, $createEpisodeDto);
         $this->getEntityManager()->persist($episode);
         $this->getEntityManager()->flush();
+
         return $this->episodeDtoMapper->fromModel($episode);
     }
 
@@ -80,29 +79,35 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         $episode = $this->find($changeEpisodeDto->id);
         $this->setAttributes($episode, $changeEpisodeDto);
         $this->getEntityManager()->flush();
+
         return $this->episodeDtoMapper->fromModel($episode);
     }
 
     public function updateOrCreate(UpdateEpisodeDto $updateEpisodeDto): EpisodeDto
     {
         $episode = $this->find($updateEpisodeDto->id);
-        if (!$episode) $episode = new Episode();
+        if (!$episode) {
+            $episode = new Episode();
+        }
         $this->setAttributes($episode, $updateEpisodeDto);
         $this->getEntityManager()->flush();
+
         return $this->episodeDtoMapper->fromModel($episode);
     }
 
     private function setAttributes(
         Episode $episode,
         UpdateEpisodeDto|ChangeEpisodeDto|CreateEpisodeDto $episodeDto
-    ): void
-    {
-        if (isset($episodeDto->name))
+    ): void {
+        if (isset($episodeDto->name)) {
             $episode->setName($episodeDto->name);
-        if (isset($episodeDto->airDate))
-            $episode->setAirDate(DateTime::createFromFormat('Y-m-d', $episodeDto->airDate));
-        if (isset($episodeDto->code))
+        }
+        if (isset($episodeDto->airDate)) {
+            $episode->setAirDate(\DateTime::createFromFormat('Y-m-d', $episodeDto->airDate));
+        }
+        if (isset($episodeDto->code)) {
             $episode->setCode($episodeDto->code);
+        }
         if (isset($episodeDto->characterIds)) {
             $existingCharacterIds = $episode->getCharacters()->map(function ($character) {
                 return $character->getId();

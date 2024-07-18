@@ -15,10 +15,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 readonly class EpisodeDtoMapper implements EpisodeDtoMapperInterface
 {
     public function __construct(
-        private UrlGeneratorInterface      $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
         private PaginateDtoMapperInterface $paginateDtoMapper
-    )
-    {
+    ) {
     }
 
     public function fromModel(Episode $episode): EpisodeDto
@@ -31,9 +30,9 @@ readonly class EpisodeDtoMapper implements EpisodeDtoMapperInterface
             air_date: $episode->getAirDate()->format('F j, Y'),
             episode: $episode->getCode(),
             characters: array_map(
-                fn($character) => $this->urlGenerator->generate(
-                'character_index',
-                ['id' => $character->getId()],
+                fn ($character) => $this->urlGenerator->generate(
+                    'character_index',
+                    ['id' => $character->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
                 $episode->getCharacters()->toArray()

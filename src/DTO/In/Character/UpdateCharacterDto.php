@@ -9,14 +9,14 @@ use App\Enums\Character\CharacterStatus;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @property int $id
+ * @property int    $id
  * @property string $name
  * @property string $status
  * @property string $species
  * @property string $type
  * @property string $gender
- * @property int $originId
- * @property int $locationId
+ * @property int    $originId
+ * @property int    $locationId
  * @property string $image
  */
 class UpdateCharacterDto
@@ -31,7 +31,7 @@ class UpdateCharacterDto
         )]
         #[Assert\NotNull]
         /**
-         * @var integer
+         * @var int
          */
         public $id,
 
@@ -102,7 +102,7 @@ class UpdateCharacterDto
         )]
         #[Assert\NotNull]
         /**
-         * @var integer
+         * @var int
          */
         public $originId,
 
@@ -115,7 +115,7 @@ class UpdateCharacterDto
         )]
         #[Assert\NotNull]
         /**
-         * @var integer
+         * @var int
          */
         public $locationId,
 
@@ -132,7 +132,6 @@ class UpdateCharacterDto
          * @var string
          */
         public $image
-    )
-    {
+    ) {
     }
 }

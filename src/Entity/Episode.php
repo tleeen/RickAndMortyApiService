@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use App\Entity\Traits\Timestampable;
 use App\Repository\Episode\EpisodeRepository;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -27,7 +26,7 @@ class Episode
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTime $airDate = null;
+    private ?\DateTime $airDate = null;
 
     #[ORM\Column(length: 255, unique: true)]
     private ?string $code = null;
@@ -65,9 +64,10 @@ class Episode
         return $this->airDate;
     }
 
-    public function setAirDate(DateTime $airDate): Episode
+    public function setAirDate(\DateTime $airDate): Episode
     {
         $this->airDate = $airDate;
+
         return $this;
     }
 
@@ -79,6 +79,7 @@ class Episode
     public function setCode(string $code): Episode
     {
         $this->code = $code;
+
         return $this;
     }
 
@@ -95,12 +96,14 @@ class Episode
         if (!$this->characters->contains($character)) {
             $this->characters->add($character);
         }
+
         return $this;
     }
 
     public function removeCharacter(Character $character): Episode
     {
         $this->characters->removeElement($character);
+
         return $this;
     }
 }

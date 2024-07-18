@@ -7,11 +7,11 @@ namespace App\DTO\In\Episode;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @property int $id
+ * @property int    $id
  * @property string $name
  * @property string $airDate
  * @property string $code
- * @property int[] $characterIds
+ * @property int[]  $characterIds
  */
 class UpdateEpisodeDto
 {
@@ -25,7 +25,7 @@ class UpdateEpisodeDto
         )]
         #[Assert\NotNull]
         /**
-         * @var integer
+         * @var int
          */
         public $id,
 
@@ -69,18 +69,17 @@ class UpdateEpisodeDto
         #[Assert\All([
             new Assert\Type([
                 'type' => 'integer',
-                'message' => 'The characterIds item is not a valid integer.'
+                'message' => 'The characterIds item is not a valid integer.',
             ]),
             new Assert\Positive([
-                'message' => 'The characterIds item is not a positive.'
-            ])
+                'message' => 'The characterIds item is not a positive.',
+            ]),
         ])]
         #[Assert\NotNull]
         /**
          * @var int[]
          */
         public $characterIds
-    )
-    {
+    ) {
     }
 }

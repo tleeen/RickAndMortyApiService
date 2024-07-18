@@ -82,6 +82,7 @@ class Character
     public function setImage(string $image): Character
     {
         $this->image = $image;
+
         return $this;
     }
 
@@ -93,6 +94,7 @@ class Character
     public function setStatus(?string $status): Character
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -104,6 +106,7 @@ class Character
     public function setSpecies(?string $species): Character
     {
         $this->species = $species;
+
         return $this;
     }
 
@@ -115,6 +118,7 @@ class Character
     public function setType(?string $type): Character
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -126,6 +130,7 @@ class Character
     public function setGender(?string $gender): Character
     {
         $this->gender = $gender;
+
         return $this;
     }
 
@@ -167,6 +172,7 @@ class Character
             $this->episodes->add($episode);
             $episode->addCharacter($this);
         }
+
         return $this;
     }
 
@@ -175,6 +181,7 @@ class Character
         if ($this->episodes->removeElement($episode)) {
             $episode->removeCharacter($this);
         }
+
         return $this;
     }
 }

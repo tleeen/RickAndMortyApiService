@@ -13,6 +13,7 @@ class CreateLocationDtoMapper implements CreateLocationDtoMapperInterface
     public function fromRequest(Request $request): CreateLocationDto
     {
         $location = $request->toArray();
+
         return new CreateLocationDto(
             name: $location['name'],
             type: $location['type'],

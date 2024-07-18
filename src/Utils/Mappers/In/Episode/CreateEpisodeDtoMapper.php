@@ -13,6 +13,7 @@ class CreateEpisodeDtoMapper implements CreateEpisodeDtoMapperInterface
     public function fromRequest(Request $request): CreateEpisodeDto
     {
         $episode = $request->toArray();
+
         return new CreateEpisodeDto(
             name: $episode['name'],
             airDate: $episode['air_date'],

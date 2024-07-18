@@ -13,6 +13,7 @@ class ChangeLocationDtoMapper implements ChangeLocationDtoMapperInterface
     public function fromRequest(Request $request): ChangeLocationDto
     {
         $location = $request->toArray();
+
         return new ChangeLocationDto(
             id: (int) $request->get('id'),
             name: $location['name'] ?? null,

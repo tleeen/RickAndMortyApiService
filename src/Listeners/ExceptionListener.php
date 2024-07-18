@@ -16,8 +16,7 @@ readonly class ExceptionListener
     public function __construct(
         private SerializerInterface $serializer,
         private ExceptionNormalizer $exceptionNormalizer
-    )
-    {
+    ) {
     }
 
     public function __invoke(ExceptionEvent $event): void

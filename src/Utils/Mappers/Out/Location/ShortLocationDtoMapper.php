@@ -13,8 +13,7 @@ readonly class ShortLocationDtoMapper implements ShortLocationDtoMapperInterface
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-    )
-    {
+    ) {
     }
 
     public function fromModel(Location $location): ShortLocationDto

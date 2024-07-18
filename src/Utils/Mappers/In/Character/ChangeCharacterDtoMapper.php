@@ -13,6 +13,7 @@ class ChangeCharacterDtoMapper implements ChangeCharacterDtoMapperInterface
     public function fromRequest(Request $request): ChangeCharacterDto
     {
         $character = $request->toArray();
+
         return new ChangeCharacterDto(
             id: (int) $request->get('id'),
             name: $character['name'] ?? null,

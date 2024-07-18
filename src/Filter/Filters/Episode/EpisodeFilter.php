@@ -20,7 +20,7 @@ class EpisodeFilter extends AbstractIFilter
     public function name(QueryBuilder $queryBuilder, ?string $value): void
     {
         $queryBuilder->andWhere('LOWER(episode.name) LIKE LOWER(:name)')
-            ->setParameter('name', '%' . strtolower($value) . '%');
+            ->setParameter('name', '%'.strtolower($value).'%');
     }
 
     public function code(QueryBuilder $queryBuilder, ?string $value): void

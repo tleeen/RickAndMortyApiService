@@ -7,7 +7,7 @@ namespace App\DTO\In\Location;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @property int $id
+ * @property int    $id
  * @property string $name
  * @property string $type
  * @property string $dimension
@@ -24,7 +24,7 @@ class UpdateLocationDto
         )]
         #[Assert\NotNull]
         /**
-         * @var integer
+         * @var int
          */
         public $id,
 
@@ -57,7 +57,6 @@ class UpdateLocationDto
          * @var string
          */
         public $dimension
-    )
-    {
+    ) {
     }
 }

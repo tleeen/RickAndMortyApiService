@@ -21,18 +21,18 @@ class LocationFilter extends AbstractIFilter
     public function name(QueryBuilder $queryBuilder, string $value): void
     {
         $queryBuilder->andWhere('LOWER(location.name) LIKE LOWER(:name)')
-            ->setParameter('name', '%' . strtolower($value) . '%');
+            ->setParameter('name', '%'.strtolower($value).'%');
     }
 
     public function type(QueryBuilder $queryBuilder, string $value): void
     {
         $queryBuilder->andWhere('LOWER(location.type) LIKE LOWER(:type)')
-            ->setParameter('type', '%' . strtolower($value) . '%');
+            ->setParameter('type', '%'.strtolower($value).'%');
     }
 
     public function dimension(QueryBuilder $queryBuilder, string $value): void
     {
         $queryBuilder->andWhere('LOWER(location.dimension) LIKE LOWER(:dimension)')
-            ->setParameter('dimension', '%' . strtolower($value) . '%');
+            ->setParameter('dimension', '%'.strtolower($value).'%');
     }
 }
