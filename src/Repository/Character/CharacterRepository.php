@@ -15,9 +15,9 @@ use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
 use App\Entity\Location;
-use App\Exceptions\Character\LastLocation\NotFoundLastLocation;
-use App\Exceptions\Character\NotFoundCharacter;
-use App\Exceptions\Character\Origin\NotFoundOrigin;
+use App\Exceptions\Character\LastLocation\NotFoundLastLocationException;
+use App\Exceptions\Character\NotFoundCharacterException;
+use App\Exceptions\Character\Origin\NotFoundOriginException;
 use App\Filter\Filters\Character\CharacterFilterFactory;
 use App\Filter\HasFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -56,28 +56,28 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
     }
 
     /**
-     * @throws NotFoundCharacter
+     * @throws NotFoundCharacterException
      */
     public function findById(int $id): CharacterDto
     {
         $character = $this->find($id);
 
         if (!isset($character)) {
-            throw new NotFoundCharacter();
+            throw new NotFoundCharacterException();
         }
 
         return $this->characterDtoMapper->fromModel($character);
     }
 
     /**
-     * @throws NotFoundCharacter
+     * @throws NotFoundCharacterException
      */
     public function delete(int $id): void
     {
         $character = $this->find($id);
 
         if (!isset($character)) {
-            throw new NotFoundCharacter();
+            throw new NotFoundCharacterException();
         }
 
         $this->getEntityManager()->remove($character);
@@ -85,8 +85,8 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
     }
 
     /**
-     * @throws NotFoundLastLocation
-     * @throws NotFoundOrigin
+     * @throws NotFoundLastLocationException
+     * @throws NotFoundOriginException
      */
     public function create(CreateCharacterDto $createCharacterDto): CharacterDto
     {
@@ -99,16 +99,16 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
     }
 
     /**
-     * @throws NotFoundCharacter
-     * @throws NotFoundLastLocation
-     * @throws NotFoundOrigin
+     * @throws NotFoundCharacterException
+     * @throws NotFoundLastLocationException
+     * @throws NotFoundOriginException
      */
     public function change(ChangeCharacterDto $changeCharacterDto): CharacterDto
     {
         $character = $this->find($changeCharacterDto->id);
 
         if (!isset($character)) {
-            throw new NotFoundCharacter();
+            throw new NotFoundCharacterException();
         }
 
         $this->setAttributes($character, $changeCharacterDto);
@@ -118,8 +118,8 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
     }
 
     /**
-     * @throws NotFoundLastLocation
-     * @throws NotFoundOrigin
+     * @throws NotFoundLastLocationException
+     * @throws NotFoundOriginException
      */
     public function updateOrCreate(UpdateCharacterDto $updateCharacterDto): CharacterDto
     {
@@ -136,8 +136,8 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
     }
 
     /**
-     * @throws NotFoundLastLocation
-     * @throws NotFoundOrigin
+     * @throws NotFoundLastLocationException
+     * @throws NotFoundOriginException
      */
     private function setAttributes(
         Character $character,
@@ -163,14 +163,14 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         if (isset($characterDto->originId)) {
             $origin = $entityManager->find(Location::class, $characterDto->originId);
             if (!isset($origin)) {
-                throw new NotFoundOrigin();
+                throw new NotFoundOriginException();
             }
             $character->setOrigin($origin);
         }
         if (isset($characterDto->locationId)) {
             $lastLocation = $entityManager->find(Location::class, $characterDto->locationId);
             if (!isset($lastLocation)) {
-                throw new NotFoundLastLocation();
+                throw new NotFoundLastLocationException();
             }
             $character->setLastLocation($lastLocation);
         }

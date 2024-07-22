@@ -10,36 +10,36 @@ use App\DTO\In\Episode\GetEpisodesDto;
 use App\DTO\In\Episode\UpdateEpisodeDto;
 use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateDto;
-use App\Exceptions\Character\NotFoundCharacter;
-use App\Exceptions\Episode\NotFoundEpisode;
+use App\Exceptions\Character\NotFoundCharacterException;
+use App\Exceptions\Episode\NotFoundEpisodeException;
 
 interface EpisodeRepositoryInterface
 {
     public function findMany(GetEpisodesDto $getEpisodeDto): PaginateDto;
 
     /**
-     * @throws NotFoundEpisode
+     * @throws NotFoundEpisodeException
      */
     public function findById(int $id): EpisodeDto;
 
     /**
-     * @throws NotFoundEpisode
+     * @throws NotFoundEpisodeException
      */
     public function delete(int $id): void;
 
     /**
-     * @throws NotFoundCharacter
+     * @throws NotFoundCharacterException
      */
     public function create(CreateEpisodeDto $createEpisodeDto): EpisodeDto;
 
     /**
-     * @throws NotFoundCharacter
-     * @throws NotFoundEpisode
+     * @throws NotFoundCharacterException
+     * @throws NotFoundEpisodeException
      */
     public function change(ChangeEpisodeDto $changeEpisodeDto): EpisodeDto;
 
     /**
-     * @throws NotFoundCharacter
+     * @throws NotFoundCharacterException
      */
     public function updateOrCreate(UpdateEpisodeDto $updateEpisodeDto): EpisodeDto;
 }

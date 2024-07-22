@@ -15,8 +15,8 @@ use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
 use App\Entity\Episode;
-use App\Exceptions\Character\NotFoundCharacter;
-use App\Exceptions\Episode\NotFoundEpisode;
+use App\Exceptions\Character\NotFoundCharacterException;
+use App\Exceptions\Episode\NotFoundEpisodeException;
 use App\Filter\Filters\Episode\EpisodeFilterFactory;
 use App\Filter\HasFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -55,33 +55,33 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     }
 
     /**
-     * @throws NotFoundEpisode
+     * @throws NotFoundEpisodeException
      */
     public function findById(int $id): EpisodeDto
     {
         $episode = $this->find($id);
         if (!isset($episode)) {
-            throw new NotFoundEpisode();
+            throw new NotFoundEpisodeException();
         }
 
         return $this->episodeDtoMapper->fromModel($episode);
     }
 
     /**
-     * @throws NotFoundEpisode
+     * @throws NotFoundEpisodeException
      */
     public function delete(int $id): void
     {
         $episode = $this->find($id);
         if (!isset($episode)) {
-            throw new NotFoundEpisode();
+            throw new NotFoundEpisodeException();
         }
         $this->getEntityManager()->remove($episode);
         $this->getEntityManager()->flush();
     }
 
     /**
-     * @throws NotFoundCharacter
+     * @throws NotFoundCharacterException
      */
     public function create(CreateEpisodeDto $createEpisodeDto): EpisodeDto
     {
@@ -94,14 +94,14 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     }
 
     /**
-     * @throws NotFoundCharacter
-     * @throws NotFoundEpisode
+     * @throws NotFoundCharacterException
+     * @throws NotFoundEpisodeException
      */
     public function change(ChangeEpisodeDto $changeEpisodeDto): EpisodeDto
     {
         $episode = $this->find($changeEpisodeDto->id);
         if (!isset($episode)) {
-            throw new NotFoundEpisode();
+            throw new NotFoundEpisodeException();
         }
         $this->setAttributes($episode, $changeEpisodeDto);
         $this->getEntityManager()->flush();
@@ -110,7 +110,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     }
 
     /**
-     * @throws NotFoundCharacter
+     * @throws NotFoundCharacterException
      */
     public function updateOrCreate(UpdateEpisodeDto $updateEpisodeDto): EpisodeDto
     {
@@ -125,7 +125,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
     }
 
     /**
-     * @throws NotFoundCharacter
+     * @throws NotFoundCharacterException
      */
     private function setAttributes(
         Episode $episode,
@@ -153,7 +153,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
             foreach ($characterIdsToAdd as $characterId) {
                 $character = $characterRepository->find($characterId);
                 if (!isset($character)) {
-                    throw new NotFoundCharacter();
+                    throw new NotFoundCharacterException();
                 }
                 $episode->addCharacter($character);
             }
@@ -161,7 +161,7 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
             foreach ($characterIdsToRemove as $characterId) {
                 $character = $characterRepository->find($characterId);
                 if (!isset($character)) {
-                    throw new NotFoundCharacter();
+                    throw new NotFoundCharacterException();
                 }
                 $episode->removeCharacter($character);
             }

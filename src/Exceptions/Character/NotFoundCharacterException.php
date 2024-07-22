@@ -4,7 +4,7 @@ namespace App\Exceptions\Character;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class NotFoundCharacter extends HttpException
+class NotFoundCharacterException extends HttpException
 {
     public function __construct(
         string $message = 'Character not found.',

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Exceptions\Episode;
+namespace App\Exceptions\Character\Origin;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class NotFoundEpisode extends HttpException
+class NotFoundOriginException extends HttpException
 {
     public function __construct(
-        string $message = 'Episode not found.',
+        string $message = 'Origin Not Found',
         int $code = 404,
     ) {
         parent::__construct($code, $message);

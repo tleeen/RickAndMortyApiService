@@ -4,7 +4,7 @@ namespace App\Exceptions\Character\LastLocation;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class NotFoundLastLocation extends HttpException
+class NotFoundLastLocationException extends HttpException
 {
     public function __construct(
         string $message = 'Last location not found.',

@@ -4,7 +4,7 @@ namespace App\Exceptions\Location;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class NotFoundLocation extends HttpException
+class NotFoundLocationException extends HttpException
 {
     public function __construct(
         string $message = 'Location not found.',

@@ -14,7 +14,7 @@ use App\DTO\In\Location\UpdateLocationDto;
 use App\DTO\Out\Location\LocationDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Location;
-use App\Exceptions\Location\NotFoundLocation;
+use App\Exceptions\Location\NotFoundLocationException;
 use App\Filter\Filters\Location\LocationFilterFactory;
 use App\Filter\HasFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -53,26 +53,26 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
     }
 
     /**
-     * @throws NotFoundLocation
+     * @throws NotFoundLocationException
      */
     public function findById(int $id): LocationDto
     {
         $location = $this->find($id);
         if (!isset($location)) {
-            throw new NotFoundLocation();
+            throw new NotFoundLocationException();
         }
 
         return $this->locationDtoMapper->fromModel($location);
     }
 
     /**
-     * @throws NotFoundLocation
+     * @throws NotFoundLocationException
      */
     public function delete(int $id): void
     {
         $location = $this->find($id);
         if (!isset($location)) {
-            throw new NotFoundLocation();
+            throw new NotFoundLocationException();
         }
         $this->getEntityManager()->remove($location);
         $this->getEntityManager()->flush();
@@ -89,13 +89,13 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
     }
 
     /**
-     * @throws NotFoundLocation
+     * @throws NotFoundLocationException
      */
     public function change(ChangeLocationDto $changeLocationDto): LocationDto
     {
         $location = $this->find($changeLocationDto->id);
         if (!isset($location)) {
-            throw new NotFoundLocation();
+            throw new NotFoundLocationException();
         }
         $this->setAttributes($location, $changeLocationDto);
         $this->getEntityManager()->flush();
