@@ -15,6 +15,9 @@ use App\DTO\Out\Character\CharacterDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
 use App\Entity\Location;
+use App\Exceptions\Character\LastLocation\NotFoundLastLocation;
+use App\Exceptions\Character\NotFoundCharacter;
+use App\Exceptions\Character\Origin\NotFoundOrigin;
 use App\Filter\Filters\Character\CharacterFilterFactory;
 use App\Filter\HasFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -52,17 +55,39 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         );
     }
 
+    /**
+     * @throws NotFoundCharacter
+     */
     public function findById(int $id): CharacterDto
     {
-        return $this->characterDtoMapper->fromModel($this->find($id));
+        $character = $this->find($id);
+
+        if (!isset($character)) {
+            throw new NotFoundCharacter();
+        }
+
+        return $this->characterDtoMapper->fromModel($character);
     }
 
+    /**
+     * @throws NotFoundCharacter
+     */
     public function delete(int $id): void
     {
-        $this->getEntityManager()->remove($this->find($id));
+        $character = $this->find($id);
+
+        if (!isset($character)) {
+            throw new NotFoundCharacter();
+        }
+
+        $this->getEntityManager()->remove($character);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @throws NotFoundLastLocation
+     * @throws NotFoundOrigin
+     */
     public function create(CreateCharacterDto $createCharacterDto): CharacterDto
     {
         $character = new Character();
@@ -73,29 +98,52 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
         return $this->characterDtoMapper->fromModel($character);
     }
 
+    /**
+     * @throws NotFoundCharacter
+     * @throws NotFoundLastLocation
+     * @throws NotFoundOrigin
+     */
     public function change(ChangeCharacterDto $changeCharacterDto): CharacterDto
     {
         $character = $this->find($changeCharacterDto->id);
+
+        if (!isset($character)) {
+            throw new NotFoundCharacter();
+        }
+
         $this->setAttributes($character, $changeCharacterDto);
         $this->getEntityManager()->flush();
 
         return $this->characterDtoMapper->fromModel($character);
     }
 
+    /**
+     * @throws NotFoundLastLocation
+     * @throws NotFoundOrigin
+     */
     public function updateOrCreate(UpdateCharacterDto $updateCharacterDto): CharacterDto
     {
         $character = $this->find($updateCharacterDto->id);
+
+        if (!isset($character)) {
+            $character = new Character();
+        }
+
         $this->setAttributes($character, $updateCharacterDto);
         $this->getEntityManager()->flush();
 
         return $this->characterDtoMapper->fromModel($character);
     }
 
+    /**
+     * @throws NotFoundLastLocation
+     * @throws NotFoundOrigin
+     */
     private function setAttributes(
         Character $character,
         UpdateCharacterDto|ChangeCharacterDto|CreateCharacterDto $characterDto
     ): void {
-        $em = $this->getEntityManager();
+        $entityManager = $this->getEntityManager();
 
         if (isset($characterDto->name)) {
             $character->setName($characterDto->name);
@@ -113,10 +161,18 @@ class CharacterRepository extends ServiceEntityRepository implements CharacterRe
             $character->setGender($characterDto->gender);
         }
         if (isset($characterDto->originId)) {
-            $character->setOrigin($em->getReference(Location::class, $characterDto->originId));
+            $origin = $entityManager->find(Location::class, $characterDto->originId);
+            if (!isset($origin)) {
+                throw new NotFoundOrigin();
+            }
+            $character->setOrigin($origin);
         }
         if (isset($characterDto->locationId)) {
-            $character->setLastLocation($em->getReference(Location::class, $characterDto->locationId));
+            $lastLocation = $entityManager->find(Location::class, $characterDto->locationId);
+            if (!isset($lastLocation)) {
+                throw new NotFoundLastLocation();
+            }
+            $character->setLastLocation($lastLocation);
         }
         if (isset($characterDto->image)) {
             $character->setImage($characterDto->image);

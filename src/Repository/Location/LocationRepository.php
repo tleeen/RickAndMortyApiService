@@ -14,6 +14,7 @@ use App\DTO\In\Location\UpdateLocationDto;
 use App\DTO\Out\Location\LocationDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Location;
+use App\Exceptions\Location\NotFoundLocation;
 use App\Filter\Filters\Location\LocationFilterFactory;
 use App\Filter\HasFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -51,14 +52,29 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
         );
     }
 
+    /**
+     * @throws NotFoundLocation
+     */
     public function findById(int $id): LocationDto
     {
-        return $this->locationDtoMapper->fromModel($this->find($id));
+        $location = $this->find($id);
+        if (!isset($location)) {
+            throw new NotFoundLocation();
+        }
+
+        return $this->locationDtoMapper->fromModel($location);
     }
 
+    /**
+     * @throws NotFoundLocation
+     */
     public function delete(int $id): void
     {
-        $this->getEntityManager()->remove($this->find($id));
+        $location = $this->find($id);
+        if (!isset($location)) {
+            throw new NotFoundLocation();
+        }
+        $this->getEntityManager()->remove($location);
         $this->getEntityManager()->flush();
     }
 
@@ -72,9 +88,15 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
         return $this->locationDtoMapper->fromModel($location);
     }
 
+    /**
+     * @throws NotFoundLocation
+     */
     public function change(ChangeLocationDto $changeLocationDto): LocationDto
     {
         $location = $this->find($changeLocationDto->id);
+        if (!isset($location)) {
+            throw new NotFoundLocation();
+        }
         $this->setAttributes($location, $changeLocationDto);
         $this->getEntityManager()->flush();
 
@@ -84,7 +106,7 @@ class LocationRepository extends ServiceEntityRepository implements LocationRepo
     public function updateOrCreate(UpdateLocationDto $updateLocationDto): LocationDto
     {
         $location = $this->find($updateLocationDto->id);
-        if (!$location) {
+        if (!isset($location)) {
             $location = new Location();
         }
         $this->setAttributes($location, $updateLocationDto);

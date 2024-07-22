@@ -15,6 +15,8 @@ use App\DTO\Out\Episode\EpisodeDto;
 use App\DTO\Paginate\PaginateDto;
 use App\Entity\Character;
 use App\Entity\Episode;
+use App\Exceptions\Character\NotFoundCharacter;
+use App\Exceptions\Episode\NotFoundEpisode;
 use App\Filter\Filters\Episode\EpisodeFilterFactory;
 use App\Filter\HasFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -52,17 +54,35 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         );
     }
 
+    /**
+     * @throws NotFoundEpisode
+     */
     public function findById(int $id): EpisodeDto
     {
-        return $this->episodeDtoMapper->fromModel($this->find($id));
+        $episode = $this->find($id);
+        if (!isset($episode)) {
+            throw new NotFoundEpisode();
+        }
+
+        return $this->episodeDtoMapper->fromModel($episode);
     }
 
+    /**
+     * @throws NotFoundEpisode
+     */
     public function delete(int $id): void
     {
-        $this->getEntityManager()->remove($this->find($id));
+        $episode = $this->find($id);
+        if (!isset($episode)) {
+            throw new NotFoundEpisode();
+        }
+        $this->getEntityManager()->remove($episode);
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @throws NotFoundCharacter
+     */
     public function create(CreateEpisodeDto $createEpisodeDto): EpisodeDto
     {
         $episode = new Episode();
@@ -73,19 +93,29 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         return $this->episodeDtoMapper->fromModel($episode);
     }
 
+    /**
+     * @throws NotFoundCharacter
+     * @throws NotFoundEpisode
+     */
     public function change(ChangeEpisodeDto $changeEpisodeDto): EpisodeDto
     {
         $episode = $this->find($changeEpisodeDto->id);
+        if (!isset($episode)) {
+            throw new NotFoundEpisode();
+        }
         $this->setAttributes($episode, $changeEpisodeDto);
         $this->getEntityManager()->flush();
 
         return $this->episodeDtoMapper->fromModel($episode);
     }
 
+    /**
+     * @throws NotFoundCharacter
+     */
     public function updateOrCreate(UpdateEpisodeDto $updateEpisodeDto): EpisodeDto
     {
         $episode = $this->find($updateEpisodeDto->id);
-        if (!$episode) {
+        if (!isset($episode)) {
             $episode = new Episode();
         }
         $this->setAttributes($episode, $updateEpisodeDto);
@@ -94,6 +124,9 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
         return $this->episodeDtoMapper->fromModel($episode);
     }
 
+    /**
+     * @throws NotFoundCharacter
+     */
     private function setAttributes(
         Episode $episode,
         UpdateEpisodeDto|ChangeEpisodeDto|CreateEpisodeDto $episodeDto
@@ -119,11 +152,17 @@ class EpisodeRepository extends ServiceEntityRepository implements EpisodeReposi
 
             foreach ($characterIdsToAdd as $characterId) {
                 $character = $characterRepository->find($characterId);
+                if (!isset($character)) {
+                    throw new NotFoundCharacter();
+                }
                 $episode->addCharacter($character);
             }
 
             foreach ($characterIdsToRemove as $characterId) {
                 $character = $characterRepository->find($characterId);
+                if (!isset($character)) {
+                    throw new NotFoundCharacter();
+                }
                 $episode->removeCharacter($character);
             }
         }
