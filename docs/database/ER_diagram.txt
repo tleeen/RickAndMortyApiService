@@ -38,10 +38,10 @@ Table episode_character {
   character_id integer
 }
 
-Ref: episodes.id < episode_characters.episode_id
+Ref: episode.id < episode_character.episode_id
 
-Ref: characters.id < episode_characters.character_id
+Ref: character.id < episode_character.character_id
 
-Ref: characters.origin_id > locations.id
+Ref: character.origin_id > location.id
 
-Ref: characters.last_location_id > locations.id
+Ref: character.last_location_id > location.id
